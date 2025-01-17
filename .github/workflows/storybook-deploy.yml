@@ -13,15 +13,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
 
       - name: Build Storybook
-        run: npm run build-storybook  # storybook-static フォルダを生成する
+        run: npm run build-storybook
 
       - name: Deploy Storybook to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # gh-pages ブランチにデプロイ
-          folder: storybook-static  # storybook-static フォルダを指定
-          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token
+          branch: gh-pages
+          folder: storybook-static
+          token: ${{ secrets.GITHUB_TOKEN }}
