@@ -3,28 +3,25 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - main  # mainブランチが更新されたときに実行
-
-permissions:
-  contents: write
+      - main  # main ブランチにプッシュされたときにトリガーされる
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: npm install  # または yarn install
+        run: npm install
 
       - name: Build Storybook
-        run: npm run build-storybook  # Storybook をビルド
+        run: npm run build-storybook  # storybook-static フォルダを生成する
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Storybook to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # デプロイ先ブランチ
-          folder: storybook-static  # Storybook のビルドフォルダ
-          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token を設定
-          
+          branch: gh-pages  # gh-pages ブランチにデプロイ
+          folder: storybook-static  # storybook-static フォルダを指定
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token
