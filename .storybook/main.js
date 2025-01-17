@@ -13,5 +13,11 @@ const config = {
     options: {},
   },
   staticDirs: ["../public"],
+  module,exports : {
+    stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+    addons: [],
+    framework: '@storybook/react',
+    staticDirs: ['../public'],
+  },  
 };
 export default config;
