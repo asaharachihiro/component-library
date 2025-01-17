@@ -26,5 +26,5 @@ jobs:
         with:
           branch: gh-pages  # デプロイ先ブランチ
           folder: storybook-static  # Storybook のビルドフォルダ
-
+          token: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token を設定
           
