@@ -1,0 +1,30 @@
+name: Deploy Storybook to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # mainブランチが更新されたときに実行
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install  # または yarn install
+
+      - name: Build Storybook
+        run: npm run build-storybook  # Storybook をビルド
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # デプロイ先ブランチ
+          folder: storybook-static  # Storybook のビルドフォルダ
+
+          
