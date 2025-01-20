@@ -3,23 +3,15 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches:
-      - main  # main ブランチにプッシュされたときにトリガーされる
+      - main # main ブランチにプッシュされたときにトリガーされる
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: npm install
