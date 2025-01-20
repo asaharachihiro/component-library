@@ -1,6 +1,6 @@
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/**/*.stories.tsx"],
   addons: [
     "@storybook/preset-create-react-app",
     "@storybook/addon-onboarding",
@@ -13,11 +13,12 @@ const config = {
     options: {},
   },
   staticDirs: ["../public"],
-  module,exports : {
-    stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  module,
+  exports: {
+    stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
     addons: [],
-    framework: '@storybook/react',
-    staticDirs: ['../public'],
-  },  
+    framework: "@storybook/react",
+    staticDirs: ["../public"],
+  },
 };
 export default config;
