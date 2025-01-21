@@ -29,4 +29,5 @@ jobs:
         with:
           branch: gh-pages
           folder: storybook-static
+          clean: false
           token: ${{ secrets.GITHUB_TOKEN }}
