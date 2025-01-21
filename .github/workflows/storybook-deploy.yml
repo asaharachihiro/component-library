@@ -31,4 +31,5 @@ jobs:
           folder: storybook-static
           clean: false
           force: false
+          clean-exclude: storybook-static/**
           token: ${{ secrets.GITHUB_TOKEN }}
