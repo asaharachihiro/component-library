@@ -1,6 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    "bg-blue-500",
+    "bg-gray-200",
+    "bg-red-500",
+    "text-white",
+    "text-black",
+    "text-gray-900",
+  ],
   theme: {
     colors: {
       main: {
@@ -10,8 +18,12 @@ module.exports = {
       black: {
         DEFAULT: "rgb(1, 30, 42, 1)",
         sub: "rgb(1, 30, 42, 0.5)",
-        overlay: "rgb(0, 0, 0, 0.3)",
+        overlay: "rgb(1, 30, 42, 0.3)",
         disabled: "rgb(1, 30, 42, 0.2)",
+        "5-opacity": "rgb(1, 30, 42, 0.05)",
+        "10-opacity": "rgb(1, 30, 42, 0.1)",
+        "20-opacity": "rgb(1, 30, 42, 0.2)",
+        "50-opacity": "rgb(1, 30, 42, 0.5)",
       },
       white: "#FFFFFF",
       danger: "rgb(224, 6, 6, 1)",
@@ -27,6 +39,9 @@ module.exports = {
       none: "0 0 rgb(0, 0, 0, 0)",
     },
     extend: {
+      fontSize: {
+        base: "16px",
+      },
       fontWeight: {
         regular: 400,
         medium: 500,
