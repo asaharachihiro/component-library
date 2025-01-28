@@ -20,5 +20,9 @@ const config = {
     framework: "@storybook/react",
     staticDirs: ["../public"],
   },
+  webpackFinal: async (config) => {
+    config.resolve.extensions.push(".tsx", ".ts", ".js");
+    return config;
+  },
 };
 export default config;
