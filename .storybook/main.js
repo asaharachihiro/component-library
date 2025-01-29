@@ -1,6 +1,10 @@
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
-  stories: ["../src/**/*.stories.tsx"],
+  managerHead: (head) => `
+  ${head}
+  <base href="/component-library/storybook-static/" />
+`,
+  stories: ["../**/*.stories.tsx"],
   addons: [
     "@storybook/preset-create-react-app",
     "@storybook/addon-onboarding",
@@ -21,7 +25,10 @@ const config = {
     staticDirs: ["../public"],
   },
   webpackFinal: async (config) => {
-    config.resolve.extensions.push(".tsx", ".ts", ".js");
+    config.output = {
+      ...config.output,
+      publicPath: "/",
+    };
     return config;
   },
 };
