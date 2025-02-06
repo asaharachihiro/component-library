@@ -1,19 +1,7 @@
 {
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "types": ["react", "react-dom"],
-    "target": "es5",
-    "lib": ["dom", "es6"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": "src", // baseUrlを設定して、srcディレクトリを基準に絶対パスを使用できるようにします
-    "paths": {
-      "*": ["node_modules/*", "src/*"]
-    }
-  },
-  "include": ["src/**/*"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

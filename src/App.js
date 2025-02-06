@@ -1,6 +1,6 @@
 import "@radix-ui/themes/styles.css";
 import * as React from "react";
-
+import "./styles/global.css";
 import { Button } from "./components/action/Button/Button";
 
 function App() {

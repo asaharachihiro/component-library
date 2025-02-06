@@ -1,48 +1,42 @@
-import { fn } from "@storybook/test";
-import { Button } from "./Button.tsx";
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from ".";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-export default {
-  title: "Example/Button",
+const meta: Meta<typeof Button> = {
+  title: "Component/Action/Button",
   component: Button,
-  parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: "centered",
-  },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    backgroundColor: { control: "color" },
-  },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-};
-
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary = {
-  args: {
-    primary: true,
-    label: "Button",
-  },
-};
-
-export const Secondary = {
-  args: {
-    label: "Button",
-  },
-};
-
-export const Large = {
-  args: {
-    size: "large",
-    label: "Button",
+    variant: {
+      control: { type: "select" },
+      options: [
+        "primary",
+        "secondary",
+        "textPrimary",
+        "textSecondary",
+        "danger",
+        "textDanger",
+      ],
+    },
+    size: {
+      control: { type: "radio" },
+      options: ["sm", "md"],
+    },
+    disabled: { control: "boolean" },
+    isActive: { control: "boolean" },
+    isLoading: { control: "boolean" },
+    children: { control: "text" },
   },
 };
+export default meta;
 
-export const Small = {
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
   args: {
-    size: "small",
-    label: "Button",
+    variant: "primary",
+    size: "md",
+    children: "BUTTON",
+    disabled: false,
+    isActive: false,
+    isLoading: false,
   },
 };
