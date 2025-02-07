@@ -7,21 +7,21 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-links",
     "@storybook/addon-interactions",
+    "@chromatic-com/storybook",
   ],
 
-  framework: "@storybook/react-vite",
-
-  staticDirs: ["../public"],
+  framework: {
+    name: "@storybook/react-vite",
+    options: {},
+  },
 
   docs: {},
 
   typescript: {
     reactDocgen: "react-docgen-typescript",
   },
+
   viteFinal: async (config) => {
-    return mergeConfig(config, {
-      base: "/",
-      assetsInclude: ["/sb-preview/runtime.js"], // 追加
-    });
+    return mergeConfig(config, {});
   },
 };

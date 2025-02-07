@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: "jit",
   content: [
     "./index.html",
-    "./src/**/*.{html,js,ts,jsx,tsx}",
+    "./src/**/*.{html,js,ts,jsx,tsx,mdx}",
     "./.storybook/**/*.{js,jsx,ts,tsx,mdx}",
     "./storybook-static/**/*.html",
   ],
@@ -55,5 +54,13 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".test-class": {
+          color: "red",
+        },
+      });
+    },
+  ],
 };
