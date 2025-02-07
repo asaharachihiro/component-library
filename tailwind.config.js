@@ -1,8 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: "jit",
   content: [
+    "./index.html",
     "./src/**/*.{html,js,ts,jsx,tsx}",
-    "./.storybook/**/*.{ts,tsx,mdx}",
+    "./.storybook/**/*.{js,jsx,ts,tsx,mdx}",
+    "./storybook-static/**/*.html",
   ],
   safelist: [
     "bg-blue-500",
