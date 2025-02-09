@@ -23,7 +23,7 @@ module.exports = {
 
   viteFinal: async (config, { configType }) => {
     //if (configType === "PRODUCTION") {
-    config.base = "./";
+    config.base = "/component-library/";
     //}
     return mergeConfig(config, {});
   },
