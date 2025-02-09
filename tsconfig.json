@@ -1,7 +1,7 @@
-// tsconfig.json
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
     "target": "es5",
     "lib": ["dom", "es6"],
     "module": "esnext",
