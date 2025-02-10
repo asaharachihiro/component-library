@@ -21,10 +21,7 @@ module.exports = {
     reactDocgen: "react-docgen-typescript",
   },
 
-  viteFinal: async (config, { configType }) => {
-    //if (configType === "PRODUCTION") {
-    config.base = "/component-library/";
-    //}
+  viteFinal: async (config) => {
     return mergeConfig(config, {});
   },
 };
