@@ -40,7 +40,22 @@ module.exports = {
       ],
     });
 
-    config.resolve.extensions.push(".ts", ".tsx");
+    config.module.rules.push({
+      test: /\.(js|jsx|ts|tsx)$/,
+      exclude: /node_modules/,
+      use: {
+        loader: require.resolve("babel-loader"),
+        options: {
+          presets: [
+            ["@babel/preset-react", { runtime: "automatic" }],
+            "@babel/preset-typescript",
+            "@babel/preset-env",
+          ],
+        },
+      },
+    });
+
+    config.resolve.extensions.push(".ts", ".tsx", ".js", ".jsx");
 
     return config;
   },
