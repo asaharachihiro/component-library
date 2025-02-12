@@ -38,4 +38,4 @@ await within(async () => {
 await $`rm -rf node_modules/.cache/gh-pages`;
 
 // デプロイ
-await $`gh-pages -d storybook-static`;
+await $`gh-pages -d storybook-static -r "https://${process.env.GITHUB_ACTOR}:${process.env.PERSONAL_TOKEN}@github.com/asaharachihiro/asaharachihiro.github.io.git"`;
