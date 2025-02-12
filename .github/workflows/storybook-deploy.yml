@@ -32,8 +32,8 @@ jobs:
       # 5. Storybook の静的ファイルをビルド
       - name: Configure Git user
         run: |
-          git config --global user.email "asahara.chihiro.23e@jp.nipponsteel.com"
-          git config --global user.name "asaharachihiro"
+          git config --global user.email "asahara.chihiro.23e@jp.nssol.nipponsteel.com"
+          git config --global user.name "asahara.chihiro"
 
       # 6. deploy-storybook.mjs を実行
       - name: Run deploy script (build, fix paths, and deploy)
