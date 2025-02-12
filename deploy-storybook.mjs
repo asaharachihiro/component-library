@@ -4,8 +4,6 @@
 /* eslint-disable no-undef */
 import "zx/globals";
 
-const REPO_NAME = "component-library"; //
-
 // ビルド
 await $`npm run build-storybook`;
 
