@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/react-18-CDyF7AiU.js","assets/index-CLdjMFSG.js","assets/index-D19a90JN.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["component-library/assets/react-18-CDyF7AiU.js","component-library/assets/index-CLdjMFSG.js","component-library/assets/index-D19a90JN.js"])))=>i.map(i=>d[i]);
 import{_ as _e}from"./iframe-DHSHq_wt.js";import{_ as ge,a as N,d as we}from"./chunk-XP5HYGXS-D5tuasO7.js";import{r as k,R as Y}from"./index-CLdjMFSG.js";var xe={};/**
  * @license React
  * react-dom-test-utils.production.js
