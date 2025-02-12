@@ -3,7 +3,7 @@ name: Deploy Storybook
 on:
   push:
     branches:
-      - main # main ブランチへの push で実行
+      - main
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # フル履歴を取得（必要に応じて）
+          fetch-depth: 0
 
       # 2. Node.js のセットアップ
       - name: Setup Node.js
@@ -29,13 +29,6 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
-      # 5. ビルド成果物を GitHub ユーザーページ用リポジトリにデプロイ
-      - name: Deploy to GitHub Pages (User Page)
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
-          publish_dir: ./storybook-static
-          # ターゲットリポジトリとしてユーザーページ用リポジトリを指定
-          external_repository: asaharachihiro/asaharachihiro.github.io
-          # ユーザーページの場合、通常は main ブランチ（または指定したブランチ）を使います
-          publish_branch: main
+      # deploy-storybook.mjs を実行
+      - name: Run deploy script (build, fix paths, and deploy)
+        run: npm run deploy-storybook
