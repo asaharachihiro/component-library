@@ -29,11 +29,10 @@ jobs:
       - name: Run deploy script (build, fix paths)
         run: npm run deploy-storybook
 
-      # 6. deploy-storybook.mjs を実行
-      - name: Deploy to GitHub Pages (User Page)
+      # 7. GitHub Pagesにデプロイ
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./storybook-static
-          external_repository: asaharachihiro/asaharachihiro.github.io
-          publish_branch: main
+          publish_branch: gh-pages
