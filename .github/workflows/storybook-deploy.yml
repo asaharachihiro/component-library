@@ -25,16 +25,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Git のユーザー情報を設定
-      - name: Install dependencies
-        run: npm install
-
-      # 5. Storybook の静的ファイルをビルド
-      - name: Configure Git user
-        run: |
-          git config --global user.email "asahara.chihiro.23e@jp.nssol.nipponsteel.com"
-          git config --global user.name "asahara.chihiro"
+      # 6. deploy-storybook.mjs を実行
+      - name: Run deploy script (build, fix paths)
+        run: npm run deploy-storybook
 
       # 6. deploy-storybook.mjs を実行
-      - name: Run deploy script (build, fix paths, and deploy)
-        run: npm run deploy-storybook
+      - name: Deploy to GitHub Pages (User Page)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          publish_dir: ./storybook-static
+          external_repository: asaharachihiro/asaharachihiro.github.io
+          publish_branch: main

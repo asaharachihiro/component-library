@@ -36,6 +36,3 @@ await within(async () => {
 
 // キャッシュ削除
 await $`rm -rf node_modules/.cache/gh-pages`;
-
-// デプロイ
-await $`gh-pages -d storybook-static -r "https://x-access-token:${process.env.PERSONAL_TOKEN}@github.com/asaharachihiro/asaharachihiro.github.io.git"`;
