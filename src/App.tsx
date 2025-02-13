@@ -7,8 +7,15 @@ const App: React.FC = () => {
     <>
       <Link
         target="_blank"
-        children={"あああ"}
-        href={"https://www.youtube.com/watch?v=V9Hjb2S4e0Y"}
+        children={"外部サイト(Tailwind - font-size)"}
+        href={"https://tailwindcss.com/docs/font-size#examples"}
+        className="block"
+      />
+      <Link
+        target="_blank"
+        children={"外部サイト(Tailwind - font-size)"}
+        href={"https://tailwindcss.com/docs/font-size#examples"}
+        className="block"
       />
     </>
   );
