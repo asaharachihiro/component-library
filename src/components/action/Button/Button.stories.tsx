@@ -24,6 +24,7 @@ const meta: Meta<typeof Button> = {
     isActive: { control: "boolean" },
     isLoading: { control: "boolean" },
     children: { control: "text" },
+    asChild: { control: { disable: true } },
   },
 };
 export default meta;
@@ -38,5 +39,6 @@ export const Primary: Story = {
     disabled: false,
     isActive: false,
     isLoading: false,
+    icon: "home",
   },
 };
