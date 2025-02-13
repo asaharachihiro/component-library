@@ -4,13 +4,13 @@ import { Link } from ".";
 const meta: Meta<typeof Link> = {
   title: "Component/Action/Link",
   component: Link,
-  argTypes: {
-    children: { control: "text" },
-    target: { control: { type: "radio" }, options: ["_self", "_blank"] },
-  },
+  tags: ["autodocs"],
   parameters: {
-    controls: {
-      exclude: ["asChild", "className"],
+    docs: {
+      description: {
+        component:
+          "Linkは、グローバルメニュー以外の場所で別ページへ遷移させるときに使用するコンポーネントです。",
+      },
     },
   },
 };
@@ -22,5 +22,14 @@ export const Default: Story = {
   args: {
     children: "サービスサポート窓口",
     target: "_blank",
+  },
+  argTypes: {
+    children: { control: "text" },
+    target: { control: { type: "radio" }, options: ["_self", "_blank"] },
+  },
+  parameters: {
+    controls: {
+      exclude: ["asChild", "className"],
+    },
   },
 };
