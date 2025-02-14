@@ -80,7 +80,7 @@ const ContainedBaseButton = React.forwardRef<
         )}
         {...props}
       >
-        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-all group-active:opacity-10" />
+        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
@@ -132,7 +132,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
-        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-all group-active:opacity-10" />
+        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
@@ -189,7 +189,7 @@ const TextBaseButton = React.forwardRef<
         )}
         {...props}
       >
-        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-all group-active:opacity-10" />
+        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>

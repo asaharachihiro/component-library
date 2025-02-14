@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { TextBox } from ".";
 
 const meta: Meta<typeof TextBox> = {
-  title: "Component/input/TextBox",
+  title: "Components/input/TextBox",
   component: TextBox,
   tags: ["autodocs"],
   parameters: {

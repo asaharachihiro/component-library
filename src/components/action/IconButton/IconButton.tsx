@@ -43,7 +43,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         <span
           className={cn(
             "material-symbols-rounded",
-            isToggled && "icon-fill text-main"
+            isToggled && "text-main icon-fill"
           )}
         >
           {icon}

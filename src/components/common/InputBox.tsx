@@ -43,12 +43,12 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={cn("border p-2 w-full rounded-lg text-black", boxStyle)}
+          className={cn("w-full rounded-lg border p-2 text-black", boxStyle)}
           aria-invalid={!isValid}
           {...props}
         />
         {supportMassage && (
-          <span className="text-black-sub text-xs">{supportMassage}</span>
+          <span className="text-xs text-black-sub">{supportMassage}</span>
         )}
         {!isValid && <ErrorText text={errorMassage} />}
       </div>

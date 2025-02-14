@@ -19,7 +19,7 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
       >
         <span className="text-sm text-black">{label}</span>
         {isRequire && (
-          <span className="text-xs text-black-sub font-bold bg-black-10-opacity px-2 h-5 rounded-md m-2 flex items-center">
+          <span className="m-2 flex h-5 items-center rounded-md bg-black-10-opacity px-2 text-xs font-bold text-black-sub">
             必須
           </span>
         )}
