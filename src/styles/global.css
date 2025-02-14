@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..200&display=swap);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,6 +18,11 @@ code {
     monospace;
 }
 
-.icon-wght-500 {
+.material-symbols-rounded {
+  font-size: inherit;
   font-variation-settings: "wght" 500;
+}
+
+.material-symbols-rounded.icon-fill {
+  font-variation-settings: "FILL" 1;
 }
