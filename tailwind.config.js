@@ -57,8 +57,11 @@ module.exports = {
   plugins: [
     function ({ addUtilities }) {
       addUtilities({
-        ".test-class": {
-          color: "red",
+        ".icon-wght-500": {
+          fontVariationSettings: '"wght" 500',
+        },
+        ".icon-fill": {
+          fontVariationSettings: '"FILL" 1',
         },
       });
     },
