@@ -25,7 +25,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
           ref={ref}
           aria-label="検索ボックス"
         />
-        <button type="submit" aria-label="検索ボタン" className={ButtonStyle}>
+        <button type="button" aria-label="検索ボタン" className={ButtonStyle}>
           <span className="material-symbols-rounded">search</span>
         </button>
       </div>
