@@ -12,6 +12,7 @@ interface InputBoxProps {
   placeholder?: string;
   value?: string;
   isValid?: boolean;
+  disabled?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
@@ -25,6 +26,7 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
       placeholder,
       value,
       isValid = true,
+      disabled = false,
       onChange,
       ...props
     },
@@ -32,7 +34,8 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
   ) => {
     const boxStyle = !isValid
       ? "border-danger"
-      : "border-black-20-opacity focus:border-black-sub";
+      : "border-black-20-opacity focus:border-black-sub text-black";
+    const disabledStyle = disabled && "text-black-sub pointer-events-none";
     console.log(isValid);
     return (
       <div className={cn(className)}>
@@ -43,7 +46,12 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={cn("w-full rounded-lg border p-2 text-black", boxStyle)}
+          disabled={disabled}
+          className={cn(
+            "w-full rounded-lg border p-2",
+            boxStyle,
+            disabledStyle
+          )}
           aria-invalid={!isValid}
           {...props}
         />

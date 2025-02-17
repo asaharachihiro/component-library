@@ -12,7 +12,8 @@ interface TextBoxProps {
   errorMassage?: string;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  isValid: boolean;
+  isValid?: boolean;
+  disabled?: boolean;
 }
 
 export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
@@ -29,6 +30,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       value,
       onChange,
       isValid,
+      disabled = false,
     },
     ref
   ) => {
@@ -41,6 +43,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
             type,
             value,
             isValid,
+            disabled,
             onChange,
             placeholder,
             supportMassage,
