@@ -6,7 +6,7 @@ import { cn } from "../../../utils/cn";
 import { Spinner } from "../../loading/Spinner/Spinner";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group",
+  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group",
   {
     variants: {
       variant: {
@@ -84,12 +84,7 @@ const ContainedBaseButton = React.forwardRef<
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
-            <span
-              className="material-symbols-rounded"
-              style={{ fontSize: "16px" }}
-            >
-              {icon}
-            </span>
+            <span className={"material-symbols-rounded"}>{icon}</span>
           </div>
         )}
         <span className={cn(isLoading && "opacity-0")}>{children}</span>
@@ -136,12 +131,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
-            <span
-              className="material-symbols-rounded"
-              style={{ fontSize: "16px" }}
-            >
-              {icon}
-            </span>
+            <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
         <span className={cn(isLoading && "opacity-0")}>{children}</span>
@@ -170,7 +160,6 @@ const TextBaseButton = React.forwardRef<
     ref
   ) => {
     const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-
     const disabledStyle =
       disabled || isLoading
         ? "text-black-20-opacity border-black-20-opacity pointer-events-none"
@@ -182,7 +171,7 @@ const TextBaseButton = React.forwardRef<
       <Comp
         ref={ref}
         className={cn(
-          buttonVariants({ variant, size }),
+          buttonVariants({ variant, size: "sm" }),
           disabledStyle,
           activeStyle,
           className
@@ -193,12 +182,7 @@ const TextBaseButton = React.forwardRef<
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
-            <span
-              className="material-symbols-rounded"
-              style={{ fontSize: "16px" }}
-            >
-              {icon}
-            </span>
+            <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
         <span
