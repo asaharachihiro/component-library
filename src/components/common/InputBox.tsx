@@ -38,7 +38,7 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
     const disabledStyle = disabled && "text-black-sub pointer-events-none";
     console.log(isValid);
     return (
-      <div className={cn(className)}>
+      <>
         <input
           id={id}
           ref={ref}
@@ -50,7 +50,8 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
           className={cn(
             "w-full rounded-lg border p-2",
             boxStyle,
-            disabledStyle
+            disabledStyle,
+            className
           )}
           aria-invalid={!isValid}
           {...props}
@@ -59,7 +60,7 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
           <span className="text-xs text-black-sub">{supportMassage}</span>
         )}
         {!isValid && <ErrorText text={errorMassage} />}
-      </div>
+      </>
     );
   }
 );

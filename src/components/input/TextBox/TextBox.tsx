@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FormLabel, InputBox } from "../common";
+import { FormLabel, InputBox } from "../../common";
 
 interface TextBoxProps {
   label?: string;
