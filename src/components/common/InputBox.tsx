@@ -4,7 +4,7 @@ import { ErrorText } from "./ErrorText";
 
 interface InputBoxProps {
   id: string;
-  type?: string;
+  type: "text" | "textarea";
   supportMassage?: string;
   errorMassage?: string;
   isRequire?: boolean;
@@ -13,13 +13,20 @@ interface InputBoxProps {
   value?: string;
   isValid?: boolean;
   disabled?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
 }
-export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
+export const InputBox = React.forwardRef<
+  HTMLInputElement | HTMLTextAreaElement,
+  InputBoxProps
+>(
   (
     {
       id,
-      type = "text",
+      type,
       supportMassage,
       errorMassage,
       className,
@@ -36,16 +43,19 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
       ? "border-danger"
       : "border-black-20-opacity focus:border-black-sub text-black";
     const disabledStyle = disabled && "text-black-sub pointer-events-none";
-    console.log(isValid);
+    const InputComponent = type === "text" ? "input" : type;
+
     return (
       <>
-        <input
+        <InputComponent
           id={id}
-          ref={ref}
-          type={type}
+          ref={
+            ref as React.Ref<HTMLInputElement> & React.Ref<HTMLTextAreaElement>
+          }
+          type={type === "textarea" ? undefined : type}
           placeholder={placeholder}
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange && onChange(e)}
           disabled={disabled}
           className={cn(
             "w-full rounded-lg border p-2",
@@ -54,6 +64,7 @@ export const InputBox = React.forwardRef<HTMLInputElement, InputBoxProps>(
             className
           )}
           aria-invalid={!isValid}
+          {...(type === "textarea" ? { rows: 4 } : {})}
           {...props}
         />
         {supportMassage && (

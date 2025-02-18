@@ -22,3 +22,7 @@ code {
   font-size: inherit;
   font-variation-settings: "wght" 500;
 }
+
+.material-symbols-rounded.icon-fill {
+  font-variation-settings: "FILL" 1;
+}
