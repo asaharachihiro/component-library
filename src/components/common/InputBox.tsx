@@ -42,7 +42,8 @@ export const InputBox = React.forwardRef<
     const boxStyle = !isValid
       ? "border-danger"
       : "border-black-20-opacity focus:border-black-sub text-black";
-    const disabledStyle = disabled && "text-black-sub pointer-events-none";
+    const disabledStyle =
+      disabled && "text-black-sub pointer-events-none bg-black-3-opacity";
     const InputComponent = type === "text" ? "input" : type;
 
     return (
@@ -58,7 +59,7 @@ export const InputBox = React.forwardRef<
           onChange={(e) => onChange && onChange(e)}
           disabled={disabled}
           className={cn(
-            "w-full rounded-lg border p-2",
+            "mb-1 w-full rounded-lg border p-2",
             boxStyle,
             disabledStyle,
             className

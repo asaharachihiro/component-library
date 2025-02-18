@@ -13,13 +13,13 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
     return (
       <Label
         ref={ref}
-        className={cn("flex flex-nowrap items-center", className)}
+        className={cn("mb-1 flex flex-nowrap items-center", className)}
         htmlFor={htmlFor || "defaultId"}
         {...props}
       >
         <span className="text-sm font-medium text-black">{label}</span>
         {isRequire && (
-          <span className="m-2 flex h-5 items-center rounded-md bg-black-10-opacity px-2 text-xs font-bold text-black-sub">
+          <span className="ml-2 flex h-5 items-center rounded-md bg-black-10-opacity px-2 text-xs font-bold text-black-sub">
             必須
           </span>
         )}

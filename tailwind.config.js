@@ -25,6 +25,7 @@ module.exports = {
         sub: "rgb(1, 30, 42, 0.5)",
         overlay: "rgb(1, 30, 42, 0.3)",
         disabled: "rgb(1, 30, 42, 0.2)",
+        "3-opacity": "rgb(1, 30, 42, 0.03)",
         "5-opacity": "rgb(1, 30, 42, 0.05)",
         "10-opacity": "rgb(1, 30, 42, 0.1)",
         "20-opacity": "rgb(1, 30, 42, 0.2)",
@@ -39,8 +40,8 @@ module.exports = {
       },
     },
     boxShadow: {
-      low: "0px 1px 4px 2px rgb(0, 0, 0, 0.05)",
-      high: "0px 4px 12px 4px rgb(0, 0, 0, 0.075)",
+      low: "0px 1px 4px 2px rgb(0, 0, 0, 0.075)",
+      high: "0px 4px 12px 4px rgb(0, 0, 0, 0.1)",
       none: "0 0 rgb(0, 0, 0, 0)",
     },
     extend: {
