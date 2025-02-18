@@ -7,7 +7,11 @@ interface SearchBoxProps {
   className?: string;
   placeholder?: string;
   value?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: (
+    event:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void;
 }
 
 export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
@@ -24,6 +28,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
           onChange={onChange}
           ref={ref}
           aria-label="検索ボックス"
+          type={"text"}
         />
         <button type="button" aria-label="検索ボタン" className={ButtonStyle}>
           <span className="material-symbols-rounded">search</span>

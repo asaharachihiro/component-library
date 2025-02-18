@@ -4,14 +4,18 @@ import { FormLabel, InputBox } from "../../common";
 interface TextBoxProps {
   label?: string;
   id: string;
-  type?: string;
+  type?: "text" | "textarea";
   isRequire?: boolean;
   className?: string;
   placeholder?: string;
   supportMassage?: string;
   errorMassage?: string;
   value?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: (
+    event:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void;
   isValid?: boolean;
   disabled?: boolean;
 }
@@ -40,8 +44,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
         <InputBox
           {...{
             id,
-            type,
             value,
+            type,
             isValid,
             disabled,
             onChange,
