@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { SelectBox } from ".";
+import * as React from "react";
 
 const meta: Meta<typeof SelectBox> = {
   title: "Components/selection/SelectBox",
@@ -17,7 +18,22 @@ export default meta;
 
 type Story = StoryObj<typeof SelectBox>;
 
+const Template: Story = {
+  render: (args) => {
+    const [selectedValue, setSelectedValue] = React.useState(args.value);
+
+    React.useEffect(() => {
+      setSelectedValue(args.value);
+    }, [args.value]);
+
+    return (
+      <SelectBox {...args} value={selectedValue} onChange={setSelectedValue} />
+    );
+  },
+};
+
 export const Default: Story = {
+  ...Template,
   args: {
     options: [
       { value: "1", label: "学生" },

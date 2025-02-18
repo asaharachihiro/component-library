@@ -23,7 +23,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
       id,
       options,
       label,
-      placeholder = "年/月/日",
+      placeholder = "未選択",
       value,
       isRequired = false,
       isValid = true,
@@ -34,6 +34,19 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
     },
     ref
   ) => {
+    const [selectedValue, setSelectedValue] = React.useState(value);
+
+    React.useEffect(() => {
+      setSelectedValue(value);
+    }, [value]);
+
+    const handleChange = (newValue: string) => {
+      setSelectedValue(newValue);
+      if (onChange) {
+        onChange(newValue);
+      }
+    };
+
     const boxStyle = !isValid
       ? "border-danger"
       : "border-black-20-opacity focus:border-black-sub text-black";
@@ -44,7 +57,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
     return (
       <div>
         {label && <FormLabel label={label} isRequire={isRequired} />}
-        <Select.Root value={value} onValueChange={onChange}>
+        <Select.Root value={selectedValue} onValueChange={handleChange}>
           <Select.Trigger
             id={id}
             ref={ref}
