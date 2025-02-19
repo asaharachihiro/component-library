@@ -49,10 +49,13 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
 
     const boxStyle = !isValid
       ? "border-danger"
-      : "border-black-20-opacity focus:border-black-sub text-black";
+      : "border-black-20-opacity focus:border-black-sub";
     const disabledStyle =
       disabled && "text-black-sub pointer-events-none bg-black-3-opacity";
-    const placeholderStyle = value ? "text-black" : "text-black-20-opacity";
+    const placeholderStyle =
+      selectedValue === "none" || selectedValue === undefined
+        ? "text-black-20-opacity"
+        : "text-black";
 
     return (
       <div>
@@ -78,6 +81,15 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
               <span className="material-symbols-rounded">expand_less</span>
             </Select.ScrollUpButton>
             <Select.Viewport className="rounded-lg border-none shadow-low">
+              <Select.Item
+                value="none"
+                className="cursor-pointer p-2 text-black-sub hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+              >
+                <Select.ItemIndicator className="mr-1 text-main">
+                  <span className="material-symbols-rounded">check</span>
+                </Select.ItemIndicator>
+                <Select.ItemText>{placeholder}</Select.ItemText>
+              </Select.Item>
               {options.map((option) => (
                 <Select.Item
                   key={option.value}

@@ -44,6 +44,6 @@ export const Default: Story = {
     ],
     label: "職業",
     placeholder: "職業を選択",
-    value: "",
+    value: "none",
   },
 };
