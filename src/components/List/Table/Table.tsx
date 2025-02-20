@@ -18,8 +18,8 @@ export const Table = <TData,>({ data, columns }: TableProps<TData>) => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div className="overflow-hidden rounded-lg border border-black-20-opacity">
-      <table className="w-full border-collapse">
+    <div className="h-full w-full overflow-hidden overflow-x-scroll overflow-y-scroll text-nowrap rounded-lg border border-black-20-opacity text-left">
+      <table className="border-separate border-spacing-0">
         <TableHeader headerGroups={table.getHeaderGroups()} />
         <tbody>
           {table.getRowModel().rows.map((row) => (

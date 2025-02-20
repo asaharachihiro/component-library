@@ -8,11 +8,14 @@ export const TableHeader = <TData,>({
   headerGroups,
 }: TableHeaderProps<TData>) => {
   return (
-    <thead className="bg-black-3-opacity border-b border-black-20-opacity text-sm font-medium text-black-sub">
+    <thead className="text-sm font-medium text-black-sub">
       {headerGroups.map((headerGroup) => (
-        <tr key={headerGroup.id}>
+        <tr key={headerGroup.id} className="sticky top-0 z-10 bg-white">
           {headerGroup.headers.map((header) => (
-            <th key={header.id}>
+            <th
+              key={header.id}
+              className="border-b border-black-20-opacity bg-black-3-opacity p-4"
+            >
               {flexRender(header.column.columnDef.header, header.getContext())}
             </th>
           ))}

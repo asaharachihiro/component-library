@@ -3,7 +3,7 @@ import { SelectBox } from ".";
 import * as React from "react";
 
 const meta: Meta<typeof SelectBox> = {
-  title: "Components/selection/SelectBox",
+  title: "Components/Selection/SelectBox",
   component: SelectBox,
   tags: ["autodocs"],
   parameters: {
