@@ -25,17 +25,23 @@ export const columns: ColumnDef<SampleData, any>[] = [
       row.original.rarity === "絶滅(EX)" ? (
         <span className="text-danger">{row.original.name}</span>
       ) : (
-        <span className="font-bold text-black">{row.original.name}</span>
+        <span className="text-black">{row.original.name}</span>
       ),
   }),
-  columnHelper.accessor("spiecies", { header: "種類" }),
+  columnHelper.accessor("spiecies", {
+    header: "種類",
+    cell: (row) => <span className="text-black-sub">{row.getValue()}</span>,
+  }),
   columnHelper.accessor("length", {
     header: "体長",
     cell: (cell) => (
       <div className="text-right text-sm text-black-sub">{cell.getValue()}</div>
     ),
   }),
-  columnHelper.accessor("distribution", { header: "分布" }),
+  columnHelper.accessor("distribution", {
+    header: "分布",
+    cell: (cell) => <span>{cell.getValue()?.join(" , ")}</span>,
+  }),
   columnHelper.accessor("rarity", { header: "希少性" }),
   columnHelper.accessor("summary", {
     header: "概要",

@@ -30,6 +30,11 @@ export default meta;
 type Story = StoryObj<typeof Table<SampleData>>;
 
 export const Default: Story = {
+  render: (args) => (
+    <div className="h-[500px] w-[100%]">
+      <Table {...args}></Table>
+    </div>
+  ),
   args: {
     data: sampleAnimalsData,
     columns: columns as ColumnDef<SampleData>[],
