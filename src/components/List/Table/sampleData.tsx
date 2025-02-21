@@ -15,37 +15,22 @@ const columnHelper = createColumnHelper<SampleData>();
 export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("id", {
     header: "ID",
-    cell: (row) => (
-      <span className="text-sm text-black-sub">{row.getValue()}</span>
-    ),
   }),
   columnHelper.accessor("name", {
     header: "名前",
-    cell: ({ row }) =>
-      row.original.rarity === "絶滅(EX)" ? (
-        <span className="text-danger">{row.original.name}</span>
-      ) : (
-        <span className="text-black">{row.original.name}</span>
-      ),
   }),
   columnHelper.accessor("spiecies", {
     header: "種類",
-    cell: (row) => <span className="text-black-sub">{row.getValue()}</span>,
   }),
   columnHelper.accessor("length", {
     header: "体長",
-    cell: (cell) => (
-      <div className="text-right text-sm text-black-sub">{cell.getValue()}</div>
-    ),
   }),
   columnHelper.accessor("distribution", {
     header: "分布",
-    cell: (cell) => <span>{cell.getValue()?.join(" , ")}</span>,
   }),
   columnHelper.accessor("rarity", { header: "希少性" }),
   columnHelper.accessor("summary", {
     header: "概要",
-    cell: (cell) => <span>{!cell.getValue() ? "-" : cell.getValue()}</span>,
   }),
 ];
 
