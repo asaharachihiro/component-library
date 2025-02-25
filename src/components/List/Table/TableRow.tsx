@@ -1,12 +1,11 @@
 import { Row } from "@tanstack/react-table";
 import { TableCell } from "./TableCell";
-import React from "react";
 
 interface TableRowProps<TData> {
   row: Row<TData>;
-  virtualColumns: { index: number; size: number }[]; // 変更
-  virtualPaddingLeft: number; // 変更
-  virtualPaddingRight: number; // 変更
+  virtualColumns: { index: number; size: number }[];
+  virtualPaddingLeft: number;
+  virtualPaddingRight: number;
 }
 
 export const TableRow = <TData,>({
@@ -15,7 +14,6 @@ export const TableRow = <TData,>({
   virtualPaddingLeft,
   virtualPaddingRight,
 }: TableRowProps<TData>) => {
-  // 変更
   return (
     <tr key={row.id} className="hover:bg-black-5-opacity">
       {virtualPaddingLeft > 0 && <td style={{ width: virtualPaddingLeft }} />}

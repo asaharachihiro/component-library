@@ -3,13 +3,18 @@ import { useState, useEffect, useRef } from "react";
 const useTableSize = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tableWidth, setTableWidth] = useState<number>(0);
+  const [tableHeight, setTableHeight] = useState<number>(0);
 
   useEffect(() => {
     const updateTableWidth = () => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
+        const height = containerRef.current.offsetHeight;
         if (width > 0) {
           setTableWidth(width);
+        }
+        if (height > 0) {
+          setTableHeight(height);
         }
       }
     };
@@ -33,7 +38,7 @@ const useTableSize = () => {
     };
   }, []);
 
-  return { containerRef, tableWidth };
+  return { containerRef, tableWidth, tableHeight };
 };
 
 export default useTableSize;
