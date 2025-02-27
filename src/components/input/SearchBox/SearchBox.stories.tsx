@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { SearchBox } from ".";
 
 const meta: Meta<typeof SearchBox> = {
-  title: "Components/input/SearchBox",
+  title: "Components/Input/SearchBox",
   component: SearchBox,
   tags: ["autodocs"],
   parameters: {
