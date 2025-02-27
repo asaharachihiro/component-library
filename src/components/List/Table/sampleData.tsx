@@ -15,6 +15,9 @@ const columnHelper = createColumnHelper<SampleData>();
 export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("id", {
     header: "ID",
+    cell: (cell) => (
+      <span className="text-sm text-black-sub">{cell.getValue()}</span>
+    ),
   }),
   columnHelper.accessor("name", {
     header: "名前",
@@ -24,6 +27,11 @@ export const columns: ColumnDef<SampleData, any>[] = [
   }),
   columnHelper.accessor("length", {
     header: "体長",
+    cell: (cell) => (
+      <span className="block text-right text-sm text-black-sub">
+        {cell.getValue()}
+      </span>
+    ),
   }),
   columnHelper.accessor("distribution", {
     header: "分布",
@@ -31,6 +39,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("rarity", { header: "希少性" }),
   columnHelper.accessor("summary", {
     header: "概要",
+    cell: (cell) => <span className="font-regular">{cell.getValue()}</span>,
   }),
 ];
 
@@ -47,7 +56,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "2",
     name: "オネンツメムガイ",
-    length: "185.7",
+    length: "5.7",
     distribution: ["ミクロネシア"],
     rarity: "野生絶滅(EW)",
     spiecies: "軟体動物",
@@ -56,7 +65,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "3",
     name: "ママウサホクセセムシ",
-    length: "196.1",
+    length: "0.7",
     distribution: ["西ヨーロッパ", "中央アメリカ"],
     rarity: "低危険種(LC)",
     spiecies: "多足類",
@@ -74,7 +83,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "5",
     name: "タアヨシアネズミ",
-    length: "188.5",
+    length: "8.5",
     distribution: ["メラネシア"],
     rarity: "絶滅危惧IB類(EN)",
     spiecies: "哺乳類",
@@ -83,7 +92,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "6",
     name: "マヨツシンガエル",
-    length: "193.3",
+    length: "3.3",
     distribution: ["中央アメリカ", "西アジア", "南アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
     spiecies: "両生類",
@@ -92,7 +101,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "7",
     name: "ラミタグモ",
-    length: "55.4",
+    length: "5.4",
     distribution: ["中央アジア", "カリブ海地域"],
     rarity: "野生絶滅(EW)",
     spiecies: "クモ類",
@@ -101,7 +110,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "8",
     name: "ヒリヤスデ",
-    length: "179.7",
+    length: "19.7",
     distribution: ["中央アメリカ"],
     rarity: "野生絶滅(EW)",
     spiecies: "多足類",
@@ -113,12 +122,12 @@ export const sampleAnimalsData: SampleData[] = [
     distribution: ["中部アフリカ"],
     rarity: "低危険種(LC)",
     spiecies: "軟体動物",
-    summary: "羽を広げると鮮やかな模様が現れ、敵を威嚇する効果がある。",
+    summary: "脚を広げると鮮やかな模様が現れ、敵を威嚇する効果がある。",
   },
   {
     id: "10",
     name: "ロニナスネコ",
-    length: "32.3",
+    length: "70.3",
     distribution: ["オーストララシア"],
     rarity: "絶滅(EX)",
     spiecies: "哺乳類",
@@ -131,6 +140,7 @@ export const sampleAnimalsData: SampleData[] = [
     distribution: ["南部アフリカ"],
     rarity: "絶滅(EX)",
     spiecies: "哺乳類",
+    summary: "発達した嗅覚を活かして獲物を探し、遠くからでも察知する。",
   },
   {
     id: "12",
@@ -139,21 +149,20 @@ export const sampleAnimalsData: SampleData[] = [
     distribution: ["中央アジア", "東ヨーロッパ"],
     rarity: "野生絶滅(EW)",
     spiecies: "魚類",
-    summary: "発達した嗅覚を活かして獲物を探し、遠くからでも察知する。",
+    summary: "毒ではなく光を使って敵を威嚇し、身を守る特殊な能力を持つ。",
   },
   {
     id: "13",
     name: "アエヘナブナ",
-    length: "71.6",
+    length: "21.6",
     distribution: ["東ヨーロッパ", "中央アメリカ"],
     rarity: "絶滅危惧II類(VU)",
     spiecies: "魚類",
-    summary: "毒ではなく光を使って敵を威嚇し、身を守る特殊な能力を持つ。",
   },
   {
     id: "14",
     name: "スムヤヨフニカサル",
-    length: "48.3",
+    length: "107.3",
     distribution: ["カリブ海地域", "南ヨーロッパ"],
     rarity: "準絶滅危惧(NT)",
     spiecies: "哺乳類",
@@ -162,7 +171,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "15",
     name: "ンシホスロヒキシヘビ",
-    length: "44.5",
+    length: "120.5",
     distribution: ["西ヨーロッパ"],
     rarity: "絶滅危惧II類(VU)",
     spiecies: "爬虫類",
@@ -180,7 +189,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "17",
     name: "レンリクガエル",
-    length: "185.3",
+    length: "15.3",
     distribution: ["北部アメリカ"],
     rarity: "絶滅(EX)",
     spiecies: "両生類",
@@ -189,7 +198,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "18",
     name: "カカヌシンニルガエル",
-    length: "64.5",
+    length: "6.5",
     distribution: ["ミクロネシア", "南アメリカ", "南ヨーロッパ"],
     rarity: "絶滅(EX)",
     spiecies: "両生類",
@@ -198,7 +207,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "19",
     name: "ロタムセヘウカイロトカゲ",
-    length: "90.5",
+    length: "19.5",
     distribution: ["西アジア", "カリブ海地域", "西アフリカ"],
     rarity: "野生絶滅(EW)",
     spiecies: "爬虫類",
@@ -224,8 +233,8 @@ export const sampleAnimalsData: SampleData[] = [
   },
   {
     id: "22",
-    name: "ケホヒタカンヤスデ",
-    length: "86.6",
+    name: "ケホヒタカン",
+    length: "8.6",
     distribution: ["南アジア", "ミクロネシア"],
     rarity: "絶滅危惧II類(VU)",
     spiecies: "多足類",
@@ -243,7 +252,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "24",
     name: "マタハンカブト",
-    length: "119.6",
+    length: "11.6",
     distribution: ["中部アフリカ", "西アフリカ", "ミクロネシア"],
     rarity: "準絶滅危惧(NT)",
     spiecies: "昆虫類",
@@ -252,7 +261,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "25",
     name: "タカミタタリザード",
-    length: "50.3",
+    length: "8.3",
     distribution: ["カリブ海地域", "中央アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
     spiecies: "爬虫類",
@@ -270,7 +279,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "27",
     name: "ニントグマ",
-    length: "118.9",
+    length: "187.7",
     distribution: ["東ヨーロッパ", "西アジア"],
     rarity: "低危険種(LC)",
     spiecies: "哺乳類",
@@ -279,7 +288,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "28",
     name: "トケイカエオスングモ",
-    length: "177.2",
+    length: "7.2",
     distribution: ["カリブ海地域", "ミクロネシア", "オーストララシア"],
     rarity: "準絶滅危惧(NT)",
     spiecies: "クモ類",
@@ -288,7 +297,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "29",
     name: "ナヒママガイ",
-    length: "169.8",
+    length: "6.8",
     distribution: ["南アジア", "東ヨーロッパ"],
     rarity: "準絶滅危惧(NT)",
     spiecies: "軟体動物",
@@ -297,7 +306,7 @@ export const sampleAnimalsData: SampleData[] = [
   {
     id: "30",
     name: "ミリヤルミチロムシ",
-    length: "67.0",
+    length: "3.9",
     distribution: ["ミクロネシア"],
     rarity: "絶滅危惧IA類(CR)",
     spiecies: "多足類",

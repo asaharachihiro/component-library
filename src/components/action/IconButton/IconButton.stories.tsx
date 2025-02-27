@@ -21,7 +21,7 @@ type Story = StoryObj<typeof IconButton>;
 
 export const Default: Story = {
   args: {
-    variant: "function",
+    variant: "global",
     disabled: false,
     icon: "star",
   },

@@ -18,7 +18,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         target={target}
         rel={isBlank ? "noopener noreferrer" : props.rel}
         className={cn(
-          "m-1 inline-flex items-center text-base font-bold text-link visited:text-link-visited",
+          "m-1 inline-flex cursor-pointer items-center text-base font-bold text-link visited:text-link-visited",
           className
         )}
         {...props}
