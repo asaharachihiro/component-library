@@ -20,7 +20,6 @@ type Story = StoryObj<typeof TextBox>;
 export const Default: Story = {
   args: {
     label: "ユーザー名",
-    value: "",
     isValid: true,
     disabled: false,
     placeholder: "山田 太郎",
