@@ -1,4 +1,6 @@
 import { flexRender, HeaderGroup } from "@tanstack/react-table";
+import { SortButton } from "./SortButton";
+import { cn } from "../../../utils/cn";
 
 interface TableHeaderProps<TData> {
   headerGroups: HeaderGroup<TData>[];
@@ -26,12 +28,25 @@ export const TableHeader = <TData,>({
               <th
                 key={header.id}
                 style={{ width: virtualColumn.size }}
-                className="border-b border-black-20-opacity bg-black-3-opacity p-4"
-              >
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
+                className={cn(
+                  header.column.getIsSorted() && "font-bold text-main",
+                  "border-b border-black-20-opacity bg-black-3-opacity p-4"
                 )}
+              >
+                <div className="flex items-center">
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                  {header.column.getCanSort() && (
+                    <SortButton
+                      className="ml-1"
+                      sorting={header.column.getIsSorted() as string}
+                      nextSortOrder={header.column.getNextSortingOrder()}
+                      onClick={header.column.getToggleSortingHandler()}
+                    />
+                  )}
+                </div>
               </th>
             );
           })}

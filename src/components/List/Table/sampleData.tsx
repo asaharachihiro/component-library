@@ -40,6 +40,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("summary", {
     header: "概要",
     cell: (cell) => <span className="font-regular">{cell.getValue()}</span>,
+    enableSorting: false,
   }),
 ];
 

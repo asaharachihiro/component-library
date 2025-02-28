@@ -1,12 +1,15 @@
 import {
   ColumnDef,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import { TableHeader } from "./TableHeader";
 import { TableRow } from "./TableRow";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import useTableSize from "../../../utils/useTableSize";
+import React from "react";
 
 interface TableProps<TData> {
   data: TData[];
@@ -22,11 +25,15 @@ export const Table = <TData,>({
   columnWidth,
 }: TableProps<TData>) => {
   const { containerRef, tableWidth, tableHeight } = useTableSize();
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
     columns,
+    state: { sorting },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   const rowVirtualizer = useVirtualizer({
@@ -61,6 +68,7 @@ export const Table = <TData,>({
       ? columnVirtualizer.getTotalSize() -
         virtualColumns[virtualColumns.length - 1].end
       : 0;
+
   return (
     <div
       ref={containerRef}
@@ -99,7 +107,7 @@ export const Table = <TData,>({
             })}
             {virtualPaddingBottom > 0 && (
               <tr>
-                <td style={{ height: virtualPaddingBottom }} /> // 変更
+                <td style={{ height: virtualPaddingBottom }} />
               </tr>
             )}
           </tbody>
