@@ -45,11 +45,15 @@ export const Default: Story = {
   args: {
     id: "1",
     checked: false,
+    children: "利用規約に同意します。",
+    disabled: false,
+    isValid: true,
   },
   argTypes: {
     checked: {
-      control: { type: "radio" },
-      options: [true, false, "indeterminate"],
+      control: { type: "boolean" },
     },
+    isValid: { control: { type: "boolean" } },
+    disabled: { control: { type: "boolean" } },
   },
 };

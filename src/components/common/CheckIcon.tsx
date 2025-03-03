@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../utils/cn";
 
-interface CheckboxProps {
+interface CheckIconProps {
   id: string;
   className?: string;
   checked?: boolean | "indeterminate";
@@ -12,9 +12,9 @@ interface CheckboxProps {
   onCheckedChange?: (checked: boolean | "indeterminate") => void;
 }
 
-export const Checkbox = React.forwardRef<
+export const CheckIcon = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
-  CheckboxProps
+  CheckIconProps
 >(
   (
     {
@@ -59,47 +59,37 @@ export const Checkbox = React.forwardRef<
     const isNomalStyle = !disabled && isValid;
 
     return (
-      <div
+      <CheckboxPrimitive.Root
+        id={id}
         className={cn(
+          "inline-flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity",
           disabledStyle,
-          className,
-          "inline-flex cursor-pointer items-center justify-center text-base"
+          errorStyle,
+          className
         )}
-        onClick={handleCheckedChange}
+        checked={internalChecked === "indeterminate" ? false : internalChecked}
+        onCheckedChange={handleCheckedChange}
+        {...props}
+        ref={ref}
+        disabled={disabled}
       >
-        <CheckboxPrimitive.Root
-          id={id}
-          className={cn(
-            errorStyle,
-            "h-7 w-7 select-none rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
+        <span className="material-symbols-rounded">
+          {internalChecked === "indeterminate" ? (
+            <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+              indeterminate_check_box
+            </span>
+          ) : internalChecked ? (
+            <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+              check_box
+            </span>
+          ) : (
+            <span className={cn(isNomalStyle && "text-black-sub")}>
+              check_box_outline_blank
+            </span>
           )}
-          checked={
-            internalChecked === "indeterminate" ? false : internalChecked
-          }
-          onCheckedChange={handleCheckedChange}
-          {...props}
-          ref={ref}
-          disabled={disabled}
-        >
-          <span className="material-symbols-rounded">
-            {internalChecked === "indeterminate" ? (
-              <span className={cn("icon-fill", isNomalStyle && "text-main")}>
-                indeterminate_check_box
-              </span>
-            ) : internalChecked ? (
-              <span className={cn("icon-fill", isNomalStyle && "text-main")}>
-                check_box
-              </span>
-            ) : (
-              <span className={cn(isNomalStyle && "text-black-sub")}>
-                check_box_outline_blank
-              </span>
-            )}
-          </span>
-        </CheckboxPrimitive.Root>
-        <span className={cn("ml-1 text-base")}>{children}</span>
-      </div>
+        </span>
+      </CheckboxPrimitive.Root>
     );
   }
 );
-Checkbox.displayName = "Checkbox";
+CheckIcon.displayName = "CheckIcon";

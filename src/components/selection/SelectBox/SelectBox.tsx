@@ -59,7 +59,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
 
     return (
       <div>
-        {label && <FormLabel label={label} isRequire={isRequired} />}
+        {label && <FormLabel label={label} isRequired={isRequired} />}
         <Select.Root value={selectedValue} onValueChange={handleChange}>
           <Select.Trigger
             id={id}
