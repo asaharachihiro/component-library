@@ -7,7 +7,6 @@ interface InputBoxProps {
   type: "text" | "textarea";
   supportMassage?: string;
   errorMassage?: string;
-  isRequire?: boolean;
   className?: string;
   placeholder?: string;
   value?: string;

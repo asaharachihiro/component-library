@@ -5,7 +5,7 @@ interface TextBoxProps {
   label?: string;
   id: string;
   type?: "text" | "textarea";
-  isRequire?: boolean;
+  isRequired?: boolean;
   className?: string;
   placeholder?: string;
   supportMassage?: string;
@@ -26,7 +26,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       label,
       id,
       type = "text",
-      isRequire = false,
+      isRequired = false,
       className = "",
       placeholder,
       supportMassage,
@@ -40,7 +40,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
   ) => {
     return (
       <div className={className}>
-        {label && <FormLabel label={label} isRequire={isRequire}></FormLabel>}
+        {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
         <InputBox
           {...{
             id,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Select from "@radix-ui/react-select";
-import { cn } from "../../utils/cn";
-import { ErrorText, FormLabel } from "../common";
+import { cn } from "../../../utils/cn";
+import { ErrorText, FormLabel } from "../../common";
 
 interface SelectBoxProps {
   id: string;
@@ -59,7 +59,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
 
     return (
       <div>
-        {label && <FormLabel label={label} isRequire={isRequired} />}
+        {label && <FormLabel label={label} isRequired={isRequired} />}
         <Select.Root value={selectedValue} onValueChange={handleChange}>
           <Select.Trigger
             id={id}
