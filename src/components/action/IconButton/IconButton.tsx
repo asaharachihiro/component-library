@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 
 const IconButtonVariants = cva(
-  "flex justify-center items-center hover:bg-black-5-opacity active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none",
+  "flex justify-center items-center hover:bg-black-5-opacity active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none",
   {
     variants: {
       variant: {

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { FormLabel, InputBox } from "../../common";
+import { ErrorText, FormLabel, InputBox } from "../../common";
 
 interface TextBoxProps {
   label?: string;
   id: string;
-  type?: "text" | "textarea";
+  type?: "text" | "textArea";
   isRequired?: boolean;
   className?: string;
   placeholder?: string;
@@ -35,6 +35,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       onChange,
       isValid,
       disabled = false,
+      ...props
     },
     ref
   ) => {
@@ -52,9 +53,15 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
             placeholder,
             supportMassage,
             errorMassage,
+            ref,
           }}
-          ref={ref}
-        ></InputBox>
+          asTextArea={type === "textArea"}
+          {...props}
+        />
+        {supportMassage && (
+          <span className="text-xs text-black-sub">{supportMassage}</span>
+        )}
+        {!isValid && <ErrorText text={errorMassage} />}
       </div>
     );
   }
