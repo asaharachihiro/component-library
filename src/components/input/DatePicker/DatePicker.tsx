@@ -6,8 +6,8 @@ import { IconButton } from "../../action/IconButton";
 interface DatePickerProps {
   id: string;
   label?: string;
-  supportMassage?: string;
-  errorMassage?: string;
+  supportMessage?: string;
+  errorMessage?: string;
   className?: string;
   value?: string;
   isValid?: boolean;
@@ -21,8 +21,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     {
       id,
       label,
-      supportMassage,
-      errorMassage,
+      supportMessage,
+      errorMessage,
       className,
       value,
       isValid = true,
@@ -65,7 +65,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {label && <FormLabel label={label} />}
         <div className="relative mb-1">
           <InputBox
-            {...{ id, value, isValid, disabled, onChange, ref }}
+            id={id}
+            value={value}
+            isValid={isValid}
+            disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
             onChange={
@@ -73,6 +76,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
                 event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
               ) => void
             }
+            ref={ref}
             {...props}
           />
           {!inputDate && (
@@ -97,10 +101,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             className="absolute z-10 rounded-lg bg-white shadow-low"
           />
         )}
-        {supportMassage && (
-          <span className="text-xs text-black-sub">{supportMassage}</span>
+        {supportMessage && (
+          <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && <ErrorText text={errorMassage} />}
+        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
       </div>
     );
   }

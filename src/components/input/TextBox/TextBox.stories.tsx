@@ -24,8 +24,8 @@ export const Default: Story = {
     disabled: false,
     placeholder: "山田 太郎",
     isRequired: true,
-    supportMassage: "この設定はあとから変更することができます。",
-    errorMassage: "ユーザー名を入力してください。",
+    supportMessage: "この設定はあとから変更することができます。",
+    errorMessage: "ユーザー名を入力してください。",
   },
   argTypes: {
     label: { control: "text" },
@@ -34,8 +34,8 @@ export const Default: Story = {
     disabled: { control: "boolean" },
     placeholder: { control: "text" },
     isRequired: { control: "boolean" },
-    supportMassage: { control: "text" },
-    errorMassage: { control: "text" },
+    supportMessage: { control: "text" },
+    errorMessage: { control: "text" },
   },
   parameters: {
     controls: {

@@ -12,8 +12,8 @@ interface SelectBoxProps {
   isRequired?: boolean;
   isValid?: boolean;
   onChange?: (value: string) => void;
-  supportMassage?: string;
-  errorMassage?: string;
+  supportMessage?: string;
+  errorMessage?: string;
   disabled?: boolean;
 }
 
@@ -28,8 +28,8 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
       isRequired = false,
       isValid = true,
       onChange,
-      supportMassage,
-      errorMassage,
+      supportMessage,
+      errorMessage,
       disabled = false,
     },
     ref
@@ -108,10 +108,10 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
             </Select.ScrollDownButton>
           </Select.Content>
         </Select.Root>
-        {supportMassage && (
-          <span className="text-xs text-black-sub">{supportMassage}</span>
+        {supportMessage && (
+          <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && <ErrorText text={errorMassage} />}
+        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
       </div>
     );
   }

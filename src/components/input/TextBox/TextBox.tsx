@@ -8,8 +8,8 @@ interface TextBoxProps {
   isRequired?: boolean;
   className?: string;
   placeholder?: string;
-  supportMassage?: string;
-  errorMassage?: string;
+  supportMessage?: string;
+  errorMessage?: string;
   value?: string;
   onChange?: (
     event:
@@ -29,8 +29,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       isRequired = false,
       className = "",
       placeholder,
-      supportMassage,
-      errorMassage,
+      supportMessage,
+      errorMessage,
       value,
       onChange,
       isValid,
@@ -51,17 +51,15 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
             disabled,
             onChange,
             placeholder,
-            supportMassage,
-            errorMassage,
             ref,
           }}
           asTextArea={type === "textArea"}
           {...props}
         />
-        {supportMassage && (
-          <span className="text-xs text-black-sub">{supportMassage}</span>
+        {supportMessage && (
+          <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && <ErrorText text={errorMassage} />}
+        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
       </div>
     );
   }
