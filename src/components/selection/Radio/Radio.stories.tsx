@@ -42,17 +42,29 @@ export const Default: Story = {
       {
         label: "通常配送",
         value: "1",
-        children: <span className="ml-auto text-sm">3~5営業日でお届け</span>,
+        children: (
+          <span className="ml-auto flex items-center text-sm">
+            3~5営業日でお届け
+          </span>
+        ),
       },
       {
         label: "速達",
         value: "2",
-        children: <span className="ml-auto text-sm">1~2営業日でお届け</span>,
+        children: (
+          <span className="ml-auto flex items-center text-sm">
+            1~2営業日でお届け
+          </span>
+        ),
       },
       {
         label: "店舗受け取り",
         value: "3",
-        children: <span className="ml-auto text-sm">2~3営業日でお届け</span>,
+        children: (
+          <span className="ml-auto flex items-center text-sm">
+            2~3営業日でお届け
+          </span>
+        ),
       },
     ],
     className: "w-[272px]",
