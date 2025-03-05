@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ErrorText, FormLabel } from ".";
-import { cn } from "../../utils/cn";
+import { ErrorText, FormLabel } from "./../../common/index";
+import { cn } from "./../../../utils/cn";
 
-interface OptionGroupProps {
+interface CheckboxGroupProps {
   id: string;
   label?: string;
   isRequired?: boolean;
@@ -13,7 +13,10 @@ interface OptionGroupProps {
   isHorizontal?: boolean;
 }
 
-export const OptionGroup = React.forwardRef<HTMLInputElement, OptionGroupProps>(
+export const CheckboxGroup = React.forwardRef<
+  HTMLInputElement,
+  CheckboxGroupProps
+>(
   (
     {
       id,
@@ -48,4 +51,4 @@ export const OptionGroup = React.forwardRef<HTMLInputElement, OptionGroupProps>(
     );
   }
 );
-OptionGroup.displayName = "OptionGroup";
+CheckboxGroup.displayName = "CheckboxGroup";
