@@ -1,8 +1,8 @@
 import * as React from "react";
-import { ErrorText, FormLabel } from ".";
+import { ErrorText, FormLabel } from "./index";
 import { cn } from "../../utils/cn";
 
-interface OptionGroupProps {
+interface OptionsGroupProps {
   id: string;
   label?: string;
   isRequired?: boolean;
@@ -13,7 +13,10 @@ interface OptionGroupProps {
   isHorizontal?: boolean;
 }
 
-export const OptionGroup = React.forwardRef<HTMLInputElement, OptionGroupProps>(
+export const OptionsGroup = React.forwardRef<
+  HTMLInputElement,
+  OptionsGroupProps
+>(
   (
     {
       id,
@@ -48,4 +51,4 @@ export const OptionGroup = React.forwardRef<HTMLInputElement, OptionGroupProps>(
     );
   }
 );
-OptionGroup.displayName = "OptionGroup";
+OptionsGroup.displayName = "OptionsGroup";
