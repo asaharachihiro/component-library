@@ -9,7 +9,7 @@ interface RadioProps {
   isValid?: boolean;
   disabled?: boolean;
   onValueChange?: (value: string) => void;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; children?: React.ReactNode }[];
 }
 
 export const Radio = React.forwardRef<
@@ -66,7 +66,7 @@ export const Radio = React.forwardRef<
               id={option.value}
               value={option.value}
               ref={ref}
-              className="mb-2 flex items-center"
+              className="mb-2 flex w-full items-center"
             >
               <div
                 className={cn(
@@ -99,10 +99,11 @@ export const Radio = React.forwardRef<
                   isNomalStyle && selected === option.value
                     ? ""
                     : "text-black-sub",
-                  "ml-1 text-base"
+                  "ml-1 flex w-full text-base"
                 )}
               >
                 {option.label}
+                {option.children}
               </span>
             </RadioGroupItem>
           </div>
