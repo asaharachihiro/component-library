@@ -15,6 +15,16 @@ interface InputBoxProps {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
+  onBlur?: (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
+  ) => void;
+  onFocus?: (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
+  ) => void;
 }
 export const InputBox = React.forwardRef<
   HTMLInputElement | HTMLTextAreaElement,
@@ -31,6 +41,7 @@ export const InputBox = React.forwardRef<
       disabled = false,
       asTextArea = false,
       onChange,
+      onBlur,
       ...props
     },
     ref
@@ -56,6 +67,7 @@ export const InputBox = React.forwardRef<
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange && onChange(e)}
+          onBlur={(e) => onBlur && onBlur(e)}
           disabled={disabled}
           className={inputStyle}
           aria-invalid={!isValid}

@@ -2,6 +2,7 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "../../common";
 import { Calendar } from ".";
 import { IconButton } from "../../action/IconButton";
+import { formatDisplayDate } from "./formatDisplayDate";
 
 interface DatePickerProps {
   id: string;
@@ -12,7 +13,7 @@ interface DatePickerProps {
   value?: string;
   isValid?: boolean;
   disabled?: boolean;
-  isJPera?: boolean;
+  isJPLocale?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -27,17 +28,22 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       value,
       isValid = true,
       disabled = false,
-      isJPera = false,
+      isJPLocale = false,
       onChange,
       ...props
     },
     ref
   ) => {
     const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputDate, setInputDate] = React.useState(value ? value : null);
+    const [inputDate, setInputDate] = React.useState(value || "");
+    const [displayDate, setDisplayDate] = React.useState(
+      value ? formatDisplayDate(value, isJPLocale) : ""
+    );
+
     React.useEffect(() => {
-      setInputDate(value ? value : null);
-    }, [value]);
+      setInputDate(value || "");
+      setDisplayDate(value ? formatDisplayDate(value, isJPLocale) : "");
+    }, [value, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
@@ -45,6 +51,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const onSelectChange = (date: string) => {
       setInputDate(date);
+      setDisplayDate(formatDisplayDate(date, isJPLocale));
       if (onChange) {
         onChange({
           target: { value: date },
@@ -55,9 +62,24 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputDate(e.target.value);
+      setDisplayDate(e.target.value);
       if (onChange) {
         onChange(e);
       }
+    };
+
+    const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      const formattedDate = formatDisplayDate(e.target.value, isJPLocale);
+      setDisplayDate(formattedDate);
+      if (onChange) {
+        onChange({
+          target: { value: formattedDate },
+        } as React.ChangeEvent<HTMLInputElement>);
+      }
+    };
+
+    const onFocus = () => {
+      setDisplayDate(inputDate || "");
     };
 
     return (
@@ -66,7 +88,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         <div className="relative mb-1">
           <InputBox
             id={id}
-            value={value}
+            value={displayDate || ""}
             isValid={isValid}
             disabled={disabled}
             type="tel"
@@ -76,6 +98,12 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
                 event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
               ) => void
             }
+            onBlur={
+              onBlur as (
+                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+              ) => void
+            }
+            onFocus={onFocus}
             ref={ref}
             {...props}
           />
