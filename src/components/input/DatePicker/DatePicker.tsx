@@ -2,7 +2,7 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "../../common";
 import { Calendar } from ".";
 import { IconButton } from "../../action/IconButton";
-import { formatDisplayDate } from "./formatDisplayDate";
+import { format, parseISO } from "date-fns";
 
 interface DatePickerProps {
   id: string;
@@ -14,6 +14,7 @@ interface DatePickerProps {
   isValid?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
+  isStartonMonday?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -29,11 +30,29 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       isValid = true,
       disabled = false,
       isJPLocale = false,
+      isStartonMonday = false,
       onChange,
       ...props
     },
     ref
   ) => {
+    const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
+      const dateObj = parseISO(dateInput);
+
+      if (isJPlocale) {
+        // 元号と曜日を取得し、元号X年MM月DD日(曜日)形式で返す
+        return dateObj.toLocaleDateString("ja-JP-u-ca-japanese", {
+          era: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "narrow",
+        });
+      }
+      // YYYY/MM/DD形式で返す
+      return format(dateObj, "yyyy/MM/dd");
+    };
+
     const [showCalendar, setShowCalendar] = React.useState(false);
     const [inputDate, setInputDate] = React.useState(value || "");
     const [displayDate, setDisplayDate] = React.useState(
@@ -125,8 +144,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         </div>
         {showCalendar && (
           <Calendar
-            onSelectDate={onSelectChange}
             className="absolute z-10 rounded-lg bg-white shadow-low"
+            inputDate={inputDate ? parseISO(inputDate) : undefined}
+            onSelectDate={onSelectChange}
+            onClosed={setShowCalendar}
+            isStartonMonday={isStartonMonday}
           />
         )}
         {supportMessage && (
