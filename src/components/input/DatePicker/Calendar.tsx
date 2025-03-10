@@ -8,7 +8,9 @@ import {
   format,
   getDay,
   getDaysInMonth,
-  parseISO,
+  setDate,
+  setMonth,
+  setYear,
   startOfMonth,
 } from "date-fns";
 
@@ -56,8 +58,8 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   // 表示の1日目の曜日を取得
   const getStartDayOfMonth = (): number => {
-    const startDay = getDay(startOfMonth(currentDate));
-    return isStartonMonday ? (startDay === 0 ? 6 : startDay - 1) : startDay;
+    const firstDay = getDay(startOfMonth(currentDate));
+    return isStartonMonday ? (firstDay === 0 ? 6 : firstDay - 1) : firstDay;
   };
 
   // 曜日のリスト
@@ -67,22 +69,20 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   // 表示する年を変更するハンドラー
   const handleYearChange = (newYear: string) => {
-    const newDate = parseISO(`${newYear}-${format(currentDate, "MM-dd")}`);
+    const newDate = setYear(currentDate, parseInt(newYear));
     setCurrentDate(newDate);
   };
 
   // 表示する月を変更するハンドラー
   const handleMonthChange = (newMonth: string) => {
-    const newDate = parseISO(
-      `${format(currentDate, "yyyy")}-${newMonth}-${format(currentDate, "dd")}`
-    );
+    const newDate = setMonth(currentDate, parseInt(newMonth) - 1);
     setCurrentDate(newDate);
   };
 
   // 日付をYYYY-MM-DD形式で返す
   const formatFullDate = (day: string) => {
-    const date = `${format(currentDate, "yyyy-MM")}-${day.padStart(2, "0")}`;
-    return date;
+    const date = setDate(currentDate, parseInt(day));
+    return format(date, "yyyy-MM-dd");
   };
 
   // 今日の日付かどうかを判定
@@ -92,11 +92,18 @@ export const Calendar: React.FC<CalendarProps> = ({
     return today === date;
   };
 
+  // 表示する月の移動
+  const moveMonth = (direction: "prev" | "next") => {
+    const newDate = direction === "prev" ? -1 : 1;
+    const nextMonth = setMonth(currentDate, currentDate.getMonth() + newDate);
+    setCurrentDate(nextMonth);
+  };
+
   return (
     <div className={className}>
       <div className={cn("flex flex-col space-y-2 p-4")}>
         <div className="flex items-center justify-between">
-          <IconButton icon="chevron_left" />
+          <IconButton icon="chevron_left" onClick={() => moveMonth("prev")} />
           <div className="flex space-x-2">
             <SelectBox
               id={"year-select"}
@@ -111,7 +118,7 @@ export const Calendar: React.FC<CalendarProps> = ({
               onChange={(value) => handleMonthChange(value)}
             />
           </div>
-          <IconButton icon="chevron_right" />
+          <IconButton icon="chevron_right" onClick={() => moveMonth("next")} />
         </div>
         <div className="grid grid-cols-7 gap-1 border-b border-black-20-opacity">
           {weekdays.map((weekday) => (
@@ -135,7 +142,7 @@ export const Calendar: React.FC<CalendarProps> = ({
               id={day}
               selected={
                 inputDate
-                  ? format(inputDate, "dd") === day.padStart(2, "0")
+                  ? format(inputDate, "yyyy-MM-dd") === formatFullDate(day)
                   : false
               }
               isToday={isToday(day)}
