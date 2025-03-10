@@ -1,15 +1,15 @@
 import * as React from "react";
-import { FormLabel, InputBox } from "../../common";
+import { ErrorText, FormLabel, InputBox } from "../../common";
 
 interface TextBoxProps {
   label?: string;
   id: string;
-  type?: "text" | "textarea";
+  type?: "text" | "textArea";
   isRequired?: boolean;
   className?: string;
   placeholder?: string;
-  supportMassage?: string;
-  errorMassage?: string;
+  supportMessage?: string;
+  errorMessage?: string;
   value?: string;
   onChange?: (
     event:
@@ -29,12 +29,13 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       isRequired = false,
       className = "",
       placeholder,
-      supportMassage,
-      errorMassage,
+      supportMessage,
+      errorMessage,
       value,
       onChange,
       isValid,
       disabled = false,
+      ...props
     },
     ref
   ) => {
@@ -50,11 +51,15 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
             disabled,
             onChange,
             placeholder,
-            supportMassage,
-            errorMassage,
+            ref,
           }}
-          ref={ref}
-        ></InputBox>
+          asTextArea={type === "textArea"}
+          {...props}
+        />
+        {supportMessage && (
+          <span className="text-xs text-black-sub">{supportMessage}</span>
+        )}
+        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
       </div>
     );
   }

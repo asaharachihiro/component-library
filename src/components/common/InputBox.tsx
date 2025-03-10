@@ -1,21 +1,29 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { ErrorText } from "./ErrorText";
 
 interface InputBoxProps {
   id: string;
-  type: "text" | "textarea";
-  supportMassage?: string;
-  errorMassage?: string;
+  type: string;
   className?: string;
   placeholder?: string;
   value?: string;
   isValid?: boolean;
   disabled?: boolean;
+  asTextArea?: boolean;
   onChange?: (
     event:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  onBlur?: (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
+  ) => void;
+  onFocus?: (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
   ) => void;
 }
 export const InputBox = React.forwardRef<
@@ -26,52 +34,47 @@ export const InputBox = React.forwardRef<
     {
       id,
       type,
-      supportMassage,
-      errorMassage,
-      className,
+      className = "",
       placeholder,
       value,
       isValid = true,
       disabled = false,
+      asTextArea = false,
       onChange,
+      onBlur,
       ...props
     },
     ref
   ) => {
-    const boxStyle = !isValid
-      ? "border-danger"
-      : "border-black-20-opacity focus:border-black-sub text-black";
-    const disabledStyle =
-      disabled && "text-black-sub pointer-events-none bg-black-3-opacity";
-    const InputComponent = type === "text" ? "input" : type;
+    const InputComponent = asTextArea ? "textarea" : "input";
+
+    const inputStyle = cn("w-full rounded-lg border p-2", {
+      "border-black-20-opacity text-black-sub pointer-events-none bg-black-3-opacity":
+        disabled,
+      "border-danger": !disabled && !isValid,
+      "border-black-20-opacity focus:border-black-sub text-black":
+        !disabled && isValid,
+    });
 
     return (
-      <>
+      <div className={className}>
         <InputComponent
           id={id}
           ref={
             ref as React.Ref<HTMLInputElement> & React.Ref<HTMLTextAreaElement>
           }
-          type={type === "textarea" ? undefined : type}
+          type={type}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange && onChange(e)}
+          onBlur={(e) => onBlur && onBlur(e)}
           disabled={disabled}
-          className={cn(
-            "mb-1 w-full rounded-lg border p-2",
-            boxStyle,
-            disabledStyle,
-            className
-          )}
+          className={inputStyle}
           aria-invalid={!isValid}
-          {...(type === "textarea" ? { rows: 4 } : {})}
+          {...(asTextArea ? { rows: 4 } : {})}
           {...props}
         />
-        {supportMassage && (
-          <span className="text-xs text-black-sub">{supportMassage}</span>
-        )}
-        {!isValid && <ErrorText text={errorMassage} />}
-      </>
+      </div>
     );
   }
 );
