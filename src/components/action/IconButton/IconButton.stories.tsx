@@ -5,10 +5,7 @@ const meta: Meta<typeof IconButton> = {
   title: "Components/Action/IconButton",
   component: IconButton,
   argTypes: {
-    variant: {
-      control: { type: "radio" },
-      options: ["global", "function"],
-    },
+    size: { control: { type: "radio", options: ["s", "m"] } },
     disabled: { control: "boolean" },
     children: { control: "text" },
     isToggled: { control: "boolean" },
@@ -21,7 +18,7 @@ type Story = StoryObj<typeof IconButton>;
 
 export const Default: Story = {
   args: {
-    variant: "global",
+    size: "m",
     disabled: false,
     icon: "star",
   },

@@ -135,7 +135,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             <IconButton
               disabled={disabled}
               icon="calendar_month"
-              variant="function"
               onClick={handleIconClick}
               aria-label="Open calendar"
               isToggled={showCalendar}

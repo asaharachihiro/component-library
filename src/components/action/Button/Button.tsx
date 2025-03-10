@@ -1,36 +1,11 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { Primitive } from "@radix-ui/react-primitive";
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../../utils/cn";
 import { Spinner } from "../../loading/Spinner/Spinner";
 
-const buttonVariants = cva(
-  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group",
-  {
-    variants: {
-      variant: {
-        primary: "bg-main text-white",
-        secondary: "border border-main text-main",
-        textPrimary: "text-main",
-        textSecondary: "text-black-sub",
-        danger: "bg-danger text-white",
-        textDanger: "text-danger",
-      },
-      size: {
-        sm: "h-7 px-2 text-sm rounded-md min-w-12",
-        md: "h-9 px-6 text-base rounded-lg",
-      },
-    },
-    defaultVariants: {
-      size: "md",
-    },
-  }
-);
-
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
   icon?: string;
   isActive?: boolean;
@@ -42,7 +17,13 @@ export interface ButtonProps
     | "textSecondary"
     | "danger"
     | "textDanger";
+  size?: "s" | "m";
 }
+
+const baseButtonStyle =
+  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group";
+const sizeS = "h-7 px-2 text-sm rounded-md min-w-12";
+const sizeM = "h-9 px-6 text-base rounded-lg";
 
 const ContainedBaseButton = React.forwardRef<
   HTMLButtonElement,
@@ -54,7 +35,7 @@ const ContainedBaseButton = React.forwardRef<
       children,
       className,
       variant,
-      size,
+      size = "m",
       disabled,
       isActive,
       isLoading = false,
@@ -65,21 +46,17 @@ const ContainedBaseButton = React.forwardRef<
   ) => {
     const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
 
-    const computedSize = variant === "danger" ? "md" : size;
-    const disabledStyle =
-      disabled || isLoading
-        ? "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none"
-        : "";
+    const ButtonStyle = cn(baseButtonStyle, {
+      "bg-main text-white": !disabled && !isLoading && variant === "primary",
+      "bg-danger text-white": !disabled && !isLoading && variant === "danger",
+      [sizeM]: variant == "danger" || size !== "s",
+      [sizeS]: size === "s" && variant !== "danger",
+      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
+        disabled || isLoading,
+    });
+
     return (
-      <Comp
-        ref={ref}
-        className={cn(
-          buttonVariants({ variant, size: computedSize }),
-          disabledStyle,
-          className
-        )}
-        {...props}
-      >
+      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -100,7 +77,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className,
       variant,
-      size,
+      size = "m",
       disabled,
       isActive,
       isLoading = false,
@@ -110,23 +87,18 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-    const disabledStyle =
-      disabled || isLoading
-        ? "text-black-20-opacity border-black-20-opacity pointer-events-none"
-        : "";
-    const activeStyle = isActive && "bg-main-bg";
+
+    const ButtonStyle = cn(baseButtonStyle, {
+      "border border-main text-main": !disabled && !isLoading,
+      [sizeS]: size === "s",
+      [sizeM]: size !== "s",
+      "text-black-20-opacity border-black-20-opacity pointer-events-none":
+        disabled || isLoading,
+      "bg-main-bg": !disabled && !isLoading && isActive,
+    });
 
     return (
-      <Comp
-        ref={ref}
-        className={cn(
-          buttonVariants({ variant, size }),
-          disabledStyle,
-          activeStyle,
-          className
-        )}
-        {...props}
-      >
+      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -160,24 +132,19 @@ const TextBaseButton = React.forwardRef<
     ref
   ) => {
     const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-    const disabledStyle =
-      disabled || isLoading
-        ? "text-black-20-opacity border-black-20-opacity pointer-events-none"
-        : "";
-    const activeStyle =
-      variant !== "textDanger" && isActive && "bg-main-bg text-main";
+
+    const ButtonStyle = cn(baseButtonStyle, [sizeS], {
+      "text-main": variant === "textPrimary",
+      "text-black-sub": variant === "textSecondary",
+      "text-danger": variant === "textDanger",
+      "text-black-20-opacity border-black-20-opacity pointer-events-none":
+        disabled || isLoading,
+      "bg-main-bg text-main":
+        !disabled && !isLoading && variant !== "textDanger" && isActive,
+    });
 
     return (
-      <Comp
-        ref={ref}
-        className={cn(
-          buttonVariants({ variant, size: "sm" }),
-          disabledStyle,
-          activeStyle,
-          className
-        )}
-        {...props}
-      >
+      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
