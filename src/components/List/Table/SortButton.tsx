@@ -29,7 +29,7 @@ export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
         className={cn(
           className,
           defaultIconStyle,
-          "flex h-7 w-7 items-center justify-center rounded-md text-lg hover:bg-black-5-opacity active:bg-black-10-opacity"
+          "flex h-7 w-7 items-center justify-center rounded-md text-lg transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
         )}
       >
         <span className="material-symbols-rounded">

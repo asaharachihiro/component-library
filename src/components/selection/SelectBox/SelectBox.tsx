@@ -83,9 +83,9 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
             <Select.Viewport className="rounded-lg border-none shadow-low">
               <Select.Item
                 value="none"
-                className="cursor-pointer p-2 text-black-sub hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+                className="flex cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
               >
-                <Select.ItemIndicator className="mr-1 text-main">
+                <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
                   <span className="material-symbols-rounded">check</span>
                 </Select.ItemIndicator>
                 <Select.ItemText>{placeholder}</Select.ItemText>
@@ -94,9 +94,9 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
                 <Select.Item
                   key={option.value}
                   value={option.value}
-                  className="cursor-pointer p-2 hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+                  className="flex cursor-pointer p-2 transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
                 >
-                  <Select.ItemIndicator className="mr-1 text-main">
+                  <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
                     <span className="material-symbols-rounded">check</span>
                   </Select.ItemIndicator>
                   <Select.ItemText>{option.label}</Select.ItemText>

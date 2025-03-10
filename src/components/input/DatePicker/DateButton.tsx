@@ -44,7 +44,7 @@ export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
         type="button"
       >
         {number}
-        <div className="absolute inset-0 rounded-full bg-black opacity-0 group-hover:opacity-5 group-active:opacity-10" />
+        <div className="absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
       </button>
     );
   }

@@ -17,7 +17,7 @@ interface SearchBoxProps {
 export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
   ({ id, className = "", placeholder, value, onChange, ...props }, ref) => {
     const ButtonStyle =
-      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0 border-black-20-opacity text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub";
+      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0 border-black-20-opacity text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub transition-all";
     return (
       <div className={cn("flex text-black", className)}>
         <InputBox

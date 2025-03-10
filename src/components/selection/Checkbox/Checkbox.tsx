@@ -63,7 +63,7 @@ export const Checkbox = React.forwardRef<
         className={cn(
           disabledStyle,
           className,
-          "inline-flex cursor-pointer items-center justify-center text-base"
+          "flex cursor-pointer items-center text-base transition-all"
         )}
         onClick={handleCheckedChange}
       >
@@ -71,7 +71,7 @@ export const Checkbox = React.forwardRef<
           id={id}
           className={cn(
             errorStyle,
-            "h-7 w-7 select-none rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
+            "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
           )}
           checked={
             internalChecked === "indeterminate" ? false : internalChecked

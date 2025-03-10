@@ -62,10 +62,9 @@ export const CheckIcon = React.forwardRef<
       <CheckboxPrimitive.Root
         id={id}
         className={cn(
-          "inline-flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity",
-          disabledStyle,
           errorStyle,
-          className
+          disabledStyle,
+          "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
         )}
         checked={internalChecked === "indeterminate" ? false : internalChecked}
         onCheckedChange={handleCheckedChange}

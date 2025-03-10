@@ -16,7 +16,7 @@ export const TableHeader = <TData,>({
   virtualColumns,
 }: TableHeaderProps<TData>) => {
   return (
-    <thead className="text-sm font-medium text-black-sub">
+    <thead className="transi text-sm font-medium text-black-sub">
       {headerGroups.map((headerGroup) => (
         <tr key={headerGroup.id} className="sticky top-0 z-10 bg-white">
           {virtualPaddingLeft > 0 && (

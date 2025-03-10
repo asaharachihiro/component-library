@@ -53,7 +53,7 @@ export const Radio = React.forwardRef<
       <RadioGroup
         value={selected}
         onValueChange={handleChange}
-        className={cn("flex flex-col", className)}
+        className={cn("flex flex-col transition-all", className)}
         {...props}
       >
         {options.map((option) => (
@@ -66,12 +66,12 @@ export const Radio = React.forwardRef<
               id={option.value}
               value={option.value}
               ref={ref}
-              className="mb-2 flex w-full items-center"
+              className="mb-4 flex items-center"
             >
               <div
                 className={cn(
                   errorStyle,
-                  "flex h-7 w-7 select-none items-center justify-center rounded-full text-2xl hover:bg-black-5-opacity"
+                  "flex w-8 select-none items-center justify-center rounded-full text-2xl hover:bg-black-5-opacity"
                 )}
               >
                 {selected === option.value ? (
