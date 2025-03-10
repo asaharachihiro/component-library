@@ -57,24 +57,22 @@ export const InputBox = React.forwardRef<
     });
 
     return (
-      <div className={className}>
-        <InputComponent
-          id={id}
-          ref={
-            ref as React.Ref<HTMLInputElement> & React.Ref<HTMLTextAreaElement>
-          }
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => onChange && onChange(e)}
-          onBlur={(e) => onBlur && onBlur(e)}
-          disabled={disabled}
-          className={inputStyle}
-          aria-invalid={!isValid}
-          {...(asTextArea ? { rows: 4 } : {})}
-          {...props}
-        />
-      </div>
+      <InputComponent
+        id={id}
+        ref={
+          ref as React.Ref<HTMLInputElement> & React.Ref<HTMLTextAreaElement>
+        }
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange && onChange(e)}
+        onBlur={(e) => onBlur && onBlur(e)}
+        disabled={disabled}
+        className={cn(inputStyle, className)}
+        aria-invalid={!isValid}
+        {...(asTextArea ? { rows: 4 } : {})}
+        {...props}
+      />
     );
   }
 );
