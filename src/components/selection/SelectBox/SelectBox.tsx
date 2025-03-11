@@ -11,10 +11,12 @@ interface SelectBoxProps {
   label?: string;
   isRequired?: boolean;
   isValid?: boolean;
+  size?: "s" | "m";
   onChange?: (value: string) => void;
   supportMessage?: string;
   errorMessage?: string;
   disabled?: boolean;
+  hasDefaultOption?: boolean;
 }
 
 export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
@@ -27,10 +29,12 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
       value,
       isRequired = false,
       isValid = true,
+      size = "m",
       onChange,
       supportMessage,
       errorMessage,
       disabled = false,
+      hasDefaultOption = false,
     },
     ref
   ) => {
@@ -47,15 +51,15 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
       }
     };
 
-    const boxStyle = !isValid
-      ? "border-danger"
-      : "border-black-20-opacity focus:border-black-sub";
-    const disabledStyle =
-      disabled && "text-black-sub pointer-events-none bg-black-3-opacity";
-    const placeholderStyle =
-      selectedValue === "none" || selectedValue === undefined
-        ? "text-black-20-opacity"
-        : "text-black";
+    const boxStyle = {
+      "text-black-sub pointer-events-none bg-black-3-opacity": disabled,
+      "border-danger": !isValid && !disabled,
+      "border-black-20-opacity focus:border-black-sub": isValid && !disabled,
+      "text-black": selectedValue,
+      "text-black-20-opacity": !selectedValue,
+      "text-sm p-1 pl-2 rounded-md": size === "s",
+      "rounded-lg border p-2": size !== "s",
+    };
 
     return (
       <div>
@@ -65,31 +69,32 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
             id={id}
             ref={ref}
             className={cn(
-              "flex w-full justify-between rounded-lg border bg-white p-2",
-              boxStyle,
-              disabledStyle,
-              placeholderStyle
+              "flex w-full items-center justify-between bg-white hover:bg-black-5-opacity",
+              boxStyle
             )}
           >
             <Select.Value placeholder={placeholder} />
-            <Select.Icon className="mr-2 items-center justify-center text-black-sub">
+            <Select.Icon className="mr-1 flex items-center justify-center text-black-sub">
               <span className="material-symbols-rounded">expand_more</span>
             </Select.Icon>
           </Select.Trigger>
           <Select.Content className="rounded-lg bg-white">
-            <Select.ScrollUpButton className="mr-2 items-center justify-center text-black-sub">
+            <Select.ScrollUpButton className="mr-1 items-center justify-center text-black-sub">
               <span className="material-symbols-rounded">expand_less</span>
             </Select.ScrollUpButton>
             <Select.Viewport className="rounded-lg border-none shadow-low">
-              <Select.Item
-                value="none"
-                className="flex cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
-              >
-                <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
-                  <span className="material-symbols-rounded">check</span>
-                </Select.ItemIndicator>
-                <Select.ItemText>{placeholder}</Select.ItemText>
-              </Select.Item>
+              {hasDefaultOption && (
+                <Select.Item
+                  value="none"
+                  className="flex cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+                >
+                  <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
+                    <span className="material-symbols-rounded">check</span>
+                  </Select.ItemIndicator>
+                  <Select.ItemText>{placeholder}</Select.ItemText>
+                </Select.Item>
+              )}
+
               {options.map((option) => (
                 <Select.Item
                   key={option.value}

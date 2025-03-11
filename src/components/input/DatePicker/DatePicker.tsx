@@ -38,7 +38,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
   ) => {
     const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
       if (!dateInput) return "";
-
       const dateObj = parseISO(dateInput);
       if (!isValid(dateObj)) return "";
 
@@ -90,6 +89,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       }
     };
 
+    // Blur時に値をフォーマット
     const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       const formattedDate = formatDisplayDate(e.target.value, isJPLocale);
       setDisplayDate(formattedDate);
@@ -100,6 +100,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       }
     };
 
+    // Focus時に入力値を表示
     const onFocus = () => {
       setDisplayDate(inputDate || "");
     };

@@ -101,21 +101,23 @@ export const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className={className}>
-      <div className={cn("flex max-w-[280px] flex-col space-y-2 p-4")}>
+      <div className={cn("flex max-w-[320px] flex-col space-y-2 p-4")}>
         <div className="flex items-center justify-between">
           <IconButton icon="chevron_left" onClick={() => moveMonth("prev")} />
-          <div className="flex space-x-2">
+          <div className="mx-2 flex">
             <SelectBox
               id={"year-select"}
               options={yearsList}
               value={format(currentDate, "yyyy")}
               onChange={(value) => handleYearChange(value)}
+              size="s"
             />
             <SelectBox
               id={"month-select"}
               options={monthsList}
               value={format(currentDate, "MM")}
               onChange={(value) => handleMonthChange(value)}
+              size="s"
             />
           </div>
           <IconButton icon="chevron_right" onClick={() => moveMonth("next")} />
