@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Select from "@radix-ui/react-select";
 import { cn } from "../../../utils/cn";
-import { ErrorText, FormLabel } from "../../common";
+import { ErrorText, FormLabel } from "../../0-common";
 
 interface SelectBoxProps {
   id: string;

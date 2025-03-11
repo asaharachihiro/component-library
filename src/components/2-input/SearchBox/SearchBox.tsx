@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { InputBox } from "../../common";
+import { InputBox } from "../../0-common";
 
 interface SearchBoxProps {
   id: string;
