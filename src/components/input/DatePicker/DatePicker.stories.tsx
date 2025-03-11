@@ -28,7 +28,7 @@ export const Default: Story = {
     label: { control: { type: "text" } },
     errorMessage: { control: { type: "text" } },
     value: { control: { type: "text" } },
-    isValid: { control: { type: "boolean" } },
+    isValidValue: { control: { type: "boolean" } },
     disabled: { control: { type: "boolean" } },
     isJPLocale: { control: { type: "boolean" } },
   },

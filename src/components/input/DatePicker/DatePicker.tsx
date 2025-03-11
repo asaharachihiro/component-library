@@ -2,7 +2,7 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "../../common";
 import { Calendar } from ".";
 import { IconButton } from "../../action/IconButton";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, isValid } from "date-fns";
 
 interface DatePickerProps {
   id: string;
@@ -11,7 +11,7 @@ interface DatePickerProps {
   errorMessage?: string;
   className?: string;
   value?: string;
-  isValid?: boolean;
+  isValidValue?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
   isStartonMonday?: boolean;
@@ -27,7 +27,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       errorMessage,
       className,
       value,
-      isValid = true,
+      isValidValue = true,
       disabled = false,
       isJPLocale = false,
       isStartonMonday = false,
@@ -37,7 +37,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     ref
   ) => {
     const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
+      if (!dateInput) return "";
+
       const dateObj = parseISO(dateInput);
+      if (!isValid(dateObj)) return "";
 
       if (isJPlocale) {
         // 元号と曜日を取得し、元号X年MM月DD日(曜日)形式で返す
@@ -108,7 +111,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <InputBox
             id={id}
             value={displayDate || ""}
-            isValid={isValid}
+            isValid={isValidValue}
             disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
