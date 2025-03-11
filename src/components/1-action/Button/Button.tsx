@@ -2,7 +2,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { Primitive } from "@radix-ui/react-primitive";
 import { cn } from "../../../utils/cn";
-import { Spinner } from "../../loading/Spinner/Spinner";
+import { Spinner } from "../../8-loading/Spinner/Spinner";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
