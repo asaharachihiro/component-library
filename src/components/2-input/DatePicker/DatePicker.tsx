@@ -15,6 +15,8 @@ interface DatePickerProps {
   disabled?: boolean;
   isJPLocale?: boolean;
   isStartonMonday?: boolean;
+  // TODO: 外側からvalue以外は意識しないで済むようにする
+  // onChange?: (date: string) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 

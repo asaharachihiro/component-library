@@ -21,7 +21,7 @@ export interface ButtonProps
 }
 
 const baseButtonStyle =
-  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group";
+  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group shrink-0";
 const sizeS = "h-7 px-2 text-sm rounded-md min-w-12";
 const sizeM = "h-9 px-6 text-base rounded-lg";
 
@@ -51,13 +51,13 @@ const ContainedBaseButton = React.forwardRef<
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
       [sizeM]: variant == "danger" || size !== "s",
       [sizeS]: size === "s" && variant !== "danger",
-      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
+      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none ":
         disabled || isLoading,
     });
 
     return (
       <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
-        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
+        <div className="absolute bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
