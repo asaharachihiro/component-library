@@ -9,7 +9,7 @@ interface ToggleSwitchProps {
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onChange?: (checked: boolean) => void;
 }
 
 export const ToggleSwitch = React.forwardRef<
@@ -23,7 +23,7 @@ export const ToggleSwitch = React.forwardRef<
       label,
       children,
       checked = false,
-      onClick,
+      onChange,
       disabled = false,
       isValid = true,
       ...props
@@ -38,7 +38,11 @@ export const ToggleSwitch = React.forwardRef<
     const handleToggled = () => {
       let newChecked = !toggle;
       setToggle(newChecked);
+      if (onChange) {
+        onChange(newChecked);
+      }
     };
+
     const switchStyle = cn(
       "flex shrink-0 items-center mt-1 h-7 w-[52px] rounded-full border-2 relative after:absolute after:content-[''] after:w-[16px] after:h-[16px] after:rounded-full  after:transition-transform after:duration-300",
       {
