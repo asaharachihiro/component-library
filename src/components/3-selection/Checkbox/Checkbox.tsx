@@ -9,7 +9,7 @@ interface CheckboxProps {
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
-  onCheckedChange?: (checked: boolean | "indeterminate") => void;
+  onChange?: (checked: boolean | "indeterminate") => void;
 }
 
 export const Checkbox = React.forwardRef<
@@ -22,7 +22,7 @@ export const Checkbox = React.forwardRef<
       className,
       children,
       checked = false,
-      onCheckedChange,
+      onChange,
       disabled = false,
       isValid = true,
       ...props
@@ -48,8 +48,8 @@ export const Checkbox = React.forwardRef<
       }
 
       setInternalChecked(newChecked);
-      if (onCheckedChange) {
-        onCheckedChange(newChecked);
+      if (onChange) {
+        onChange(newChecked);
       }
     };
 

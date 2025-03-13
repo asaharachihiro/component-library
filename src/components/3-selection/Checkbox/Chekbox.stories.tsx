@@ -31,11 +31,7 @@ const Template: Story = {
     };
 
     return (
-      <Checkbox
-        {...args}
-        checked={checked}
-        onCheckedChange={handleCheckedChange}
-      />
+      <Checkbox {...args} checked={checked} onChange={handleCheckedChange} />
     );
   },
 };

@@ -12,11 +12,11 @@ interface SelectBoxProps {
   isRequired?: boolean;
   isValid?: boolean;
   size?: "s" | "m";
-  onChange?: (value: string) => void;
   supportMessage?: string;
   errorMessage?: string;
   disabled?: boolean;
   hasDefaultOption?: boolean;
+  onChange?: (value: string) => void;
 }
 
 export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(

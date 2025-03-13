@@ -8,8 +8,8 @@ interface FilePickerProps {
   className?: string;
   fileFormats?: string[];
   disabled?: boolean;
-  onChange?: (files: File[]) => void;
   isMultiple?: boolean;
+  onChange?: (files: File[]) => void;
 }
 
 export const FilePicker: React.FC<FilePickerProps> = ({

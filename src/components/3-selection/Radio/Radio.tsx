@@ -8,8 +8,8 @@ interface RadioProps {
   children?: React.ReactNode;
   isValid?: boolean;
   disabled?: boolean;
-  onValueChange?: (value: string) => void;
   options: { label: string; value: string; children?: React.ReactNode }[];
+  onChange?: (value: string) => void;
 }
 
 export const Radio = React.forwardRef<
@@ -23,7 +23,7 @@ export const Radio = React.forwardRef<
       children,
       isValid = true,
       disabled = false,
-      onValueChange,
+      onChange,
       options = [],
       ...props
     },
@@ -37,8 +37,8 @@ export const Radio = React.forwardRef<
     }, [value]);
 
     const handleChange = (newValue: string) => {
-      if (onValueChange) {
-        onValueChange(newValue);
+      if (onChange) {
+        onChange(newValue);
       }
 
       setSelected(newValue);
