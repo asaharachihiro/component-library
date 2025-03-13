@@ -10,21 +10,9 @@ interface InputBoxProps {
   isValid?: boolean;
   disabled?: boolean;
   asTextArea?: boolean;
-  onChange?: (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
-  ) => void;
-  onBlur?: (
-    event:
-      | React.FocusEvent<HTMLInputElement>
-      | React.FocusEvent<HTMLTextAreaElement>
-  ) => void;
-  onFocus?: (
-    event:
-      | React.FocusEvent<HTMLInputElement>
-      | React.FocusEvent<HTMLTextAreaElement>
-  ) => void;
+  onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
+  onFocus?: (value: string) => void;
 }
 export const InputBox = React.forwardRef<
   HTMLInputElement | HTMLTextAreaElement,
@@ -41,6 +29,7 @@ export const InputBox = React.forwardRef<
       disabled = false,
       asTextArea = false,
       onChange,
+      onFocus,
       onBlur,
       ...props
     },
@@ -65,8 +54,9 @@ export const InputBox = React.forwardRef<
         type={type}
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange && onChange(e)}
-        onBlur={(e) => onBlur && onBlur(e)}
+        onChange={(e) => onChange && onChange(e.target.value)}
+        onBlur={(e) => onBlur && onBlur(e.target.value)}
+        onFocus={(e) => onFocus && onFocus(e.target.value)}
         disabled={disabled}
         className={cn(inputStyle, className)}
         aria-invalid={!isValid}

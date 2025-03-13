@@ -15,9 +15,10 @@ interface DatePickerProps {
   disabled?: boolean;
   isJPLocale?: boolean;
   isStartonMonday?: boolean;
-  // TODO: 外側からvalue以外は意識しないで済むようにする
-  // onChange?: (date: string) => void;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  validate?: (value: string) => boolean;
+  onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
+  onFocus?: (value: string) => void;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -33,7 +34,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       disabled = false,
       isJPLocale = false,
       isStartonMonday = false,
+      validate,
       onChange,
+      onBlur,
+      onFocus,
       ...props
     },
     ref
@@ -76,35 +80,34 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       setInputDate(date);
       setDisplayDate(formatDisplayDate(date, isJPLocale));
       if (onChange) {
-        onChange({
-          target: { value: date },
-        } as React.ChangeEvent<HTMLInputElement>);
+        onChange(date);
       }
       setShowCalendar(false);
     };
 
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputDate(e.target.value);
-      setDisplayDate(e.target.value);
+    const onInputChange = (value: string) => {
+      setInputDate(value);
+      setDisplayDate(value);
       if (onChange) {
-        onChange(e);
+        onChange(value);
       }
     };
 
     // Blur時に値をフォーマット
-    const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      const formattedDate = formatDisplayDate(e.target.value, isJPLocale);
+    const handleOnBlur = (value: string) => {
+      const formattedDate = formatDisplayDate(value, isJPLocale);
       setDisplayDate(formattedDate);
       if (onChange) {
-        onChange({
-          target: { value: formattedDate },
-        } as React.ChangeEvent<HTMLInputElement>);
+        onChange(formattedDate);
       }
     };
 
     // Focus時に入力値を表示
-    const onFocus = () => {
+    const handleOnFocus = (value: string) => {
       setDisplayDate(inputDate || "");
+      if (onFocus) {
+        onFocus(value);
+      }
     };
 
     return (
@@ -118,17 +121,9 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
-            onChange={
-              onInputChange as (
-                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => void
-            }
-            onBlur={
-              onBlur as (
-                event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-              ) => void
-            }
-            onFocus={onFocus}
+            onChange={onInputChange}
+            onBlur={handleOnBlur}
+            onFocus={handleOnFocus}
             ref={ref}
             {...props}
           />
@@ -150,7 +145,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {showCalendar && (
           <Calendar
             className="absolute z-10 rounded-lg bg-white shadow-low"
-            inputDate={inputDate ? parseISO(inputDate) : undefined}
+            inputDate={
+              inputDate && isValid(parseISO(inputDate))
+                ? parseISO(inputDate)
+                : undefined
+            }
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
             isStartonMonday={isStartonMonday}
