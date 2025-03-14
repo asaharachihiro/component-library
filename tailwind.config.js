@@ -25,10 +25,7 @@ module.exports = {
         "50-opacity": "rgb(1, 30, 42, 0.5)",
       },
       white: "#FFFFFF",
-      danger: {
-        DEFAULT: "rgb(224, 6, 6, 1)",
-        light: "rgb(224, 6, 6, 0.1)",
-      },
+      danger: "rgb(224, 6, 6, 1)",
       success: "rgb(23, 179, 132, 1)",
       link: {
         DEFAULT: "rgb(58, 58, 230, 1)",
