@@ -13,6 +13,7 @@ interface InputBoxProps {
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
   onFocus?: (value: string) => void;
+  autoComplete?: string;
 }
 export const InputBox = React.forwardRef<
   HTMLInputElement | HTMLTextAreaElement,
@@ -28,6 +29,7 @@ export const InputBox = React.forwardRef<
       isValid = true,
       disabled = false,
       asTextArea = false,
+      autoComplete,
       onChange,
       onFocus,
       onBlur,
@@ -59,6 +61,8 @@ export const InputBox = React.forwardRef<
         onFocus={(e) => onFocus && onFocus(e.target.value)}
         disabled={disabled}
         className={cn(inputStyle, className)}
+        autoComplete={autoComplete}
+        aria-disabled={disabled}
         aria-invalid={!isValid}
         {...(asTextArea ? { rows: 4 } : {})}
         {...props}

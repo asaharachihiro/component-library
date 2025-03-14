@@ -17,17 +17,19 @@ import {
 interface CalendarProps {
   inputDate?: Date;
   className?: string;
-  onSelectDate?: (date: string) => void;
+  isStartOnMonday?: boolean;
+  getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
+  onSelectDate: (date: string) => void;
   onClosed?: (isCanceled: boolean) => void;
-  isStartonMonday?: boolean;
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
   inputDate,
   className = "",
+  getCalendar,
   onSelectDate,
   onClosed,
-  isStartonMonday = false,
+  isStartOnMonday = false,
 }) => {
   const [currentDate, setCurrentDate] = React.useState(inputDate || new Date());
 
@@ -49,21 +51,29 @@ export const Calendar: React.FC<CalendarProps> = ({
   }));
 
   // 日付のリストを取得
-  const daysList = (dateInput: Date): string[] => {
-    const daysList = Array.from({ length: getDaysInMonth(dateInput) }, (_, i) =>
-      (i + 1).toString()
+  const datesList = (): { date: Date; disabled: boolean }[] => {
+    if (getCalendar) {
+      return getCalendar(currentDate);
+    }
+    const dates = Array.from(
+      { length: getDaysInMonth(currentDate) },
+      (_, i) => ({
+        date: setDate(currentDate, i + 1),
+        disabled: false,
+      })
     );
-    return daysList;
+
+    return dates;
   };
 
   // 表示の1日目の曜日を取得
   const getStartDayOfMonth = (): number => {
     const firstDay = getDay(startOfMonth(currentDate));
-    return isStartonMonday ? (firstDay === 0 ? 6 : firstDay - 1) : firstDay;
+    return isStartOnMonday ? (firstDay === 0 ? 6 : firstDay - 1) : firstDay;
   };
 
   // 曜日のリスト
-  const weekdays = isStartonMonday
+  const weekdays = isStartOnMonday
     ? ["月", "火", "水", "木", "金", "土", "日"]
     : ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -79,17 +89,11 @@ export const Calendar: React.FC<CalendarProps> = ({
     setCurrentDate(newDate);
   };
 
-  // 日付をYYYY-MM-DD形式で返す
-  const formatFullDate = (day: string) => {
-    const date = setDate(currentDate, parseInt(day));
-    return format(date, "yyyy-MM-dd");
-  };
-
   // 今日の日付かどうかを判定
-  const isToday = (day: string): boolean => {
+  const isToday = (date: Date): boolean => {
     const today = format(new Date(), "yyyy-MM-dd");
-    const date = formatFullDate(day);
-    return today === date;
+    const inputDate = format(date, "yyyy-MM-dd");
+    return today === inputDate;
   };
 
   // 表示する月の移動
@@ -136,21 +140,24 @@ export const Calendar: React.FC<CalendarProps> = ({
           {Array.from({ length: getStartDayOfMonth() }).map((_, i) => (
             <div key={`empty-${i}`} className="h-7 w-7" />
           ))}
-          {daysList(currentDate).map((day) => (
-            <DateButton
-              onClick={() => onSelectDate && onSelectDate(formatFullDate(day))}
-              number={day}
-              key={day}
-              id={day}
-              selected={
-                inputDate
-                  ? format(inputDate, "yyyy-MM-dd") === formatFullDate(day)
-                  : false
-              }
-              isToday={isToday(day)}
-              disabled={false}
-            />
-          ))}
+          {datesList().map(({ date, disabled }) => {
+            return (
+              <DateButton
+                onClick={() => onSelectDate(format(date, "yyyy-MM-dd"))}
+                number={format(date, "dd")}
+                key={format(date, "yyyy-MM-dd")}
+                id={format(date, "yyyy-MM-dd")}
+                selected={
+                  inputDate
+                    ? format(inputDate, "yyyy-MM-dd") ===
+                      format(date, "yyyy-MM-dd")
+                    : false
+                }
+                isToday={isToday(date)}
+                disabled={disabled}
+              />
+            );
+          })}
         </div>
         <div className="flex justify-end space-x-4">
           <Button

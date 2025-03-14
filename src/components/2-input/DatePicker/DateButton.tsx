@@ -32,9 +32,10 @@ export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
       }
     );
 
+    const displayNum = Number(number).toString();
     return (
       <button
-        onClick={onClick}
+        onClick={disabled ? undefined : onClick}
         id={id}
         className={className}
         ref={ref}
@@ -43,7 +44,7 @@ export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
         disabled={disabled}
         type="button"
       >
-        {number}
+        {displayNum}
         <div className="absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
       </button>
     );
