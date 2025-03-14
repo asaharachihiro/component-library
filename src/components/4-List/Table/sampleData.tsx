@@ -6,7 +6,7 @@ type SampleData = {
   length?: string;
   distribution?: string[];
   rarity: string;
-  spiecies: string;
+  species: string;
   summary?: string;
 };
 
@@ -22,7 +22,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("name", {
     header: "名前",
   }),
-  columnHelper.accessor("spiecies", {
+  columnHelper.accessor("species", {
     header: "種類",
   }),
   columnHelper.accessor("length", {
@@ -51,7 +51,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "1.5",
     distribution: ["北部アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
-    spiecies: "クモ類",
+    species: "クモ類",
     summary: "群れを作らず単独行動を好み、縄張り意識が非常に強い生物。",
   },
   {
@@ -60,7 +60,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "5.7",
     distribution: ["ミクロネシア"],
     rarity: "野生絶滅(EW)",
-    spiecies: "軟体動物",
+    species: "軟体動物",
     summary: "水辺に生息し、強靭な歯を持ち、小魚や甲殻類を捕食する。",
   },
   {
@@ -69,7 +69,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "0.7",
     distribution: ["西ヨーロッパ", "中央アメリカ"],
     rarity: "低危険種(LC)",
-    spiecies: "多足類",
+    species: "多足類",
     summary: "暗闇でも目が見える特殊な能力を持ち、夜行性の生活を送る。",
   },
   {
@@ -78,7 +78,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "9.5",
     distribution: ["東アフリカ"],
     rarity: "絶滅危惧IA類(CR)",
-    spiecies: "魚類",
+    species: "魚類",
     summary: "砂漠地帯に適応した耐熱性のある体を持ち、乾燥に強い。",
   },
   {
@@ -87,7 +87,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "8.5",
     distribution: ["メラネシア"],
     rarity: "絶滅危惧IB類(EN)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "水に溶ける特殊な粘液を分泌し、敵から逃れるための防御策とする。",
   },
   {
@@ -96,7 +96,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "3.3",
     distribution: ["中央アメリカ", "西アジア", "南アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
-    spiecies: "両生類",
+    species: "両生類",
     summary: "驚異的な跳躍力を誇る小型動物で、障害物を軽々と飛び越える。",
   },
   {
@@ -105,7 +105,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "5.4",
     distribution: ["中央アジア", "カリブ海地域"],
     rarity: "野生絶滅(EW)",
-    spiecies: "クモ類",
+    species: "クモ類",
     summary: "擬態を得意とし、周囲の環境に溶け込んで敵から身を隠す。",
   },
   {
@@ -114,7 +114,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "19.7",
     distribution: ["中央アメリカ"],
     rarity: "野生絶滅(EW)",
-    spiecies: "多足類",
+    species: "多足類",
   },
   {
     id: "9",
@@ -122,7 +122,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "11.2",
     distribution: ["中部アフリカ"],
     rarity: "低危険種(LC)",
-    spiecies: "軟体動物",
+    species: "軟体動物",
     summary: "脚を広げると鮮やかな模様が現れ、敵を威嚇する効果がある。",
   },
   {
@@ -131,7 +131,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "70.3",
     distribution: ["オーストララシア"],
     rarity: "絶滅(EX)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "暗闇でも目が見える特殊な能力を持ち、夜行性の生活を送る。",
   },
   {
@@ -140,7 +140,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "88.6",
     distribution: ["南部アフリカ"],
     rarity: "絶滅(EX)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "発達した嗅覚を活かして獲物を探し、遠くからでも察知する。",
   },
   {
@@ -149,7 +149,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "38.3",
     distribution: ["中央アジア", "東ヨーロッパ"],
     rarity: "野生絶滅(EW)",
-    spiecies: "魚類",
+    species: "魚類",
     summary: "毒ではなく光を使って敵を威嚇し、身を守る特殊な能力を持つ。",
   },
   {
@@ -158,7 +158,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "21.6",
     distribution: ["東ヨーロッパ", "中央アメリカ"],
     rarity: "絶滅危惧II類(VU)",
-    spiecies: "魚類",
+    species: "魚類",
   },
   {
     id: "14",
@@ -166,7 +166,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "107.3",
     distribution: ["カリブ海地域", "南ヨーロッパ"],
     rarity: "準絶滅危惧(NT)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "多彩な鳴き声を使い分け、仲間と意思疎通を行う高度な知能を持つ。",
   },
   {
@@ -175,7 +175,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "120.5",
     distribution: ["西ヨーロッパ"],
     rarity: "絶滅危惧II類(VU)",
-    spiecies: "爬虫類",
+    species: "爬虫類",
     summary: "天敵が少なく、寿命が長く、数十年にわたって生存する。",
   },
   {
@@ -184,7 +184,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "25.3",
     distribution: ["東ヨーロッパ", "中央アメリカ"],
     rarity: "絶滅危惧II類(VU)",
-    spiecies: "両生類",
+    species: "両生類",
     summary: "寒冷地に適応し、厚い毛皮を持ち、低温でも活動できる生物。",
   },
   {
@@ -193,7 +193,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "15.3",
     distribution: ["北部アメリカ"],
     rarity: "絶滅(EX)",
-    spiecies: "両生類",
+    species: "両生類",
     summary: "水に溶ける特殊な粘液を分泌し、敵から逃れるための防御策とする。",
   },
   {
@@ -202,7 +202,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "6.5",
     distribution: ["ミクロネシア", "南アメリカ", "南ヨーロッパ"],
     rarity: "絶滅(EX)",
-    spiecies: "両生類",
+    species: "両生類",
     summary: "樹上生活を送る動物で、高い枝を器用に移動する能力がある。",
   },
   {
@@ -211,7 +211,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "19.5",
     distribution: ["西アジア", "カリブ海地域", "西アフリカ"],
     rarity: "野生絶滅(EW)",
-    spiecies: "爬虫類",
+    species: "爬虫類",
     summary: "砂漠地帯に適応した耐熱性のある体を持ち、乾燥に強い。",
   },
   {
@@ -220,7 +220,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "24.2",
     distribution: ["南極"],
     rarity: "絶滅危惧II類(VU)",
-    spiecies: "軟体動物",
+    species: "軟体動物",
     summary: "寒冷地に適応し、厚い毛皮を持ち、低温でも活動できる生物。",
   },
   {
@@ -229,7 +229,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "124.4",
     distribution: ["ミクロネシア", "南アジア"],
     rarity: "絶滅(EX)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "独特な羽毛を持ち、美しい鳴き声で仲間とコミュニケーションを取る。",
   },
   {
@@ -238,7 +238,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "8.6",
     distribution: ["南アジア", "ミクロネシア"],
     rarity: "絶滅危惧II類(VU)",
-    spiecies: "多足類",
+    species: "多足類",
     summary: "毒ではなく光を使って敵を威嚇し、身を守る特殊な能力を持つ。",
   },
   {
@@ -247,7 +247,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "159.4",
     distribution: ["北部アメリカ", "北アフリカ"],
     rarity: "準絶滅危惧(NT)",
-    spiecies: "甲殻類",
+    species: "甲殻類",
     summary: "樹上生活を送る動物で、高い枝を器用に移動する能力がある。",
   },
   {
@@ -256,7 +256,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "11.6",
     distribution: ["中部アフリカ", "西アフリカ", "ミクロネシア"],
     rarity: "準絶滅危惧(NT)",
-    spiecies: "昆虫類",
+    species: "昆虫類",
     summary: "樹上生活を送る動物で、高い枝を器用に移動する能力がある。",
   },
   {
@@ -265,7 +265,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "8.3",
     distribution: ["カリブ海地域", "中央アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
-    spiecies: "爬虫類",
+    species: "爬虫類",
     summary: "独特な羽を持ち、美しい鳴き声で仲間とコミュニケーションを取る。",
   },
   {
@@ -274,7 +274,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "90.6",
     distribution: ["中央アジア", "南アジア", "東アフリカ"],
     rarity: "低危険種(LC)",
-    spiecies: "爬虫類",
+    species: "爬虫類",
     summary: "高速で移動することができ、時速50km以上で走ることも可能。",
   },
   {
@@ -283,7 +283,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "187.7",
     distribution: ["東ヨーロッパ", "西アジア"],
     rarity: "低危険種(LC)",
-    spiecies: "哺乳類",
+    species: "哺乳類",
     summary: "昼夜を問わず活動し、俊敏な動きで獲物を捕える肉食性の生物。",
   },
   {
@@ -292,7 +292,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "7.2",
     distribution: ["カリブ海地域", "ミクロネシア", "オーストララシア"],
     rarity: "準絶滅危惧(NT)",
-    spiecies: "クモ類",
+    species: "クモ類",
     summary: "群れを作らず単独行動を好み、縄張り意識が非常に強い生物。",
   },
   {
@@ -301,7 +301,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "6.8",
     distribution: ["南アジア", "東ヨーロッパ"],
     rarity: "準絶滅危惧(NT)",
-    spiecies: "軟体動物",
+    species: "軟体動物",
     summary: "羽を広げると鮮やかな模様が現れ、敵を威嚇する効果がある。",
   },
   {
@@ -310,7 +310,7 @@ export const sampleAnimalsData: SampleData[] = [
     length: "3.9",
     distribution: ["ミクロネシア"],
     rarity: "絶滅危惧IA類(CR)",
-    spiecies: "多足類",
+    species: "多足類",
     summary: "強力な顎を持ち、硬い殻の生物をも砕くことができる捕食者。",
   },
 ];

@@ -14,7 +14,7 @@ interface DatePickerProps {
   isValidValue?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
-  isStartonMonday?: boolean;
+  isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
@@ -33,7 +33,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       isValidValue = true,
       disabled = false,
       isJPLocale = false,
-      isStartonMonday = false,
+      isStartOnMonday = false,
       getCalendar,
       onChange,
       onBlur,
@@ -167,7 +167,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             }
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
-            isStartOnMonday={isStartonMonday}
+            isStartOnMonday={isStartOnMonday}
           />
         )}
         {supportMessage && (

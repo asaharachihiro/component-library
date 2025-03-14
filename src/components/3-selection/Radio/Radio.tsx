@@ -47,7 +47,7 @@ export const Radio = React.forwardRef<
     const disabledStyle =
       disabled && "text-black-20-opacity pointer-events-none";
     const errorStyle = !disabled && !isValid && "text-danger";
-    const isNomalStyle = !disabled && isValid;
+    const isNormalStyle = !disabled && isValid;
 
     return (
       <RadioGroup
@@ -78,7 +78,7 @@ export const Radio = React.forwardRef<
                   <span
                     className={cn(
                       "material-symbols-rounded",
-                      isNomalStyle && "text-main"
+                      isNormalStyle && "text-main"
                     )}
                   >
                     radio_button_checked
@@ -87,7 +87,7 @@ export const Radio = React.forwardRef<
                   <span
                     className={cn(
                       "material-symbols-rounded",
-                      isNomalStyle && "text-black-sub"
+                      isNormalStyle && "text-black-sub"
                     )}
                   >
                     radio_button_unchecked
@@ -96,7 +96,7 @@ export const Radio = React.forwardRef<
               </div>
               <span
                 className={cn(
-                  isNomalStyle && selected === option.value
+                  isNormalStyle && selected === option.value
                     ? ""
                     : "text-black-sub",
                   "ml-1 flex w-full text-base"

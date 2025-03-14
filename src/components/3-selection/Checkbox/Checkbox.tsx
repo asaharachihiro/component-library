@@ -56,7 +56,7 @@ export const Checkbox = React.forwardRef<
     const disabledStyle =
       disabled && "text-black-20-opacity pointer-events-none";
     const errorStyle = !disabled && !isValid && "text-danger";
-    const isNomalStyle = !disabled && isValid;
+    const isNormalStyle = !disabled && isValid;
 
     return (
       <div
@@ -83,15 +83,15 @@ export const Checkbox = React.forwardRef<
         >
           <span className="material-symbols-rounded">
             {internalChecked === "indeterminate" ? (
-              <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
                 indeterminate_check_box
               </span>
             ) : internalChecked ? (
-              <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
                 check_box
               </span>
             ) : (
-              <span className={cn(isNomalStyle && "text-black-sub")}>
+              <span className={cn(isNormalStyle && "text-black-sub")}>
                 check_box_outline_blank
               </span>
             )}

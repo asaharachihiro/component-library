@@ -53,7 +53,7 @@ export const CheckIcon = React.forwardRef<
       }
     };
 
-    const isNomalStyle = !disabled && isValid;
+    const isNormalStyle = !disabled && isValid;
     const checkBoxtyle = cn(
       "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity",
       {
@@ -74,15 +74,15 @@ export const CheckIcon = React.forwardRef<
       >
         <span className="material-symbols-rounded">
           {internalChecked === "indeterminate" ? (
-            <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+            <span className={cn("icon-fill", isNormalStyle && "text-main")}>
               indeterminate_check_box
             </span>
           ) : internalChecked ? (
-            <span className={cn("icon-fill", isNomalStyle && "text-main")}>
+            <span className={cn("icon-fill", isNormalStyle && "text-main")}>
               check_box
             </span>
           ) : (
-            <span className={cn(isNomalStyle && "text-black-sub")}>
+            <span className={cn(isNormalStyle && "text-black-sub")}>
               check_box_outline_blank
             </span>
           )}

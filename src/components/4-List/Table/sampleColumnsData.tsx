@@ -19,7 +19,7 @@ const sampleColmnsData: ColmnsData[] = [
     length: "1.5",
     distribution: ["北部アメリカ"],
     rarity: "絶滅危惧IB類(EN)",
-    spiecies: "クモ類",
+    species: "クモ類",
     summary: "群れを作らず単独行動を好み、縄張り意識が非常に強い生物。",
     ...Object.fromEntries(
       Array.from({ length: 5000 }, (_, i) => [
@@ -55,7 +55,7 @@ const sampleRecordsData: RecordsData[] = Array.from(
     length: `${(Math.random() * 10).toFixed(1)}`,
     distribution: ["地域A", "地域B", "地域C"],
     rarity: "一般",
-    spiecies: "サンプル種",
+    species: "サンプル種",
     summary: `サンプルの概要${i + 1}`,
     ...Object.fromEntries(
       Array.from({ length: 5000 }, (_, j) => [
