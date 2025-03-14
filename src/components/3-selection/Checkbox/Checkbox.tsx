@@ -5,7 +5,7 @@ import { cn } from "../../../utils/cn";
 interface CheckboxProps {
   id: string;
   className?: string;
-  checked?: boolean | "indeterminate";
+  defaultChecked?: boolean | "indeterminate";
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
@@ -21,7 +21,7 @@ export const Checkbox = React.forwardRef<
       id,
       className,
       children,
-      checked = false,
+      defaultChecked = false,
       onChange,
       disabled = false,
       isValid = true,
@@ -31,13 +31,13 @@ export const Checkbox = React.forwardRef<
   ) => {
     const [internalChecked, setInternalChecked] = React.useState<
       boolean | "indeterminate"
-    >(checked);
+    >(defaultChecked);
 
     React.useEffect(() => {
-      if (checked !== undefined) {
-        setInternalChecked(checked);
+      if (defaultChecked !== undefined) {
+        setInternalChecked(defaultChecked);
       }
-    }, [checked]);
+    }, [defaultChecked]);
 
     const handleCheckedChange = () => {
       let newChecked: boolean | "indeterminate";
@@ -46,8 +46,8 @@ export const Checkbox = React.forwardRef<
       } else {
         newChecked = false;
       }
-
       setInternalChecked(newChecked);
+
       if (onChange) {
         onChange(newChecked);
       }

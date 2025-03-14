@@ -29,7 +29,7 @@ export const Default: Story = {
   },
   argTypes: {
     label: { control: "text" },
-    value: { control: "text" },
+    defaultValue: { control: "text" },
     isValid: { control: "boolean" },
     disabled: { control: "boolean" },
     placeholder: { control: "text" },

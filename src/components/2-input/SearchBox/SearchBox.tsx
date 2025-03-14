@@ -6,7 +6,7 @@ interface SearchBoxProps {
   id: string;
   className?: string;
   placeholder?: string;
-  value?: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
   onFocus?: (value: string) => void;
@@ -18,7 +18,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       id,
       className = "",
       placeholder,
-      value,
+      defaultValue,
       onChange,
       onBlur,
       onFocus,
@@ -31,7 +31,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     return (
       <div className={cn("flex text-black", className)}>
         <InputBox
-          {...{ id, placeholder, value, onChange, onBlur, onFocus, ref }}
+          {...{ id, placeholder, defaultValue, onChange, onBlur, onFocus, ref }}
           className="rounded-r-none"
           aria-label="Search Input"
           type={"text"}

@@ -7,7 +7,7 @@ interface SelectBoxProps {
   id: string;
   options: { value: string; label: string }[];
   placeholder?: string;
-  value?: string;
+  defaultValue?: string;
   label?: string;
   isRequired?: boolean;
   isValid?: boolean;
@@ -26,7 +26,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
       options,
       label,
       placeholder = "未選択",
-      value,
+      defaultValue,
       isRequired = false,
       isValid = true,
       size = "m",
@@ -38,11 +38,11 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
     },
     ref
   ) => {
-    const [selectedValue, setSelectedValue] = React.useState(value);
+    const [selectedValue, setSelectedValue] = React.useState(defaultValue);
 
     React.useEffect(() => {
-      setSelectedValue(value);
-    }, [value]);
+      setSelectedValue(defaultValue);
+    }, [defaultValue]);
 
     const handleChange = (newValue: string) => {
       setSelectedValue(newValue);

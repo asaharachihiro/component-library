@@ -22,10 +22,10 @@ type Story = StoryObj<typeof Radio>;
 
 const Template: Story = {
   render: (args) => {
-    const [value, setValue] = React.useState(args.value);
+    const [value, setValue] = React.useState(args.defaultValue);
     React.useEffect(() => {
-      setValue(args.value);
-    }, [args.value]);
+      setValue(args.defaultValue);
+    }, [args.defaultValue]);
 
     return (
       <OptionsGroup id={"1"} label="ご希望の配送方法" isRequired={true}>

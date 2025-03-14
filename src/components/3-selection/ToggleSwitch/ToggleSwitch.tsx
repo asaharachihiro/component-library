@@ -5,7 +5,7 @@ interface ToggleSwitchProps {
   id: string;
   className?: string;
   label?: string;
-  checked?: boolean;
+  defaultChecked?: boolean;
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
@@ -22,7 +22,7 @@ export const ToggleSwitch = React.forwardRef<
       className,
       label,
       children,
-      checked = false,
+      defaultChecked = false,
       onChange,
       disabled = false,
       isValid = true,
@@ -30,10 +30,10 @@ export const ToggleSwitch = React.forwardRef<
     },
     ref
   ) => {
-    const [toggle, setToggle] = React.useState<boolean>(checked);
+    const [toggle, setToggle] = React.useState<boolean>(defaultChecked);
     React.useEffect(() => {
-      setToggle(checked);
-    }, [checked]);
+      setToggle(defaultChecked);
+    }, [defaultChecked]);
 
     const handleToggled = () => {
       let newChecked = !toggle;

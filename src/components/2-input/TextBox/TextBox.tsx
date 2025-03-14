@@ -10,10 +10,9 @@ interface TextBoxProps {
   placeholder?: string;
   supportMessage?: string;
   errorMessage?: string;
-  value?: string;
+  defaultValue?: string;
   isValid?: boolean;
   disabled?: boolean;
-  validate: (value: string) => void;
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
   onFocus?: (value: string) => void;
@@ -30,9 +29,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       placeholder,
       supportMessage,
       errorMessage,
-      value,
+      defaultValue,
       onChange,
-      validate,
       onBlur,
       onFocus,
       isValid,
@@ -47,7 +45,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
         <InputBox
           {...{
             id,
-            value,
+            defaultValue,
             type,
             isValid,
             disabled,

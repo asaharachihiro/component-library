@@ -4,7 +4,7 @@ import { cn } from "../../../utils/cn";
 
 interface RadioProps {
   className?: string;
-  value?: string;
+  defaultValue?: string;
   children?: React.ReactNode;
   isValid?: boolean;
   disabled?: boolean;
@@ -19,7 +19,7 @@ export const Radio = React.forwardRef<
   (
     {
       className = "",
-      value = "",
+      defaultValue = "",
       children,
       isValid = true,
       disabled = false,
@@ -29,12 +29,12 @@ export const Radio = React.forwardRef<
     },
     ref
   ) => {
-    const [selected, setSelected] = React.useState(value);
+    const [selected, setSelected] = React.useState(defaultValue);
     React.useEffect(() => {
-      if (value !== undefined) {
-        setSelected(value);
+      if (defaultValue !== undefined) {
+        setSelected(defaultValue);
       }
-    }, [value]);
+    }, [defaultValue]);
 
     const handleChange = (newValue: string) => {
       if (onChange) {

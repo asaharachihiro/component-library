@@ -22,11 +22,11 @@ type Story = StoryObj<typeof ToggleSwitch>;
 const Template: Story = {
   render: (args) => {
     const [check, setCheck] = React.useState<boolean>(
-      args.checked ? args.checked : false
+      args.defaultChecked ? args.defaultChecked : false
     );
     React.useEffect(() => {
       setCheck(check);
-    }, [args.checked]);
+    }, [args.defaultChecked]);
 
     return (
       <div className="w-[240px]">
@@ -41,11 +41,11 @@ export const Default: Story = {
   args: {
     id: "1",
     label: "メール通知を受け取る",
-    checked: false,
+    defaultChecked: false,
     disabled: false,
   },
   argTypes: {
-    checked: {
+    defaultChecked: {
       control: {
         type: "boolean",
       },
