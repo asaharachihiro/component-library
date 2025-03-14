@@ -3,6 +3,7 @@ import { ErrorText, FormLabel, InputBox } from "../../0-common";
 import { Calendar } from ".";
 import { IconButton } from "../../1-action/IconButton";
 import { format, parseISO, isValid } from "date-fns";
+import { useFormContext } from "../Form/FormContext";
 
 interface DatePickerProps {
   id: string;
@@ -16,9 +17,9 @@ interface DatePickerProps {
   isJPLocale?: boolean;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onChange?: (value: string) => void;
-  onBlur?: (value: string) => void;
-  onFocus?: (value: string) => void;
+  onChange?: (id: string, date: string) => void;
+  onBlur?: (id: string, date: string) => void;
+  onFocus?: (id: string, date: string) => void;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -42,6 +43,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     },
     ref
   ) => {
+    const { formData, errors, handleInputChange } = useFormContext();
     const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
       if (!dateInput) return "";
       const dateObj = parseISO(dateInput);
@@ -78,39 +80,39 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       setShowCalendar(!showCalendar);
     };
 
-    const onSelectChange = (date: string) => {
+    const onSelectChange = (id: string, date: string) => {
       setInputDate(date);
       setDisplayDate(formatDisplayDate(date, isJPLocale));
       if (onChange) {
-        onChange(date);
+        onChange(id, date);
       }
       setShowCalendar(false);
     };
 
-    const onInputChange = (value: string) => {
+    const onInputChange = (id: string, value: string) => {
       setInputDate(value);
       setDisplayDate(value);
       if (onChange) {
-        onChange(value);
+        onChange(id, value);
       }
     };
 
     // Blur時に値をフォーマット
-    const handleOnBlur = (value: string) => {
+    const handleOnBlur = (id: string, value: string) => {
       const formattedDate = formatDisplayDate(value, isJPLocale);
       setDisplayDate(formattedDate);
       if (onBlur) {
-        onBlur(value);
+        onBlur(id, value);
       }
     };
 
     // Focus時に入力値を表示
-    const handleOnFocus = (value: string) => {
+    const handleOnFocus = (id: string, value: string) => {
       setShowCalendar(true);
 
       setDisplayDate(inputDate || "");
       if (onFocus) {
-        onFocus(value);
+        onFocus(id, value);
       }
     };
 
@@ -120,12 +122,15 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         <div className="relative mb-1">
           <InputBox
             id={id}
-            value={displayDate || ""}
-            isValid={isValidValue}
+            defaultValue={formData[id] || displayDate}
+            isValid={errors[id] ? false : isValidValue}
             disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
-            onChange={onInputChange}
+            onChange={(id, value) => {
+              onInputChange(id, value);
+              handleInputChange(id, value);
+            }}
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}
             ref={ref}
@@ -149,6 +154,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         </div>
         {showCalendar && (
           <Calendar
+            id={id}
             className="absolute z-10 rounded-lg bg-white shadow-low"
             inputDate={
               inputDate && isValid(parseISO(inputDate))
@@ -173,7 +179,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
+        {errors[id] && <ErrorText text={errors[id]} />}
       </div>
     );
   }
