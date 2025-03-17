@@ -48,7 +48,6 @@ export const InputBox = React.forwardRef<
       "border-black-20-opacity focus:border-black-sub text-black":
         !disabled && isValid,
     });
-    console.log("inputBox", isValid);
 
     return (
       <InputComponent

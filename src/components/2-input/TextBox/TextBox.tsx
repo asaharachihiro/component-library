@@ -43,7 +43,6 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     const { formData, errors, handleInputChange } = useFormContext();
     const isValidStatus =
       !isValid && (errors[id] === null || errors[id] === undefined);
-    console.log(isValidStatus, isValid, errors[id]);
     return (
       <div className={className}>
         {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
