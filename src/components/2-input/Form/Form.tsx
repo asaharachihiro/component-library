@@ -11,7 +11,7 @@ interface FormProps {
   children?: React.ReactNode;
   onSubmit?: (formData: Record<string, any>) => void;
   validate?: (formData: Record<string, any>) => Record<string, string | null>; // id: errorText || null 形式で返す
-  values?: Record<string, any>;
+  defaultValues?: Record<string, any>;
 }
 
 export const Form = React.forwardRef<HTMLFormElement, FormProps>(
@@ -25,13 +25,13 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       children,
       onSubmit,
       validate,
-      values = {},
+      defaultValues = {},
       ...props
     },
     ref
   ) => {
     const [formData, setFormData] = React.useState<Record<string, any>>({
-      values,
+      defaultValues,
     });
     const [errors, setErrors] = React.useState<Record<string, string | null>>(
       {}
@@ -42,9 +42,9 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       if (savedData) {
         setFormData(JSON.parse(savedData));
       } else {
-        setFormData(values);
+        setFormData(defaultValues);
       }
-    }, [id, children, values]);
+    }, [id, children, defaultValues]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { id, value } = e.target;
