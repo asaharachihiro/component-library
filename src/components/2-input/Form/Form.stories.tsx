@@ -21,20 +21,28 @@ export default meta;
 
 type Story = StoryObj<typeof Form>;
 
-const validate = () => {
-  return (formData: Record<string, any>) => {
-    return {
-      name: null,
-      birthdate: null,
-      email: "メールアドレスを入力してください。",
-    };
+const validate = (formData: Record<string, any>) => {
+  console.log("フォームデータ:", formData);
+  return {
+    name: null,
+    birthdate: null,
+    email: "メールアドレスを入力してください。",
   };
+};
+
+const handleSubmit = (formData: Record<string, any>) => {
+  console.log("フォームデータ:", formData);
 };
 
 const Template: Story = {
   render: (args) => {
     return (
-      <Form {...args} className="w-[500px]" validate={validate()}>
+      <Form
+        {...args}
+        className="w-[500px]"
+        validate={validate}
+        onSubmit={handleSubmit}
+      >
         <TextBox
           id="name"
           label="お名前"

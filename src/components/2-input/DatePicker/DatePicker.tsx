@@ -3,7 +3,7 @@ import { ErrorText, FormLabel, InputBox } from "../../0-common";
 import { Calendar } from ".";
 import { IconButton } from "../../1-action/IconButton";
 import { format, parseISO, isValid } from "date-fns";
-import { useFormContext } from "../Form/FormContext";
+import { useFormContext } from "../../2-input/Form/FormContext";
 
 interface DatePickerProps {
   id: string;
@@ -31,7 +31,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       errorMessage,
       className,
       defaultValue,
-      isValidValue = true,
+      isValidValue,
       disabled = false,
       isJPLocale = false,
       isStartOnMonday = false,
@@ -43,7 +43,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     },
     ref
   ) => {
-    const { formData, errors, handleInputChange } = useFormContext();
     const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
       if (!dateInput) return "";
       const dateObj = parseISO(dateInput);
@@ -62,19 +61,31 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       // YYYY/MM/DD形式で返す
       return format(dateObj, "yyyy/MM/dd");
     };
+    const { formData, errors, handleInputChange } = useFormContext();
+    const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
     const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputDate, setInputDate] = React.useState(defaultValue || "");
+    const [inputDate, setInputDate] = React.useState(
+      formData[id] || defaultValue || ""
+    );
     const [displayDate, setDisplayDate] = React.useState(
-      defaultValue ? formatDisplayDate(defaultValue, isJPLocale) : ""
+      formData[id]
+        ? formatDisplayDate(formData[id], isJPLocale)
+        : defaultValue
+          ? formatDisplayDate(defaultValue, isJPLocale)
+          : ""
     );
 
     React.useEffect(() => {
-      setInputDate(defaultValue || "");
+      setInputDate(formData[id] || defaultValue || "");
       setDisplayDate(
-        defaultValue ? formatDisplayDate(defaultValue, isJPLocale) : ""
+        formData[id]
+          ? formatDisplayDate(formData[id], isJPLocale)
+          : defaultValue
+            ? formatDisplayDate(defaultValue, isJPLocale)
+            : ""
       );
-    }, [defaultValue, isJPLocale]);
+    }, [formData[id], defaultValue, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
@@ -95,6 +106,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       if (onChange) {
         onChange(id, value);
       }
+      handleInputChange(id, value);
     };
 
     // Blur時に値をフォーマット
@@ -122,14 +134,13 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         <div className="relative mb-1">
           <InputBox
             id={id}
-            defaultValue={formData[id] || displayDate}
-            isValid={errors[id] ? false : isValidValue}
+            defaultValue={displayDate}
+            isValid={isValidStatus}
             disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
-            onChange={(id, value) => {
-              onInputChange(id, value);
-              handleInputChange(id, value);
+            onChange={(e) => {
+              onInputChange(id, e.target.value);
             }}
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}
@@ -179,7 +190,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {errors[id] && <ErrorText text={errors[id]} />}
+        {!isValidStatus && (
+          <ErrorText
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
+        )}
       </div>
     );
   }
