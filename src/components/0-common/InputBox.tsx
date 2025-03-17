@@ -6,13 +6,15 @@ interface InputBoxProps {
   type: string;
   className?: string;
   placeholder?: string;
-  value?: string;
+  defaultValue?: string;
   isValid?: boolean;
   disabled?: boolean;
   asTextArea?: boolean;
-  onChange?: (value: string) => void;
-  onBlur?: (value: string) => void;
-  onFocus?: (value: string) => void;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  onBlur?: (id: string, value: string) => void;
+  onFocus?: (id: string, value: string) => void;
   autoComplete?: string;
 }
 export const InputBox = React.forwardRef<
@@ -25,7 +27,7 @@ export const InputBox = React.forwardRef<
       type,
       className = "",
       placeholder,
-      value,
+      defaultValue = "",
       isValid = true,
       disabled = false,
       asTextArea = false,
@@ -46,6 +48,7 @@ export const InputBox = React.forwardRef<
       "border-black-20-opacity focus:border-black-sub text-black":
         !disabled && isValid,
     });
+    console.log("inputBox", isValid);
 
     return (
       <InputComponent
@@ -55,10 +58,10 @@ export const InputBox = React.forwardRef<
         }
         type={type}
         placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange && onChange(e.target.value)}
-        onBlur={(e) => onBlur && onBlur(e.target.value)}
-        onFocus={(e) => onFocus && onFocus(e.target.value)}
+        defaultValue={defaultValue || ""}
+        onChange={onChange}
+        onBlur={(e) => onBlur && onBlur(id, e.target.value)}
+        onFocus={(e) => onFocus && onFocus(id, e.target.value)}
         disabled={disabled}
         className={cn(inputStyle, className)}
         autoComplete={autoComplete}

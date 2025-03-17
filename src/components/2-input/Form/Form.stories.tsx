@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Form } from ".";
+import { Form, FormFooter } from ".";
 import { TextBox } from "../TextBox";
 import { Button } from "../../1-action/Button";
 import { DatePicker } from "../DatePicker";
@@ -52,9 +52,11 @@ const Template: Story = {
           isRequired
           className="pointer-events-none"
         />
-        <Button variant={"primary"} type="submit">
-          登録
-        </Button>
+        <FormFooter id={"formFotter"}>
+          <Button variant={"primary"} type="submit">
+            登録
+          </Button>
+        </FormFooter>
       </Form>
     );
   },
@@ -67,10 +69,10 @@ export const Default: Story = {
     formLabel: "アカウント登録",
     description: "サービス利用のため、下記の情報をご入力ください。",
     supportText: "ご登録の内容は後から変更することができます。",
-    values: {
+    defaultValues: {
       name: "山田 太郎",
       birthdate: "1990-01-01",
-      email: "taro.yamada@example.com",
+      email: "",
     },
   },
 };
