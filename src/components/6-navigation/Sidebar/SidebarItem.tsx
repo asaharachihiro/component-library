@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 
-interface MenuItemProps {
+interface SidebarItemProps {
   id: string;
   className?: string;
   icon?: string;
@@ -11,7 +11,7 @@ interface MenuItemProps {
   onClick?: () => void;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({
+export const SidebarItem: React.FC<SidebarItemProps> = ({
   id,
   className,
   icon,
@@ -45,4 +45,4 @@ export const MenuItem: React.FC<MenuItemProps> = ({
     </li>
   );
 };
-MenuItem.displayName = "MenuItem";
+SidebarItem.displayName = "SidebarItem";

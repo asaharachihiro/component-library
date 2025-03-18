@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { MenuItem, Sidebar } from ".";
+import { SidebarItem, Sidebar } from ".";
 
 const meta: Meta<typeof Sidebar> = {
   title: "Components/Navigation/Sidebar",
@@ -22,16 +22,21 @@ const Template: Story = {
   render: (args) => {
     return (
       <Sidebar {...args}>
-        <MenuItem
+        <SidebarItem
           icon="home"
           id={"home"}
           href={"#"}
           label="ホーム"
           selected={true}
         />
-        <MenuItem icon="mail" id={"notification"} href={""} label="お知らせ" />
-        <MenuItem icon="task_alt" id={"mytask"} href={""} label="タスク" />
-        <MenuItem
+        <SidebarItem
+          icon="mail"
+          id={"notification"}
+          href={""}
+          label="お知らせ"
+        />
+        <SidebarItem icon="task_alt" id={"mytask"} href={""} label="タスク" />
+        <SidebarItem
           icon="description"
           id={"mydoc"}
           href={""}
