@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { cn } from "../../../utils/cn";
+import { useFormContext } from "../../2-input/Form";
 
 interface CheckboxProps {
   id: string;
@@ -33,11 +34,16 @@ export const Checkbox = React.forwardRef<
       boolean | "indeterminate"
     >(defaultChecked);
 
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+    const isValidStatus = isValid ? isValid : errors[id] == null;
+
     React.useEffect(() => {
-      if (defaultChecked !== undefined) {
-        setInternalChecked(defaultChecked);
-      }
-    }, [defaultChecked]);
+      setInternalChecked(formData[id] || defaultChecked);
+    }, [formData[id], defaultChecked]);
 
     const handleCheckedChange = () => {
       let newChecked: boolean | "indeterminate";
@@ -51,12 +57,13 @@ export const Checkbox = React.forwardRef<
       if (onChange) {
         onChange(newChecked);
       }
+      handleInputChange(id, newChecked.toString());
     };
 
     const disabledStyle =
       disabled && "text-black-20-opacity pointer-events-none";
-    const errorStyle = !disabled && !isValid && "text-danger";
-    const isNormalStyle = !disabled && isValid;
+    const errorStyle = !disabled && isValidStatus && "text-danger";
+    const isNormalStyle = !disabled && isValidStatus;
 
     return (
       <div
