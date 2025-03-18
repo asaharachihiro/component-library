@@ -40,7 +40,12 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     },
     ref
   ) => {
-    const { formData, errors, handleInputChange } = useFormContext();
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
     return (

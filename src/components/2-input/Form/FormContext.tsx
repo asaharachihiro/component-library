@@ -9,11 +9,7 @@ interface FormContextProps {
 export const FormContext = createContext<FormContextProps | undefined>(
   undefined
 );
-
-export const useFormContext = (): FormContextProps => {
-  const context = useContext(FormContext);
-  if (!context) {
-    throw new Error("useFormContext must be used within a FormProvider");
-  }
-  return context;
+export const useFormContext = (): FormContextProps | undefined => {
+  return useContext(FormContext);
 };
+// Formを使用しない場合、各コンポーネントでundefinedに対応してください。

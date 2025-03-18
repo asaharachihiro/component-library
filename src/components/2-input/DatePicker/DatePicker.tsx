@@ -61,7 +61,13 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       // YYYY/MM/DD形式で返す
       return format(dateObj, "yyyy/MM/dd");
     };
-    const { formData, errors, handleInputChange } = useFormContext();
+    const context = useFormContext();
+
+    // FormContextが提供されていない場合のデフォルト動作
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
     const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
     const [showCalendar, setShowCalendar] = React.useState(false);
