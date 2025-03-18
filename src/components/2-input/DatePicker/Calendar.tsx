@@ -15,15 +15,17 @@ import {
 } from "date-fns";
 
 interface CalendarProps {
+  id: string;
   inputDate?: Date;
   className?: string;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onSelectDate: (date: string) => void;
+  onSelectDate: (id: string, date: string) => void;
   onClosed?: (isCanceled: boolean) => void;
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
+  id,
   inputDate,
   className = "",
   getCalendar,
@@ -112,14 +114,14 @@ export const Calendar: React.FC<CalendarProps> = ({
             <SelectBox
               id={"year-select"}
               options={yearsList}
-              value={format(currentDate, "yyyy")}
+              defaultValue={format(currentDate, "yyyy")}
               onChange={(value) => handleYearChange(value)}
               size="s"
             />
             <SelectBox
               id={"month-select"}
               options={monthsList}
-              value={format(currentDate, "MM")}
+              defaultValue={format(currentDate, "MM")}
               onChange={(value) => handleMonthChange(value)}
               size="s"
             />
@@ -143,7 +145,7 @@ export const Calendar: React.FC<CalendarProps> = ({
           {datesList().map(({ date, disabled }) => {
             return (
               <DateButton
-                onClick={() => onSelectDate(format(date, "yyyy-MM-dd"))}
+                onClick={() => onSelectDate(id, format(date, "yyyy-MM-dd"))}
                 number={format(date, "dd")}
                 key={format(date, "yyyy-MM-dd")}
                 id={format(date, "yyyy-MM-dd")}

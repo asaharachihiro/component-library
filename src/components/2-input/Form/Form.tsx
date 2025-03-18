@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { ErrorText } from "../../0-common";
+import { FormContext } from "./FormContext";
 
 interface FormProps {
   id: string;
@@ -11,7 +11,7 @@ interface FormProps {
   children?: React.ReactNode;
   onSubmit?: (formData: Record<string, any>) => void;
   validate?: (formData: Record<string, any>) => Record<string, string | null>; // id: errorText || null 形式で返す
-  values?: Record<string, any>;
+  defaultValues?: Record<string, any>;
 }
 
 export const Form = React.forwardRef<HTMLFormElement, FormProps>(
@@ -25,13 +25,13 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       children,
       onSubmit,
       validate,
-      values = {},
+      defaultValues = {},
       ...props
     },
     ref
   ) => {
     const [formData, setFormData] = React.useState<Record<string, any>>({
-      values,
+      defaultValues,
     });
     const [errors, setErrors] = React.useState<Record<string, string | null>>(
       {}
@@ -40,14 +40,16 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
     React.useEffect(() => {
       const savedData = localStorage.getItem(id);
       if (savedData) {
-        setFormData(JSON.parse(savedData));
+        setFormData((prevData) => ({
+          ...prevData,
+          ...JSON.parse(savedData),
+        }));
       } else {
-        setFormData(values);
+        setFormData(defaultValues);
       }
-    }, [id, children, values]);
+    }, [id, children, defaultValues]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { id, value } = e.target;
+    const handleInputChange = (id: string, value: string) => {
       setFormData((prevData) => ({
         ...prevData,
         [id]: value,
@@ -72,62 +74,28 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       localStorage.setItem(id, JSON.stringify(formData));
     };
 
-    const renderChildren = () => {
-      const inputChildren: React.ReactNode[] = [];
-      let buttonChild: React.ReactNode = null;
-
-      React.Children.forEach(children, (child) => {
-        if ((child as React.ReactElement<any>).props.type === "submit") {
-          buttonChild = child;
-        } else {
-          const childProps = child as React.ReactElement<any>;
-          const error = errors[childProps.props.id];
-          inputChildren.push(
-            <div
-              key={childProps.props.id}
-              className={cn("rounded-lg p-1", error && "bg-danger-light")}
-            >
-              {React.cloneElement(childProps, {
-                onChange: handleInputChange,
-                value: formData[childProps.props.id] || "",
-                error: error || null,
-              })}
-              {error && <ErrorText text={error} />}
-            </div>
-          );
-        }
-      });
-
-      return { inputChildren, buttonChild };
-    };
-
-    const { inputChildren, buttonChild } = renderChildren();
-
     return (
-      <div className={cn(className, "space-y-6")} id={id}>
-        {formLabel && (
-          <label className="block text-lg font-bold">{formLabel}</label>
-        )}
-        <div className="space-y-1">
-          {description && <p className="text-base">{description}</p>}
-          {supportText && (
-            <p className="mb-6 text-sm text-black-sub">{supportText}</p>
+      <FormContext.Provider value={{ formData, errors, handleInputChange }}>
+        <div className={cn(className, "space-y-6")} id={id}>
+          {formLabel && (
+            <label className="block text-lg font-bold">{formLabel}</label>
           )}
+          <div className="space-y-1">
+            {description && <p className="text-base">{description}</p>}
+            {supportText && (
+              <p className="mb-6 text-sm text-black-sub">{supportText}</p>
+            )}
+          </div>
+          <form
+            ref={ref}
+            {...props}
+            className="flex-col space-y-2 pl-4"
+            onSubmit={handleSubmit}
+          >
+            {children}
+          </form>
         </div>
-        <form
-          ref={ref}
-          {...props}
-          className="flex-col space-y-2 pl-4"
-          onSubmit={handleSubmit}
-        >
-          {inputChildren}
-          {buttonChild && (
-            <div id="submitButton" className="flex justify-end pt-4">
-              {buttonChild}
-            </div>
-          )}
-        </form>
-      </div>
+      </FormContext.Provider>
     );
   }
 );

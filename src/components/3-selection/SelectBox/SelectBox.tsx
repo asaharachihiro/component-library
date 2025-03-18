@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Select from "@radix-ui/react-select";
 import { cn } from "../../../utils/cn";
 import { ErrorText, FormLabel } from "../../0-common";
+import { useFormContext } from "../../2-input/Form";
 
 interface SelectBoxProps {
   id: string;
@@ -38,25 +39,36 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
     },
     ref
   ) => {
-    const [selectedValue, setSelectedValue] = React.useState(defaultValue);
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
+    const [selectedValue, setSelectedValue] = React.useState(
+      formData[id] || defaultValue
+    );
 
     React.useEffect(() => {
-      setSelectedValue(defaultValue);
-    }, [defaultValue]);
+      setSelectedValue(formData[id] || defaultValue);
+    }, [formData[id], defaultValue]);
 
     const handleChange = (newValue: string) => {
       setSelectedValue(newValue);
       if (onChange) {
         onChange(newValue);
       }
+      handleInputChange(id, newValue);
     };
 
+    const isValidStatus = isValid ? isValid : errors[id] == null;
     const boxStyle = {
       "text-black-sub pointer-events-none bg-black-3-opacity": disabled,
-      "border-danger": !isValid && !disabled,
-      "border-black-20-opacity focus:border-black-sub": isValid && !disabled,
+      "border-danger": !isValidStatus && !disabled,
+      "border-black-20-opacity focus:border-black-sub":
+        isValidStatus && !disabled,
       "text-black": selectedValue,
-      "text-black-20-opacity": !selectedValue,
+      "text-black-20-opacity": selectedValue === "none",
       "text-sm p-1 pl-2 rounded-md": size === "s",
       "rounded-lg border p-2": size !== "s",
     };
@@ -69,7 +81,7 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
             id={id}
             ref={ref}
             className={cn(
-              "flex w-full items-center justify-between bg-white hover:bg-black-5-opacity",
+              "bg-whit flex w-full items-center justify-between hover:bg-black-5-opacity",
               boxStyle
             )}
           >
@@ -116,7 +128,11 @@ export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
+        {!isValidStatus && (
+          <ErrorText
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
+        )}
       </div>
     );
   }

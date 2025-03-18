@@ -1,8 +1,10 @@
 import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { useFormContext } from "../../2-input/Form";
 
 interface RadioProps {
+  id: string;
   className?: string;
   defaultValue?: string;
   children?: React.ReactNode;
@@ -18,8 +20,9 @@ export const Radio = React.forwardRef<
 >(
   (
     {
+      id,
       className = "",
-      defaultValue = "",
+      defaultValue,
       children,
       isValid = true,
       disabled = false,
@@ -30,11 +33,15 @@ export const Radio = React.forwardRef<
     ref
   ) => {
     const [selected, setSelected] = React.useState(defaultValue);
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
     React.useEffect(() => {
-      if (defaultValue !== undefined) {
-        setSelected(defaultValue);
-      }
-    }, [defaultValue]);
+      setSelected(formData[id] || defaultValue);
+    }, [formData[id], defaultValue]);
 
     const handleChange = (newValue: string) => {
       if (onChange) {
@@ -42,15 +49,19 @@ export const Radio = React.forwardRef<
       }
 
       setSelected(newValue);
+      handleInputChange(id, newValue.toString());
     };
+
+    const isValidStatus = isValid ? isValid : errors[id] == null;
 
     const disabledStyle =
       disabled && "text-black-20-opacity pointer-events-none";
-    const errorStyle = !disabled && !isValid && "text-danger";
-    const isNormalStyle = !disabled && isValid;
+    const errorStyle = !disabled && !isValidStatus && "text-danger";
+    const isNormalStyle = !disabled && isValidStatus;
 
     return (
       <RadioGroup
+        id={id}
         value={selected}
         onValueChange={handleChange}
         className={cn("flex flex-col transition-all", className)}

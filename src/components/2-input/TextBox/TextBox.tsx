@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "../../0-common";
+import { useFormContext } from "../Form/FormContext";
 
 interface TextBoxProps {
   id: string;
@@ -13,9 +14,9 @@ interface TextBoxProps {
   defaultValue?: string;
   isValid?: boolean;
   disabled?: boolean;
-  onChange?: (value: string) => void;
-  onBlur?: (value: string) => void;
-  onFocus?: (value: string) => void;
+  onChange?: (id: string, value: string) => void;
+  onBlur?: (id: string, value: string) => void;
+  onFocus?: (id: string, value: string) => void;
 }
 
 export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
@@ -39,29 +40,39 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     },
     ref
   ) => {
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const errors = context?.errors || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
+    const isValidStatus = isValid ? isValid : errors[id] == null;
+
     return (
       <div className={className}>
         {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
         <InputBox
-          {...{
-            id,
-            defaultValue,
-            type,
-            isValid,
-            disabled,
-            onChange,
-            onBlur,
-            onFocus,
-            placeholder,
-            ref,
-          }}
+          id={id}
+          defaultValue={formData[id] || defaultValue}
+          type={type}
+          isValid={isValidStatus}
+          disabled={disabled}
+          onChange={(e) => handleInputChange(id, e.target.value)}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          placeholder={placeholder}
+          ref={ref}
           asTextArea={type === "textArea"}
           {...props}
         />
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && errorMessage && <ErrorText text={errorMessage} />}
+        {!isValidStatus && (
+          <ErrorText
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
+        )}
       </div>
     );
   }

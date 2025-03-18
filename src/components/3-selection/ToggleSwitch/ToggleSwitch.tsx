@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { useFormContext } from "../../2-input/Form";
 
 interface ToggleSwitchProps {
   id: string;
@@ -31,9 +32,14 @@ export const ToggleSwitch = React.forwardRef<
     ref
   ) => {
     const [toggle, setToggle] = React.useState<boolean>(defaultChecked);
+    const context = useFormContext();
+    // FormContextが提供されていない場合
+    const formData = context?.formData || {};
+    const handleInputChange = context?.handleInputChange || (() => {});
+
     React.useEffect(() => {
-      setToggle(defaultChecked);
-    }, [defaultChecked]);
+      setToggle(formData[id] || defaultChecked);
+    }, [formData[id], defaultChecked]);
 
     const handleToggled = () => {
       let newChecked = !toggle;
@@ -41,6 +47,7 @@ export const ToggleSwitch = React.forwardRef<
       if (onChange) {
         onChange(newChecked);
       }
+      handleInputChange(id, newChecked.toString());
     };
 
     const switchStyle = cn(
