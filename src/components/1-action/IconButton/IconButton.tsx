@@ -20,7 +20,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
 
     const IconButtonStyle = cn(
-      "flex justify-center items-center hover:bg-black-5-opacity active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all",
+      "flex justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all",
       {
         "text-2xl w-9 h-9 rounded-lg text-main": size === "m",
         "text-base disabled:text-black-20-opacity w-7 h-7 rounded-md text-black-sub":
