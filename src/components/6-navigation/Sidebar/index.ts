@@ -1,2 +1,2 @@
 export { Sidebar } from "./Sidebar";
-export { MenuItem } from "./MenuItem";
+export { SidebarItem } from "./SidebarItem";

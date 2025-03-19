@@ -17,7 +17,7 @@ export const parameters = {
           "Notification",
           ["Badge", "Tag", "Dialog", "Toast", "Tooltip", "MeatballMenu"],
           "Navigation",
-          ["MenuBar", "SideMenu", "Breadcrumbs", "Stepper"],
+          ["Topbar", "Sidebar", "Breadcrumbs", "Stepper"],
           "Display",
           ["Tabs", "Mordal", "Pagenation"],
           "Loading",
