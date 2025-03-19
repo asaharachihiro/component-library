@@ -6,6 +6,7 @@ interface AccordionProps {
   className?: string;
   label: string;
   children?: React.ReactNode;
+  defalutOpen?: boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -13,21 +14,22 @@ export const Accordion: React.FC<AccordionProps> = ({
   className = "",
   label = "",
   children,
+  defalutOpen = false,
 }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(defalutOpen);
 
   const toggleAccordion = (Open: boolean) => {
     setIsOpen(Open);
   };
   return (
-    <div id={id} className={className}>
-      <div className="relative flex w-full cursor-pointer list-none flex-col text-base">
+    <li id={id} className={cn(className, "list-none")}>
+      <div className="relative flex w-full cursor-pointer flex-col text-base">
         <button
           onClick={() => toggleAccordion(!isOpen)}
           className="flex h-[40px] w-full items-center justify-between p-2 hover:bg-black-3-opacity"
           aria-expanded={isOpen}
         >
-          <span className="truncate">{label}</span>
+          <span className="truncate font-medium">{label}</span>
           <span
             className={cn(
               "material-symbols-rounded ml-1 flex select-none text-black-sub transition-all duration-300",
@@ -46,7 +48,7 @@ export const Accordion: React.FC<AccordionProps> = ({
           {children}
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 Accordion.displayName = "Accordion";
