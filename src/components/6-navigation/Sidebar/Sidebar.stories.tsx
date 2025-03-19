@@ -25,7 +25,7 @@ const Template: Story = {
         <SidebarItem
           icon="home"
           id={"home"}
-          href={"#"}
+          href={""}
           label="ホーム"
           selected={true}
         />
