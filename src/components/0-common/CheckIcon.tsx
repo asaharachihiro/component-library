@@ -9,7 +9,7 @@ interface CheckIconProps {
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
-  onCheckedChange?: (checked: boolean | "indeterminate") => void;
+  onChange?: (checked: boolean | "indeterminate") => void;
 }
 
 export const CheckIcon = React.forwardRef<
@@ -22,7 +22,7 @@ export const CheckIcon = React.forwardRef<
       className,
       children,
       checked = false,
-      onCheckedChange,
+      onChange,
       disabled = false,
       isValid = true,
       ...props
@@ -48,8 +48,8 @@ export const CheckIcon = React.forwardRef<
       }
 
       setInternalChecked(newChecked);
-      if (onCheckedChange) {
-        onCheckedChange(newChecked);
+      if (onChange) {
+        onChange(newChecked);
       }
     };
 
