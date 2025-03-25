@@ -47,7 +47,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       } else {
         setFormData(defaultValues);
       }
-    }, [id, children, defaultValues]);
+    }, [id, children]);
 
     const handleInputChange = (id: string, value: string) => {
       setFormData((prevData) => ({

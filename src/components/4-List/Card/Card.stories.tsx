@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Card } from ".";
-import { CheckIcon } from "../../0-common";
-import { IconButton } from "../../1-action/IconButton";
-import { check } from "prettier";
-import * as React from "react";
-import { set } from "date-fns";
 
 const meta: Meta<typeof Card> = {
   title: "Components/List/Card",
