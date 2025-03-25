@@ -1,58 +1,54 @@
 import * as React from "react";
 import { Button } from "../../1-action/Button";
+import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface FilterButtonProps {
   id: string;
   className?: string;
   children?: React.ReactNode;
+  isActive?: boolean;
+  isOpen?: boolean;
+  fotterElements?: React.ReactNode;
 }
 
 export const FilterButton: React.FC<FilterButtonProps> = ({
   id,
   className,
   children,
+  isActive = false,
+  isOpen = false,
+  fotterElements,
 }) => {
-  const [showPanel, setShowPanel] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(isOpen);
 
-  // TODO:useFormContext
-  const hasFormValue = false;
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  useClickOutside(panelRef as React.RefObject<HTMLElement>, () =>
+    setShowPanel(false)
+  );
 
   return (
-    <>
+    <div className={className}>
       <Button
         id={id}
         variant="textPrimary"
         icon="filter_list"
-        className={className}
+        className="mb-1"
         onClick={() => setShowPanel(!showPanel)}
-        isActive={hasFormValue}
+        isActive={isActive}
       >
         フィルター
       </Button>
       {showPanel && (
-        <div className="rounded-lg bg-white shadow-low">
-          <div className="flex-col space-y-4 p-6">
-            {/* TODO: Formを直したあとでレイアウト修正 */}
-            {/* <Form id={"filterForm"}> */}
-            {children}
-            {/* </Form> */}
-          </div>
-          <div className="sticky flex justify-between border-t border-black-20-opacity p-6">
-            <Button variant={"textPrimary"} icon="refresh">
-              リセット
-            </Button>
-            <Button
-              variant={"primary"}
-              size="s"
-              type="submit"
-              form="filterForm"
-            >
-              検索
-            </Button>
-          </div>
+        <div className="rounded-lg bg-white shadow-low" ref={panelRef}>
+          <div className="flex-col space-y-4 p-6">{children}</div>
+          {fotterElements && (
+            <div className="sticky flex justify-between border-t border-black-20-opacity p-6">
+              {fotterElements}
+            </div>
+          )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 FilterButton.displayName = "FilterButton";

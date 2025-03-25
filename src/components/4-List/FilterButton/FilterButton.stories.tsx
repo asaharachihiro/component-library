@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FilterButton } from ".";
 import { TextBox } from "../../2-input/TextBox";
 import { SelectBox } from "../../3-selection/SelectBox";
+import { Button } from "../../1-action/Button";
 
 const meta: Meta<typeof FilterButton> = {
   title: "Components/List/FilterButton",
@@ -45,5 +46,15 @@ export const Default: Story = {
   ...Template,
   args: {
     id: "1",
+    fotterElements: (
+      <>
+        <Button id="reset" variant="textPrimary" icon="refresh">
+          リセット
+        </Button>
+        <Button id="confirm" variant="primary" size="s">
+          検索
+        </Button>
+      </>
+    ),
   },
 };
