@@ -4,6 +4,7 @@ import { Calendar } from ".";
 import { IconButton } from "../../1-action/IconButton";
 import { format, parseISO, isValid } from "date-fns";
 import { useFormContext } from "../../2-input/Form/FormContext";
+import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface DatePickerProps {
   id: string;
@@ -134,6 +135,14 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       }
     };
 
+    // Calender外をクリックした時に閉じる
+    const panelRef = React.useRef<HTMLDivElement>(null);
+    useClickOutside(panelRef as React.RefObject<HTMLElement>, () =>
+      setShowCalendar(false)
+    );
+
+    // TODO:useFloatingPosition
+
     return (
       <div className={className}>
         {label && <FormLabel label={label} />}
@@ -145,13 +154,14 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             disabled={disabled}
             type="tel"
             aria-haspopup="dialog"
+            aria-expanded={showCalendar}
             onChange={(e) => {
               onInputChange(id, e.target.value);
             }}
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}
-            ref={ref}
             autoComplete="off"
+            ref={ref}
             {...props}
           />
           {!inputDate && (
@@ -170,28 +180,30 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           </div>
         </div>
         {showCalendar && (
-          <Calendar
-            id={id}
-            className="absolute z-10 rounded-lg bg-white shadow-low"
-            inputDate={
-              inputDate && isValid(parseISO(inputDate))
-                ? parseISO(inputDate)
-                : undefined
-            }
-            getCalendar={
-              getCalendar
-                ? () =>
-                    getCalendar(
-                      inputDate && isValid(parseISO(inputDate))
-                        ? parseISO(inputDate)
-                        : new Date()
-                    )
-                : undefined
-            }
-            onSelectDate={onSelectChange}
-            onClosed={setShowCalendar}
-            isStartOnMonday={isStartOnMonday}
-          />
+          <div ref={panelRef}>
+            <Calendar
+              id={id}
+              className="absolute z-10 rounded-lg bg-white shadow-low"
+              inputDate={
+                inputDate && isValid(parseISO(inputDate))
+                  ? parseISO(inputDate)
+                  : undefined
+              }
+              getCalendar={
+                getCalendar
+                  ? () =>
+                      getCalendar(
+                        inputDate && isValid(parseISO(inputDate))
+                          ? parseISO(inputDate)
+                          : new Date()
+                      )
+                  : undefined
+              }
+              onSelectDate={onSelectChange}
+              onClosed={setShowCalendar}
+              isStartOnMonday={isStartOnMonday}
+            />
+          </div>
         )}
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
