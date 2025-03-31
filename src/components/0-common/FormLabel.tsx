@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Label } from "@radix-ui/react-label";
 import { cn } from "../../utils/cn";
 
 interface FormLabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
@@ -11,7 +10,7 @@ interface FormLabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
 export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
   ({ label, isRequired, className, htmlFor, ...props }, ref) => {
     return (
-      <Label
+      <label
         ref={ref}
         className={cn("mb-1 flex flex-nowrap items-center", className)}
         htmlFor={htmlFor || "defaultId"}
@@ -23,7 +22,7 @@ export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
             必須
           </span>
         )}
-      </Label>
+      </label>
     );
   }
 );

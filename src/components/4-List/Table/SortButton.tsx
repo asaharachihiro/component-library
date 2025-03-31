@@ -1,4 +1,3 @@
-import { Primitive } from "@radix-ui/react-primitive";
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 
@@ -23,7 +22,7 @@ export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
     };
 
     return (
-      <Primitive.button
+      <button
         ref={ref}
         {...props}
         className={cn(
@@ -39,7 +38,7 @@ export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
               ? getIcon(nextSortOrder)
               : null}
         </span>
-      </Primitive.button>
+      </button>
     );
   }
 );
