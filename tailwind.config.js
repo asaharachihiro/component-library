@@ -51,16 +51,27 @@ module.exports = {
       },
       animation: {
         fadeIn: "fadeIn 0.3s ease-in-out",
-        fadeOut: "fadeOut 0.3s ease-in-out",
+        fadeOut: "fadeOut 0.3s ease-out",
+        slideInTop: "slideInTop 0.3s ease-out",
+        slideInBottom: "slideInBottom 0.3s ease-out",
+        fadeSlideInTop: "fadeSlideInTop 0.3s ease-in-out",
       },
       keyframes: {
         fadeIn: {
-          "0%": { opacity: "0", visibility: "hidden" },
-          "100%": { opacity: "1", visibility: "visible" },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         fadeOut: {
-          "0%": { opacity: "1", visibility: "visible" },
-          "100%": { opacity: "0", visibility: "hidden" },
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+        fadeSlideInTop: {
+          "0%": { opacity: "0", transform: "translateY(-100%)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeSlideInBottom: {
+          "0%": { opacity: "0", transform: "translateY(100%)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },
