@@ -1,6 +1,4 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { Primitive } from "@radix-ui/react-primitive";
 import { cn } from "../../../utils/cn";
 import { Spinner } from "../../8-loading/Spinner/Spinner";
 
@@ -44,8 +42,6 @@ const ContainedBaseButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-
     const ButtonStyle = cn(baseButtonStyle, {
       "bg-main text-white": !disabled && !isLoading && variant === "primary",
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
@@ -56,7 +52,7 @@ const ContainedBaseButton = React.forwardRef<
     });
 
     return (
-      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -65,7 +61,7 @@ const ContainedBaseButton = React.forwardRef<
           </div>
         )}
         <span className={cn(isLoading && "opacity-0")}>{children}</span>
-      </Comp>
+      </button>
     );
   }
 );
@@ -86,8 +82,6 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-
     const ButtonStyle = cn(baseButtonStyle, {
       "border border-main text-main": !disabled && !isLoading,
       [sizeS]: size === "s",
@@ -98,7 +92,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     });
 
     return (
-      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -107,7 +101,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </div>
         )}
         <span className={cn(isLoading && "opacity-0")}>{children}</span>
-      </Comp>
+      </button>
     );
   }
 );
@@ -131,8 +125,6 @@ const TextBaseButton = React.forwardRef<
     },
     ref
   ) => {
-    const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-
     const ButtonStyle = cn(baseButtonStyle, [sizeS], {
       "text-main": variant === "textPrimary",
       "text-black-sub": variant === "textSecondary",
@@ -144,7 +136,7 @@ const TextBaseButton = React.forwardRef<
     });
 
     return (
-      <Comp ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -157,7 +149,7 @@ const TextBaseButton = React.forwardRef<
         >
           {children}
         </span>
-      </Comp>
+      </button>
     );
   }
 );

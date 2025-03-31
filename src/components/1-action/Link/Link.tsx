@@ -1,20 +1,20 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cn } from "../../../utils/cn";
 
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  asChild?: boolean;
+  href?: string;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ asChild, className, children, target, ...props }, ref) => {
-    const Component = asChild ? Slot : "a";
+  ({ href, className, children, target, ...props }, ref) => {
     const isBlank = target === "_blank";
 
     return (
-      <Component
+      <a
         ref={ref}
+        href={href}
         target={target}
         rel={isBlank ? "noopener noreferrer" : props.rel}
         className={cn(
@@ -29,7 +29,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             <span className="align-middle">open_in_new</span>
           </span>
         )}
-      </Component>
+      </a>
     );
   }
 );

@@ -1,5 +1,3 @@
-import { Primitive } from "@radix-ui/react-primitive";
-import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 
@@ -17,8 +15,6 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     { asChild, icon, isToggled = false, className, size = "s", ...props },
     ref
   ) => {
-    const Comp = (asChild ? Slot : Primitive.button) as React.ElementType;
-
     const IconButtonStyle = cn(
       "flex justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all",
       {
@@ -29,7 +25,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     );
 
     return (
-      <Comp ref={ref} {...props} className={cn(IconButtonStyle, className)}>
+      <button ref={ref} {...props} className={cn(IconButtonStyle, className)}>
         <span
           className={cn(
             "material-symbols-rounded",
@@ -38,7 +34,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         >
           {icon}
         </span>
-      </Comp>
+      </button>
     );
   }
 );
