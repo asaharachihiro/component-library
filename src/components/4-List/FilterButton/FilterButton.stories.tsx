@@ -31,12 +31,7 @@ const Template: Story = {
     return (
       <FilterButton {...args}>
         <TextBox id={"1"} label="検索ワード" />
-        <SelectBox
-          id={"2"}
-          label="所属部署"
-          defaultValue="1"
-          options={options}
-        />
+        <SelectBox id={"2"} label="所属部署" value="1" options={options} />
       </FilterButton>
     );
   },

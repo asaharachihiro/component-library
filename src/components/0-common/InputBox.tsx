@@ -6,7 +6,7 @@ interface InputBoxProps {
   type: string;
   className?: string;
   placeholder?: string;
-  defaultValue?: string;
+  value?: string;
   isValid?: boolean;
   disabled?: boolean;
   asTextArea?: boolean;
@@ -27,7 +27,7 @@ export const InputBox = React.forwardRef<
       type,
       className = "",
       placeholder,
-      defaultValue = "",
+      value = "",
       isValid = true,
       disabled = false,
       asTextArea = false,
@@ -57,7 +57,7 @@ export const InputBox = React.forwardRef<
         }
         type={type}
         placeholder={placeholder}
-        defaultValue={defaultValue || ""}
+        value={value || ""}
         onChange={onChange}
         onBlur={(e) => onBlur && onBlur(id, e.target.value)}
         onFocus={(e) => onFocus && onFocus(id, e.target.value)}

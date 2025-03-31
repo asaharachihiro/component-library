@@ -7,7 +7,7 @@ interface SearchBoxProps {
   id: string;
   className?: string;
   placeholder?: string;
-  defaultValue?: string;
+  value?: string;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
@@ -19,7 +19,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       id,
       className = "",
       placeholder,
-      defaultValue,
+      value,
       onChange,
       onBlur,
       onFocus,
@@ -39,7 +39,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
         <InputBox
           id={id}
           placeholder={placeholder}
-          defaultValue={formData[id] || defaultValue}
+          value={formData[id] || value}
           onChange={(e) => {
             onChange && onChange(id, e.target.value);
             handleInputChange(id, e.target.value);

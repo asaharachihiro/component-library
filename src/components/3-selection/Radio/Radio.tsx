@@ -6,7 +6,7 @@ import { useFormContext } from "../../2-input/Form";
 interface RadioProps {
   id: string;
   className?: string;
-  defaultValue?: string;
+  value?: string;
   children?: React.ReactNode;
   isValid?: boolean;
   disabled?: boolean;
@@ -22,7 +22,7 @@ export const Radio = React.forwardRef<
     {
       id,
       className = "",
-      defaultValue,
+      value,
       children,
       isValid = true,
       disabled = false,
@@ -32,7 +32,7 @@ export const Radio = React.forwardRef<
     },
     ref
   ) => {
-    const [selected, setSelected] = React.useState(defaultValue);
+    const [selected, setSelected] = React.useState(value);
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
@@ -40,8 +40,8 @@ export const Radio = React.forwardRef<
     const handleInputChange = context?.handleInputChange || (() => {});
 
     React.useEffect(() => {
-      setSelected(formData[id] || defaultValue);
-    }, [formData[id], defaultValue]);
+      setSelected(formData[id] || value);
+    }, [formData[id], value]);
 
     const handleChange = (newValue: string) => {
       if (onChange) {

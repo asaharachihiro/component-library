@@ -20,18 +20,14 @@ type Story = StoryObj<typeof SelectBox>;
 
 const Template: Story = {
   render: (args) => {
-    const [selectedValue, setSelectedValue] = React.useState(args.defaultValue);
+    const [selectedValue, setSelectedValue] = React.useState(args.value);
 
     React.useEffect(() => {
-      setSelectedValue(args.defaultValue);
-    }, [args.defaultValue]);
+      setSelectedValue(args.value);
+    }, [args.value]);
 
     return (
-      <SelectBox
-        {...args}
-        defaultValue={selectedValue}
-        onChange={setSelectedValue}
-      />
+      <SelectBox {...args} value={selectedValue} onChange={setSelectedValue} />
     );
   },
 };
@@ -48,7 +44,7 @@ export const Default: Story = {
     ],
     label: "職業",
     placeholder: "職業を選択",
-    defaultValue: "none",
+    value: "none",
     hasDefaultOption: true,
   },
 };

@@ -135,14 +135,14 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               <SelectBox
                 id={"year-select"}
                 options={yearsList}
-                defaultValue={format(currentDate, "yyyy")}
+                value={format(currentDate, "yyyy")}
                 onChange={(value) => handleYearChange(value)}
                 size="s"
               />
               <SelectBox
                 id={"month-select"}
                 options={monthsList}
-                defaultValue={format(currentDate, "MM")}
+                value={format(currentDate, "MM")}
                 onChange={(value) => handleMonthChange(value)}
                 size="s"
               />

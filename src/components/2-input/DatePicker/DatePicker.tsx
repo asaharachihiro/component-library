@@ -12,7 +12,7 @@ interface DatePickerProps {
   supportMessage?: string;
   errorMessage?: string;
   className?: string;
-  defaultValue?: string;
+  value?: string;
   isValidValue?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
@@ -31,7 +31,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       supportMessage,
       errorMessage,
       className,
-      defaultValue,
+      value,
       isValidValue,
       disabled = false,
       isJPLocale = false,
@@ -73,26 +73,26 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const [showCalendar, setShowCalendar] = React.useState(false);
     const [inputDate, setInputDate] = React.useState(
-      formData[id] || defaultValue || ""
+      formData[id] || value || ""
     );
     const [displayDate, setDisplayDate] = React.useState(
       formData[id]
         ? formatDisplayDate(formData[id], isJPLocale)
-        : defaultValue
-          ? formatDisplayDate(defaultValue, isJPLocale)
+        : value
+          ? formatDisplayDate(value, isJPLocale)
           : ""
     );
 
     React.useEffect(() => {
-      setInputDate(formData[id] || defaultValue || "");
+      setInputDate(formData[id] || value || "");
       setDisplayDate(
         formData[id]
           ? formatDisplayDate(formData[id], isJPLocale)
-          : defaultValue
-            ? formatDisplayDate(defaultValue, isJPLocale)
+          : value
+            ? formatDisplayDate(value, isJPLocale)
             : ""
       );
-    }, [formData[id], defaultValue, isJPLocale]);
+    }, [formData[id], value, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
@@ -149,7 +149,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         <div className="relative mb-1">
           <InputBox
             id={id}
-            defaultValue={displayDate}
+            value={displayDate}
             isValid={isValidStatus}
             disabled={disabled}
             type="tel"

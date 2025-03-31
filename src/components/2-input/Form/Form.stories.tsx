@@ -77,7 +77,7 @@ export const Default: Story = {
     formLabel: "アカウント登録",
     description: "サービス利用のため、下記の情報をご入力ください。",
     supportText: "ご登録の内容は後から変更することができます。",
-    defaultValues: {
+    values: {
       name: "山田 太郎",
       birthdate: "1990-01-01",
       email: "",
