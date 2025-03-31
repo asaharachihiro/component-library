@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "../../2-input/Form";
 
@@ -13,10 +12,7 @@ interface CheckboxProps {
   onChange?: (checked: boolean | "indeterminate") => void;
 }
 
-export const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  CheckboxProps
->(
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       id,
@@ -70,23 +66,15 @@ export const Checkbox = React.forwardRef<
         className={cn(
           disabledStyle,
           className,
-          "flex cursor-pointer items-center text-base transition-all"
+          "flex cursor-pointer items-center text-2xl transition-all"
         )}
         onClick={handleCheckedChange}
       >
-        <CheckboxPrimitive.Root
-          id={id}
+        <div
           className={cn(
             errorStyle,
             "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
           )}
-          checked={
-            internalChecked === "indeterminate" ? false : internalChecked
-          }
-          onCheckedChange={handleCheckedChange}
-          {...props}
-          ref={ref}
-          disabled={disabled}
         >
           <span className="material-symbols-rounded">
             {internalChecked === "indeterminate" ? (
@@ -103,7 +91,19 @@ export const Checkbox = React.forwardRef<
               </span>
             )}
           </span>
-        </CheckboxPrimitive.Root>
+        </div>
+        <input
+          type="checkbox"
+          id={id}
+          className="hidden"
+          checked={
+            internalChecked === "indeterminate" ? false : internalChecked
+          }
+          onChange={handleCheckedChange}
+          {...props}
+          ref={ref}
+          disabled={disabled}
+        />
         <span className={cn("ml-1 text-base")}>{children}</span>
       </div>
     );

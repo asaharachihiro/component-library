@@ -47,7 +47,7 @@ export const Default: Story = {
     defaultChecked: false,
     children: "利用規約に同意します。",
     disabled: false,
-    isValid: true,
+    isValid: false,
   },
   argTypes: {
     defaultChecked: {
