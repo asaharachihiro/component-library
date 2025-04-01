@@ -5,11 +5,17 @@ const meta: Meta<typeof IconButton> = {
   title: "Components/Action/IconButton",
   component: IconButton,
   argTypes: {
+    icon: {
+      control: { type: "text" },
+      description: "Material Symbols アイコン名",
+    },
     size: { control: { type: "radio", options: ["s", "m"] } },
     disabled: { control: "boolean" },
-    children: { control: "text" },
-    isToggled: { control: "boolean" },
-    asChild: { control: { disable: true } },
+    isLoading: { control: "boolean" },
+    checked: {
+      control: "boolean",
+      description: "ON/OFFの状態を示す",
+    },
   },
 };
 export default meta;
@@ -21,10 +27,7 @@ export const Default: Story = {
     size: "m",
     disabled: false,
     icon: "star",
-  },
-  parameters: {
-    controls: {
-      exclude: ["asChild", "className"],
-    },
+    isLoading: false,
+    checked: false,
   },
 };

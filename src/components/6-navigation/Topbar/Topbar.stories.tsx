@@ -31,17 +31,8 @@ const Template: Story = {
           label="ホーム"
           selected={true}
         />
-        <IconButton
-          icon={"notifications"}
-          size="m"
-          className="ml-2"
-        ></IconButton>
-
-        <IconButton
-          icon={"account_circle"}
-          size="m"
-          className="ml-2"
-        ></IconButton>
+        <IconButton icon={"notifications"} size="m" className="ml-2" />
+        <IconButton icon={"account_circle"} size="m" className="ml-2" />
       </Topbar>
     );
   },

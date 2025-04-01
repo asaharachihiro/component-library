@@ -175,7 +175,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
               icon="calendar_month"
               onClick={handleIconClick}
               aria-label="Open calendar"
-              isToggled={showCalendar}
+              checked={showCalendar}
             />
           </div>
         </div>

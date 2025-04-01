@@ -46,7 +46,7 @@ const ContainedBaseButton = React.forwardRef<
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
       [sizeM]: variant == "danger" || size !== "s",
       [sizeS]: size === "s" && variant !== "danger",
-      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
+      "bg-black-5-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
         disabled || isLoading,
     });
 
@@ -84,7 +84,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "border border-main text-main": !disabled && !isLoading,
       [sizeS]: size === "s",
       [sizeM]: size !== "s",
-      "text-black-20-opacity border-black-20-opacity pointer-events-none":
+      "text-black-20-opacity border-black-20-opacity pointer-events-none border":
         disabled || isLoading,
       "bg-main-bg": !disabled && !isLoading && isActive,
     });

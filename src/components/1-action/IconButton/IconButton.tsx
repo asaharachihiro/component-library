@@ -1,40 +1,79 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { Spinner } from "../../8-loading/Spinner/Spinner";
 
 export interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  asChild?: boolean;
   icon: string;
   className?: string;
-  isToggled?: boolean;
+  checked?: boolean;
   size?: "s" | "m";
+  onClick?: () => void;
+  isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
-    { asChild, icon, isToggled = false, className, size = "s", ...props },
+    {
+      icon,
+      checked = false,
+      isLoading = false,
+      disabled = false,
+      className,
+      size = "s",
+      onClick,
+      ...props
+    },
     ref
   ) => {
+    const [toggleChecked, setToggleChecked] = React.useState(checked || false);
+
+    React.useEffect(() => {
+      setToggleChecked(checked);
+    }, [checked]);
+
+    const handleClick = () => {
+      setToggleChecked((prev) => !prev);
+      if (onClick) {
+        onClick();
+      }
+    };
+
     const IconButtonStyle = cn(
-      "flex justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all",
+      "flex relative justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all focus-visible:bg-black-5-opacity",
       {
         "text-2xl w-9 h-9 rounded-lg text-main": size === "m",
-        "text-base disabled:text-black-20-opacity w-7 h-7 rounded-md text-black-sub":
+        "text-lg disabled:text-black-20-opacity w-7 h-7 rounded-md text-black-sub":
           size !== "m",
+        "text-black-20-opacity pointer-events-none": disabled || isLoading,
+        "text-main": !isLoading && toggleChecked,
+        "text-black-sub": !isLoading && !toggleChecked,
       }
     );
 
     return (
-      <button ref={ref} {...props} className={cn(IconButtonStyle, className)}>
-        <span
-          className={cn(
-            "material-symbols-rounded",
-            isToggled && "text-main icon-fill"
-          )}
+      <div className={className}>
+        <button
+          ref={ref}
+          className={cn(IconButtonStyle)}
+          onClick={handleClick}
+          aria-checked={toggleChecked}
+          disabled={disabled || isLoading}
+          {...props}
         >
-          {icon}
-        </span>
-      </button>
+          {isLoading && <Spinner className="absolute flex" />}
+          <span
+            className={cn(
+              "material-symbols-rounded",
+              isLoading && "opacity-0",
+              toggleChecked && "icon-fill"
+            )}
+          >
+            {icon}
+          </span>
+        </button>
+      </div>
     );
   }
 );
