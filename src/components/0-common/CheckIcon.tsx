@@ -55,17 +55,19 @@ export const CheckIcon: React.FC<CheckIconProps> = ({
   );
 
   return (
-    <input
-      type="checkbox"
-      id={id}
-      className={checkBoxtyle}
-      checked={internalChecked === "indeterminate" ? false : internalChecked}
-      aria-disabled={disabled}
-      aria-invalid={!isValid}
-      onChange={handleCheckedChange}
-      {...props}
-      disabled={disabled}
-    >
+    <div className={checkBoxtyle} onClick={handleCheckedChange}>
+      <input
+        type="checkbox"
+        id={id}
+        checked={internalChecked === "indeterminate" ? false : internalChecked}
+        aria-disabled={disabled}
+        aria-invalid={!isValid}
+        onChange={handleCheckedChange}
+        {...props}
+        disabled={disabled}
+        className="hidden"
+      />
+
       <span className="material-symbols-rounded">
         {internalChecked === "indeterminate" ? (
           <span className={cn("icon-fill", isNormalStyle && "text-main")}>
@@ -81,7 +83,7 @@ export const CheckIcon: React.FC<CheckIconProps> = ({
           </span>
         )}
       </span>
-    </input>
+    </div>
   );
 };
 CheckIcon.displayName = "CheckIcon";
