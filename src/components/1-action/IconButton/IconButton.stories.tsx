@@ -16,6 +16,7 @@ const meta: Meta<typeof IconButton> = {
       control: "boolean",
       description: "ON/OFFの状態を示す",
     },
+    className: { control: false },
   },
 };
 export default meta;

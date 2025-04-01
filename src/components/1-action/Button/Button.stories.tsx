@@ -5,6 +5,7 @@ const meta: Meta<typeof Button> = {
   title: "Components/Action/Button",
   component: Button,
   argTypes: {
+    label: { control: "text" },
     variant: {
       control: { type: "radio" },
       options: [
@@ -26,7 +27,6 @@ const meta: Meta<typeof Button> = {
       description: "モードがある場合のアクティブ状態",
     },
     isLoading: { control: "boolean" },
-    children: { control: "text" },
     icon: {
       control: { type: "text" },
       description: "Material Symbols アイコン名",

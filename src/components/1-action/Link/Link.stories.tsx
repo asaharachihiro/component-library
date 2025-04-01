@@ -13,6 +13,12 @@ const meta: Meta<typeof Link> = {
       },
     },
   },
+  argTypes: {
+    label: { control: "text" },
+    target: { control: { type: "radio" }, options: ["_self", "_blank"] },
+    href: { control: false },
+    className: { control: false },
+  },
 };
 export default meta;
 
@@ -20,16 +26,7 @@ type Story = StoryObj<typeof Link>;
 
 export const Default: Story = {
   args: {
-    children: "サービスサポート窓口",
+    label: "サービスサポート窓口",
     target: "_blank",
-  },
-  argTypes: {
-    children: { control: "text" },
-    target: { control: { type: "radio" }, options: ["_self", "_blank"] },
-  },
-  parameters: {
-    controls: {
-      exclude: ["asChild", "className"],
-    },
   },
 };

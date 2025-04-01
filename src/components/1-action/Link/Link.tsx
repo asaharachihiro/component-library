@@ -4,11 +4,11 @@ import { cn } from "../../../utils/cn";
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
   className?: string;
-  children?: React.ReactNode;
+  label: string;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, className, children, target, ...props }, ref) => {
+  ({ href, className, label, target, ...props }, ref) => {
     const isBlank = target === "_blank";
 
     return (
@@ -23,7 +23,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         )}
         {...props}
       >
-        <span className="mx-1 underline underline-offset-4">{children}</span>
+        <span className="mx-1 underline underline-offset-4">{label}</span>
         {isBlank && (
           <span className="material-symbols-rounded text-base icon-wght-500">
             <span className="align-middle">open_in_new</span>
