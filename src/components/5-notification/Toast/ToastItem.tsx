@@ -32,10 +32,8 @@ export const ToastItem: React.FC<ToastItemProps> = ({
   React.useEffect(() => {
     if (autoDelete) {
       const timer = setTimeout(() => {
-        console.log("setIsVisible");
         setIsVisible(false);
         setTimeout(() => {
-          console.log("setIsRender");
           setIsRender(false);
         }, 1000);
       }, 5000);
