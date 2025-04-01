@@ -11,6 +11,7 @@ export const parameters = {
           "Input",
           [
             "TextBox",
+            "PasswordBox",
             "SearchBox",
             "DatePicker",
             "FilePicker",
