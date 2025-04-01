@@ -28,14 +28,14 @@ const Template: Story = {
           message={"1件 のお知らせがあります。"}
           autoDelete={false}
         >
-          <Button variant="textPrimary">詳細</Button>
+          <Button variant="textPrimary" label="詳細" />
         </ToastItem>
         <ToastItem
           id="2"
           message={"パスワードの有効期限が切れています。"}
           type="error"
         >
-          <Button variant="textPrimary">設定</Button>
+          <Button variant="textPrimary" label="設定" />
         </ToastItem>
         <ToastItem
           id="3"

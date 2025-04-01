@@ -6,7 +6,7 @@ const meta: Meta<typeof Button> = {
   component: Button,
   argTypes: {
     variant: {
-      control: { type: "select" },
+      control: { type: "radio" },
       options: [
         "primary",
         "secondary",
@@ -18,13 +18,19 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: { type: "radio" },
-      options: ["sm", "md"],
+      options: ["s", "m"],
     },
     disabled: { control: "boolean" },
-    isActive: { control: "boolean" },
+    isActive: {
+      control: "boolean",
+      description: "モードがある場合のアクティブ状態",
+    },
     isLoading: { control: "boolean" },
     children: { control: "text" },
-    asChild: { control: { disable: true } },
+    icon: {
+      control: { type: "text" },
+      description: "Material Symbols アイコン名",
+    },
   },
 };
 export default meta;
@@ -34,8 +40,8 @@ type Story = StoryObj<typeof Button>;
 export const Primary: Story = {
   args: {
     variant: "primary",
-    size: "md",
-    children: "BUTTON",
+    size: "m",
+    label: "HOME",
     disabled: false,
     isActive: false,
     isLoading: false,

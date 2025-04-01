@@ -23,9 +23,12 @@ export const FormFooter: React.FC<FormFooterProps> = ({
     <div id={id} className={cn(className, "flex justify-between pt-6")}>
       <div>
         {hasPrev && (
-          <Button id="prevButton" variant={"textSecondary"} icon="chevron_left">
-            もどる
-          </Button>
+          <Button
+            id="prevButton"
+            variant={"textSecondary"}
+            icon="chevron_left"
+            label="もどる"
+          />
         )}
       </div>
       {hasNext ? (
@@ -34,9 +37,8 @@ export const FormFooter: React.FC<FormFooterProps> = ({
           variant={"textSecondary"}
           icon="chevron_right"
           className={cn(hasNext && "flex-row-reverse")}
-        >
-          次へ
-        </Button>
+          label="次へ"
+        />
       ) : (
         <div>{children}</div>
       )}

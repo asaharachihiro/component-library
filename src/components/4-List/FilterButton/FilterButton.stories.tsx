@@ -43,12 +43,13 @@ export const Default: Story = {
     id: "1",
     fotterElements: (
       <>
-        <Button id="reset" variant="textPrimary" icon="refresh">
-          リセット
-        </Button>
-        <Button id="confirm" variant="primary" size="s">
-          検索
-        </Button>
+        <Button
+          id="reset"
+          variant="textPrimary"
+          icon="refresh"
+          label="リセット"
+        />
+        <Button id="confirm" variant="primary" size="s" label="検索" />
       </>
     ),
   },

@@ -38,8 +38,8 @@ const Template: Story = {
             />
           </div>
           <div className="flex justify-end space-x-4">
-            <Button variant="textSecondary">キャンセル</Button>
-            <Button variant="primary">ログイン</Button>
+            <Button variant="textSecondary" label="キャンセル" />
+            <Button variant="primary" label="ログイン" />
           </div>
         </Modal>
       </div>

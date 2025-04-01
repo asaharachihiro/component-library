@@ -35,9 +35,8 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
         className="mb-1"
         onClick={() => setShowPanel(!showPanel)}
         isActive={isActive}
-      >
-        フィルター
-      </Button>
+        label="フィルター"
+      />
       {showPanel && (
         <div className="rounded-lg bg-white shadow-low" ref={panelRef}>
           <div className="flex-col space-y-4 p-6">{children}</div>

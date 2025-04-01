@@ -108,9 +108,8 @@ export const FilePicker: React.FC<FilePickerProps> = ({
           size="m"
           className="flex"
           onClick={handleOpenFolder}
-        >
-          ファイルを選択
-        </Button>
+          label="ファイルを選択"
+        />
       </div>
       {files &&
         files.map((file, index) => (

@@ -190,13 +190,10 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               variant="textSecondary"
               type="reset"
               onClick={() => onClosed && onClosed(false)}
-            >
-              キャンセル
-            </Button>
+              label="キャンセル"
+            />
             {/* TODO: 日付範囲指定のためのボタン
-          <Button variant="primary" size="sm" type="submit">
-            決定
-          </Button> */}
+          <Button variant="primary" size="sm" type="submit" label="決定"}/> */}
           </div>
         </div>
       </div>

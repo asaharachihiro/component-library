@@ -4,7 +4,7 @@ import { Spinner } from "../../8-loading/Spinner/Spinner";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  asChild?: boolean;
+  label?: string;
   icon?: string;
   isActive?: boolean;
   isLoading?: boolean;
@@ -29,8 +29,7 @@ const ContainedBaseButton = React.forwardRef<
 >(
   (
     {
-      asChild = false,
-      children,
+      label,
       className,
       variant,
       size = "m",
@@ -47,7 +46,7 @@ const ContainedBaseButton = React.forwardRef<
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
       [sizeM]: variant == "danger" || size !== "s",
       [sizeS]: size === "s" && variant !== "danger",
-      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none ":
+      "bg-black-20-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
         disabled || isLoading,
     });
 
@@ -56,11 +55,11 @@ const ContainedBaseButton = React.forwardRef<
         <div className="absolute bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
+          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
             <span className={"material-symbols-rounded"}>{icon}</span>
           </div>
         )}
-        <span className={cn(isLoading && "opacity-0")}>{children}</span>
+        <span className={cn(isLoading && "opacity-0")}>{label}</span>
       </button>
     );
   }
@@ -69,8 +68,7 @@ const ContainedBaseButton = React.forwardRef<
 const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      asChild = false,
-      children,
+      label,
       className,
       variant,
       size = "m",
@@ -96,11 +94,11 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
+          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
             <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
-        <span className={cn(isLoading && "opacity-0")}>{children}</span>
+        <span className={cn(isLoading && "opacity-0")}>{label}</span>
       </button>
     );
   }
@@ -112,8 +110,7 @@ const TextBaseButton = React.forwardRef<
 >(
   (
     {
-      asChild = false,
-      children,
+      label,
       className,
       variant,
       size,
@@ -140,14 +137,14 @@ const TextBaseButton = React.forwardRef<
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={isLoading ? "opacity-0" : "mr-1 flex"}>
+          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
             <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
         <span
           className={isLoading ? "opacity-0" : "underline underline-offset-4"}
         >
-          {children}
+          {label}
         </span>
       </button>
     );
@@ -166,10 +163,10 @@ const ButtonComponentMap: Record<ButtonProps["variant"], React.ElementType> = {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
+      label,
       className,
       variant,
       size,
-      asChild = false,
       isLoading = false,
       disabled,
       isActive,
@@ -183,10 +180,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Component
+        label={label}
         className={className}
         variant={variant}
         size={size}
-        asChild={asChild}
         children={children}
         disabled={disabled}
         isActive={isActive}
