@@ -61,9 +61,7 @@ const Template: Story = {
           className="pointer-events-none"
         />
         <FormFooter id={"formFotter"}>
-          <Button variant={"primary"} type="submit">
-            登録
-          </Button>
+          <Button variant={"primary"} type="submit" label="登録" />
         </FormFooter>
       </Form>
     );

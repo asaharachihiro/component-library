@@ -49,8 +49,9 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
 
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
-    const radioStyle = cn("flex flex-col space-y-4", {
+    const radioStyle = cn("flex flex-col ", {
       "text-black-20-opacity pointer-events-none": disabled,
+      "cursor-pointer": !disabled,
       "text-danger": !disabled && !isValidStatus,
     });
 
@@ -66,25 +67,26 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         {...props}
       >
         <div className={radioStyle}>
-          {options.map((option) => {
+          {options.map((option, index) => {
             const isSelected = selected === option.value;
             return (
-              <div
-                key={option.value}
-                className={cn("flex", !isSelected && "text-black-sub")}
+              <button
+                type="button"
+                role="radio"
+                aria-selected={isSelected}
+                aria-label={option.label}
+                key={index}
+                className={cn(
+                  "group flex items-center rounded-lg p-2",
+                  !isSelected && "text-black-sub"
+                )}
                 onClick={() => handleChange(option.value)}
               >
-                <input
-                  type="radio"
-                  key={option.value}
-                  id={option.value}
-                  value={option.value}
-                  disabled={disabled}
-                  onChange={() => handleChange(option.value)}
-                  checked={isSelected}
-                  className="hidden"
-                />
-                <div className="flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all hover:bg-black-5-opacity">
+                <div
+                  className={cn(
+                    "flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all group-hover:bg-black-5-opacity"
+                  )}
+                >
                   <span className="material-symbols-rounded">
                     <span className={cn(isSelected && "text-main")}>
                       {isSelected
@@ -94,11 +96,11 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                   </span>
                 </div>
 
-                <span className="ml-1 flex w-full text-base">
+                <div className="ml-1 flex h-full w-full text-base">
                   {option.label}
                   {option.children}
-                </span>
-              </div>
+                </div>
+              </button>
             );
           })}
         </div>
