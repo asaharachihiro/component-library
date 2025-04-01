@@ -1,8 +1,8 @@
 import * as React from "react";
-import * as Select from "@radix-ui/react-select";
 import { cn } from "../../../utils/cn";
 import { ErrorText, FormLabel } from "../../0-common";
 import { useFormContext } from "../../2-input/Form";
+import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface SelectBoxProps {
   id: string;
@@ -20,122 +20,174 @@ interface SelectBoxProps {
   onChange?: (value: string) => void;
 }
 
-export const SelectBox = React.forwardRef<HTMLButtonElement, SelectBoxProps>(
-  (
-    {
-      id,
-      options,
-      label,
-      placeholder = "未選択",
-      value,
-      isRequired = false,
-      isValid = true,
-      size = "m",
-      onChange,
-      supportMessage,
-      errorMessage,
-      disabled = false,
-      hasDefaultOption = false,
-    },
-    ref
-  ) => {
-    const context = useFormContext();
-    // FormContextが提供されていない場合
-    const formData = context?.formData || {};
-    const errors = context?.errors || {};
-    const handleInputChange = context?.handleInputChange || (() => {});
+export const SelectBox: React.FC<SelectBoxProps> = ({
+  id,
+  options,
+  label,
+  placeholder = "未選択",
+  value,
+  isRequired = false,
+  isValid = true,
+  size = "m",
+  onChange,
+  supportMessage,
+  errorMessage,
+  disabled = false,
+  hasDefaultOption = false,
+}) => {
+  const context = useFormContext();
+  // FormContextが提供されていない場合
+  const formData = context?.formData || {};
+  const errors = context?.errors || {};
+  const handleInputChange = context?.handleInputChange || (() => {});
 
-    const [selectedValue, setSelectedValue] = React.useState(
-      formData[id] || value
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState(
+    formData[id] || value
+  );
+
+  React.useEffect(() => {
+    setSelectedValue(formData[id] || value);
+  }, [formData[id], value]);
+
+  const selectedLabel = React.useMemo(() => {
+    const selectedOption = options.find(
+      (option) => option.value === selectedValue
     );
+    return selectedOption ? selectedOption.label : null;
+  }, [selectedValue, options]);
 
-    React.useEffect(() => {
-      setSelectedValue(formData[id] || value);
-    }, [formData[id], value]);
+  const handleToggle = () => {
+    if (!disabled) {
+      setIsOpen((prev) => !prev);
+    }
+  };
 
-    const handleChange = (newValue: string) => {
-      setSelectedValue(newValue);
-      if (onChange) {
-        onChange(newValue);
+  const handleChange = (newValue: string) => {
+    setSelectedValue(newValue);
+    setIsOpen(false);
+    if (onChange) {
+      onChange(newValue);
+    }
+    handleInputChange(id, newValue);
+  };
+
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const optionRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+
+  React.useEffect(() => {
+    if (isOpen && selectedValue) {
+      const selectedIndex = options.findIndex(
+        (option) => option.value === selectedValue
+      );
+      if (selectedIndex !== -1 && optionRefs.current[selectedIndex]) {
+        optionRefs.current[selectedIndex]?.scrollIntoView({
+          block: "start",
+        });
       }
-      handleInputChange(id, newValue);
-    };
+    }
+  }, [isOpen, selectedValue, options]);
 
-    const isValidStatus = isValid ? isValid : errors[id] == null;
-    const boxStyle = {
+  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
+    setIsOpen(false)
+  );
+
+  const isValidStatus = isValid ? isValid : errors[id] == null;
+  const boxStyle = cn(
+    "relative w-full cursor-pointer rounded-lg border p-2  bg-white flex w-full items-center justify-between hover:bg-black-5-opacity",
+    {
       "text-black-sub pointer-events-none bg-black-3-opacity": disabled,
       "border-danger": !isValidStatus && !disabled,
       "border-black-20-opacity focus:border-black-sub":
         isValidStatus && !disabled,
       "text-black": selectedValue,
       "text-black-20-opacity": selectedValue === "none",
-      "text-sm p-1 pl-2 rounded-md": size === "s",
+      "text-sm p-1 pl-2 rounded-md border-none": size === "s",
       "rounded-lg border p-2": size !== "s",
-    };
+    }
+  );
 
-    return (
-      <div>
-        {label && <FormLabel label={label} isRequired={isRequired} />}
-        <Select.Root value={selectedValue} onValueChange={handleChange}>
-          <Select.Trigger
-            id={id}
-            ref={ref}
-            className={cn(
-              "bg-whit flex w-full items-center justify-between hover:bg-black-5-opacity",
-              boxStyle
-            )}
-          >
-            <Select.Value placeholder={placeholder} />
-            <Select.Icon className="mr-1 flex items-center justify-center text-black-sub">
-              <span className="material-symbols-rounded">expand_more</span>
-            </Select.Icon>
-          </Select.Trigger>
-          <Select.Content className="rounded-lg bg-white">
-            <Select.ScrollUpButton className="mr-1 items-center justify-center text-black-sub">
-              <span className="material-symbols-rounded">expand_less</span>
-            </Select.ScrollUpButton>
-            <Select.Viewport className="rounded-lg border-none shadow-low">
-              {hasDefaultOption && (
-                <Select.Item
-                  value="none"
-                  className="flex cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
-                >
-                  <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
+  return (
+    <div>
+      {label && <FormLabel label={label} isRequired={isRequired} />}
+      <button
+        type="button"
+        role="select"
+        id={id}
+        className={boxStyle}
+        onClick={handleToggle}
+        tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-disabled={disabled}
+      >
+        <span>{selectedLabel || placeholder}</span>
+        <span
+          className={cn(
+            "material-symbols-rounded ml-2 text-black-sub transition-all",
+            isOpen ? "-rotate-180" : "rotate-0"
+          )}
+        >
+          expand_more
+        </span>
+      </button>
+      {isOpen && (
+        <div
+          ref={listRef}
+          className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
+          role="listbox"
+        >
+          {hasDefaultOption && (
+            <button
+              type="button"
+              role="option"
+              aria-selected={selectedValue === "none"}
+              aria-label={placeholder}
+              className="flex w-full cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+              onClick={() => handleChange("none")}
+            >
+              {placeholder}
+            </button>
+          )}
+          {options.map((option, index) => {
+            const isSelected = selectedValue === option.value;
+            return (
+              <button
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                aria-label={option.label}
+                key={index}
+                ref={(el) => {
+                  if (el) {
+                    optionRefs.current[index] = el;
+                  }
+                }}
+                className="flex w-full cursor-pointer p-2 *:transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
+                onClick={() => handleChange(option.value)}
+              >
+                {isSelected && (
+                  <span className="mr-1 flex items-center text-lg text-main">
                     <span className="material-symbols-rounded">check</span>
-                  </Select.ItemIndicator>
-                  <Select.ItemText>{placeholder}</Select.ItemText>
-                </Select.Item>
-              )}
+                  </span>
+                )}
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-              {options.map((option) => (
-                <Select.Item
-                  key={option.value}
-                  value={option.value}
-                  className="flex cursor-pointer p-2 transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
-                >
-                  <Select.ItemIndicator className="mr-1 flex items-center text-lg text-main">
-                    <span className="material-symbols-rounded">check</span>
-                  </Select.ItemIndicator>
-                  <Select.ItemText>{option.label}</Select.ItemText>
-                </Select.Item>
-              ))}
-            </Select.Viewport>
-            <Select.ScrollDownButton className="flex items-center justify-center p-2">
-              <span className="material-symbols-rounded">expand_more</span>
-            </Select.ScrollDownButton>
-          </Select.Content>
-        </Select.Root>
-        {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
-        )}
-        {!isValidStatus && (
-          <ErrorText
-            text={errors[id] || errorMessage || "入力がエラーになっています。"}
-          />
-        )}
-      </div>
-    );
-  }
-);
+      {supportMessage && (
+        <span className="text-xs text-black-sub">{supportMessage}</span>
+      )}
+      {!isValidStatus && (
+        <ErrorText
+          text={errors[id] || errorMessage || "入力がエラーになっています。"}
+        />
+      )}
+    </div>
+  );
+};
 
 SelectBox.displayName = "SelectBox";
