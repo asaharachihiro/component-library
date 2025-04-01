@@ -1,4 +1,3 @@
-import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "../../2-input/Form";
@@ -14,10 +13,7 @@ interface RadioProps {
   onChange?: (value: string) => void;
 }
 
-export const Radio = React.forwardRef<
-  React.ElementRef<typeof RadioGroupItem>,
-  RadioProps
->(
+export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   (
     {
       id,
@@ -32,16 +28,13 @@ export const Radio = React.forwardRef<
     },
     ref
   ) => {
-    const [selected, setSelected] = React.useState(value);
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
-    React.useEffect(() => {
-      setSelected(formData[id] || value);
-    }, [formData[id], value]);
+    const [selected, setSelected] = React.useState(formData[id] || value);
 
     const handleChange = (newValue: string) => {
       if (onChange) {
@@ -49,77 +42,67 @@ export const Radio = React.forwardRef<
       }
 
       setSelected(newValue);
-      handleInputChange(id, newValue.toString());
+      if (handleInputChange) {
+        handleInputChange(id, newValue);
+      }
     };
 
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
-    const disabledStyle =
-      disabled && "text-black-20-opacity pointer-events-none";
-    const errorStyle = !disabled && !isValidStatus && "text-danger";
-    const isNormalStyle = !disabled && isValidStatus;
+    const radioStyle = cn("flex flex-col space-y-4", {
+      "text-black-20-opacity pointer-events-none": disabled,
+      "text-danger": !disabled && !isValidStatus,
+    });
 
     return (
-      <RadioGroup
+      <div
         id={id}
-        value={selected}
-        onValueChange={handleChange}
-        className={cn("flex flex-col transition-all", className)}
+        ref={ref}
+        role="group"
+        aria-labelledby={id}
+        aria-invalid={!isValidStatus}
+        aria-disabled={disabled}
+        className={className}
         {...props}
       >
-        {options.map((option) => (
-          <div
-            key={option.value}
-            className={cn("flex cursor-pointer items-center", disabledStyle)}
-          >
-            <RadioGroupItem
-              key={option.value}
-              id={option.value}
-              value={option.value}
-              ref={ref}
-              className="mb-4 flex items-center"
-            >
+        <div className={radioStyle}>
+          {options.map((option) => {
+            const isSelected = selected === option.value;
+            return (
               <div
-                className={cn(
-                  errorStyle,
-                  "flex w-8 select-none items-center justify-center rounded-full text-2xl hover:bg-black-5-opacity"
-                )}
+                key={option.value}
+                className={cn("flex", !isSelected && "text-black-sub")}
+                onClick={() => handleChange(option.value)}
               >
-                {selected === option.value ? (
-                  <span
-                    className={cn(
-                      "material-symbols-rounded",
-                      isNormalStyle && "text-main"
-                    )}
-                  >
-                    radio_button_checked
+                <input
+                  type="radio"
+                  key={option.value}
+                  id={option.value}
+                  value={option.value}
+                  disabled={disabled}
+                  onChange={() => handleChange(option.value)}
+                  checked={isSelected}
+                  className="hidden"
+                />
+                <div className="flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all hover:bg-black-5-opacity">
+                  <span className="material-symbols-rounded">
+                    <span className={cn(isSelected && "text-main")}>
+                      {isSelected
+                        ? "radio_button_checked"
+                        : "radio_button_unchecked"}
+                    </span>
                   </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "material-symbols-rounded",
-                      isNormalStyle && "text-black-sub"
-                    )}
-                  >
-                    radio_button_unchecked
-                  </span>
-                )}
+                </div>
+
+                <span className="ml-1 flex w-full text-base">
+                  {option.label}
+                  {option.children}
+                </span>
               </div>
-              <span
-                className={cn(
-                  isNormalStyle && selected === option.value
-                    ? ""
-                    : "text-black-sub",
-                  "ml-1 flex w-full text-base"
-                )}
-              >
-                {option.label}
-                {option.children}
-              </span>
-            </RadioGroupItem>
-          </div>
-        ))}
-      </RadioGroup>
+            );
+          })}
+        </div>
+      </div>
     );
   }
 );
