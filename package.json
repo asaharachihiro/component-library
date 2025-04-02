@@ -1,8 +1,23 @@
 {
-  "name": "vite-project",
+  "name": "@bxdc/components-library",
+  "version": "1.0.0",
+  "description": "NSSOL標準で使用するためのUIコンポーネントをまとめたパッケージです。",
+  "main": "index.js",
+  "types": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "author": "asaharachihiro <asahara.chihiro.23e@jp.nssol.nipponsteel.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asaharachihiro/component-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asaharachihiro/component-library/issues"
+  },
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

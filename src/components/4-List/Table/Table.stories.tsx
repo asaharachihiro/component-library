@@ -9,7 +9,7 @@ type SampleData = {
   length?: string;
   distribution?: string[];
   rarity: string;
-  spiecies: string;
+  species: string;
   summary?: string;
 };
 

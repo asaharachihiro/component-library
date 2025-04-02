@@ -28,6 +28,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
             variant={"textSecondary"}
             icon="chevron_left"
             label="もどる"
+            onClick={() => setPage((prev) => prev - 1)}
           />
         )}
       </div>
@@ -38,6 +39,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
           icon="chevron_right"
           className={cn(hasNext && "flex-row-reverse")}
           label="次へ"
+          onClick={() => setPage((prev) => prev + 1)}
         />
       ) : (
         <div>{children}</div>
