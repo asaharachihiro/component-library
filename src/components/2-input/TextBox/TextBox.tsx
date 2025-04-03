@@ -48,16 +48,37 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
 
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
+    const [inputValue, setInputValue] = React.useState(
+      formData[id] || value || ""
+    );
+
+    React.useEffect(() => {
+      if (value !== undefined || formData[id] !== undefined) {
+        setInputValue(formData[id] || value || "");
+      }
+    }, [formData[id], value]);
+
+    const handleChange = (newValue: string) => {
+      setInputValue(newValue);
+      if (context) {
+        handleInputChange(id, newValue);
+      }
+
+      if (onChange) {
+        onChange(id, newValue);
+      }
+    };
+
     return (
       <div className={className}>
         {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
         <InputBox
           id={id}
-          value={formData[id] || value}
+          value={inputValue}
           type={type}
           isValid={isValidStatus}
           disabled={disabled}
-          onChange={(e) => handleInputChange(id, e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
           onBlur={onBlur}
           onFocus={onFocus}
           placeholder={placeholder}

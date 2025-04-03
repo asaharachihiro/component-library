@@ -32,6 +32,27 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     const formData = context?.formData || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    const [inputValue, setInputValue] = React.useState(
+      formData[id] || value || ""
+    );
+
+    React.useEffect(() => {
+      if (value !== undefined || formData[id] !== undefined) {
+        setInputValue(formData[id] || value || "");
+      }
+    }, [formData[id], value]);
+
+    const handleChenge = (newValue: string) => {
+      setInputValue(newValue);
+      if (context) {
+        handleInputChange(id, newValue);
+      }
+
+      if (onChange) {
+        onChange(id, newValue);
+      }
+    };
+
     const ButtonStyle =
       "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0 border-black-20-opacity text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub transition-all";
     return (
@@ -39,11 +60,8 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
         <InputBox
           id={id}
           placeholder={placeholder}
-          value={formData[id] || value}
-          onChange={(e) => {
-            onChange && onChange(id, e.target.value);
-            handleInputChange(id, e.target.value);
-          }}
+          value={inputValue}
+          onChange={(e) => handleChenge(e.target.value)}
           onBlur={onBlur}
           onFocus={onFocus}
           className="rounded-r-none"

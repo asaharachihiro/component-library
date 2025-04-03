@@ -49,8 +49,29 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
 
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
+    const [inputValue, setInputValue] = React.useState(
+      formData[id] || value || ""
+    );
+
+    React.useEffect(() => {
+      if (value !== undefined || formData[id] !== undefined) {
+        setInputValue(formData[id] || value || "");
+      }
+    }, [formData[id], value]);
+
     const toggleShowPassword = () => {
       setShowPassword(!showPassword);
+    };
+
+    const handleChange = (newValue: string) => {
+      setInputValue(newValue);
+      if (context) {
+        handleInputChange(id, newValue);
+      }
+
+      if (onChange) {
+        onChange(id, newValue);
+      }
     };
 
     return (
@@ -59,11 +80,11 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
         <div className="relative mb-1">
           <InputBox
             id={id}
-            value={formData[id] || value}
+            value={inputValue}
             type={showPassword ? "text" : "password"}
             isValid={isValidStatus}
             disabled={disabled}
-            onChange={(e) => handleInputChange(id, e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             onBlur={onBlur}
             onFocus={onFocus}
             placeholder={placeholder}
