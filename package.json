@@ -1,5 +1,5 @@
 {
-  "name": "@bxdc/components-library",
+  "name": "@asaharachihiro/components-library",
   "version": "1.0.0",
   "description": "NSSOL標準で使用するためのUIコンポーネントをまとめたパッケージです。",
   "main": "index.js",
@@ -8,13 +8,15 @@
     "dist",
     "README.md"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "author": "asaharachihiro <asahara.chihiro.23e@jp.nssol.nipponsteel.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.sdc.ns-sol.co.jp/bxdc/designsystem"
+    "url": "https://github.com/asaharachihiro/component-library.git"
   },
-  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
