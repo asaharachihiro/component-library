@@ -19,7 +19,7 @@ export const parameters = {
             "Form",
           ],
           "Selection",
-          ["SelectBox", "Checkbox", "ToggleSwitch", "Radio"],
+          ["SelectBox", "MultiSelectBox", "Checkbox", "ToggleSwitch", "Radio"],
           "List",
           ["List", "Accordion", "Card", "Table", "FilterButton"],
           "Notification",
