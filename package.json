@@ -23,6 +23,7 @@
     "test": "jest",
     "lint": "eslint .",
     "preview": "vite preview",
+    "publish": "npm publish --registry=https://npm.pkg.github.com",
     "start-storybook": "storybook dev -s ./static",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
