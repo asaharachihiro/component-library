@@ -1,6 +1,6 @@
 {
   "name": "@asaharachihiro/components-library",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "NSSOL標準で使用するためのUIコンポーネントをまとめたパッケージです。",
   "main": "index.js",
   "types": "module",
@@ -17,9 +17,16 @@
     "type": "git",
     "url": "https://github.com/asaharachihiro/component-library.git"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
+    "build-sb": "vite build --mode storybook",
     "test": "jest",
     "lint": "eslint .",
     "preview": "vite preview",
