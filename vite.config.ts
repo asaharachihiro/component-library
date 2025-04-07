@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig(({ mode }) => {
   if (mode === "storybook") {
@@ -39,7 +40,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     build: {
       lib: {
-        entry: "./src/index.ts",
+        entry: path.resolve(__dirname, "src/components/index.ts"),
         name: "ComponentLibrary",
         formats: ["es", "cjs"],
         fileName: (format) => `index.${format}.js`,
@@ -53,8 +54,8 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      outDir: "dist", // ライブラリの出力先
-      sourcemap: true, // ソースマップを生成
+      outDir: "dist",
+      sourcemap: true,
     },
   };
 });
