@@ -7,3 +7,4 @@ export const Spinner = ({ className }: { className?: string }) => {
     </div>
   );
 };
+Spinner.displayName = "Spinner";

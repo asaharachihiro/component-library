@@ -24,3 +24,4 @@ export * from "./6-navigation/Sidebar";
 export * from "./6-navigation/Topbar";
 export * from "./7-display/Modal";
 export * from "./7-display/Tab";
+export * from "./8-loading/Spinner";
