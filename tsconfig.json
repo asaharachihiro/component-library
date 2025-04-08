@@ -10,6 +10,7 @@
     "module": "ESNext",
     "target": "ESNext",
     "declaration": true,
+    "emitDeclarationOnly": true,
     "declarationDir": "./dist",
     "sourceMap": true,
     "strict": true,
@@ -18,5 +19,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "storybook-static"]
+  "exclude": ["node_modules", "storybook-static", "dist"]
 }
