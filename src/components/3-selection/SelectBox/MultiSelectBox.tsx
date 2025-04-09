@@ -54,13 +54,13 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
 
   const handleToggle = () => {
     if (disabled) return;
-    setIsOpen((prev) => !prev);
+    setIsOpen(!isOpen);
   };
 
-  const listRef = React.useRef<HTMLUListElement>(null);
-  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
-    setIsOpen(false)
-  );
+  const SelectRef = React.useRef<HTMLInputElement>(null);
+  useClickOutside(SelectRef as React.RefObject<HTMLElement>, () => {
+    setIsOpen(false);
+  });
 
   const handleChange = (value: string) => {
     const isSelected = selectedValues.some((item) => item.value === value);
@@ -84,6 +84,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
 
   return (
     <BaseSelectBox
+      ref={SelectRef}
       id={id}
       label={label}
       isRequired={isRequired}
@@ -124,10 +125,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
         ) : null
       }
     >
-      <ul
-        className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
-        ref={listRef}
-      >
+      <ul className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low">
         {options.map((option, index) => {
           const isSelected = selectedValues.some(
             (item) => item.value === option.value

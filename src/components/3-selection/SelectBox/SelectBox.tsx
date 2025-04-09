@@ -6,6 +6,7 @@ import { List } from "../../4-list/List";
 
 interface SelectBoxProps {
   id: string;
+  className?: string;
   options: { value: string; label: string }[];
   placeholder?: string;
   value?: string;
@@ -24,6 +25,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   id,
   options,
   label,
+  className = "",
   placeholder = "未選択",
   value,
   isRequired = false,
@@ -59,13 +61,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   const handleToggle = () => {
     if (disabled) return;
-    setIsOpen((prev) => !prev);
+    setIsOpen(!isOpen);
   };
 
-  const listRef = React.useRef<HTMLUListElement>(null);
-  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
-    setIsOpen(false)
-  );
+  const SelectRef = React.useRef<HTMLInputElement>(null);
+  useClickOutside(SelectRef as React.RefObject<HTMLElement>, () => {
+    setIsOpen(false);
+  });
 
   const handleChange = (newValue: string) => {
     setSelectedValue(newValue);
@@ -94,6 +96,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   return (
     <BaseSelectBox
+      ref={SelectRef}
+      className={className}
       id={id}
       label={label}
       isRequired={isRequired}
@@ -112,7 +116,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       <ul
         className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
         role="listbox"
-        ref={listRef}
       >
         {hasDefaultOption && (
           <List
