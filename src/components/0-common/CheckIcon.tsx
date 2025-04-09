@@ -13,7 +13,7 @@ interface CheckIconProps {
 
 export const CheckIcon: React.FC<CheckIconProps> = ({
   id,
-  className,
+  className = "",
   children,
   checked = false,
   onChange,
@@ -55,34 +55,38 @@ export const CheckIcon: React.FC<CheckIconProps> = ({
   );
 
   return (
-    <div className={checkBoxtyle} onClick={handleCheckedChange}>
-      <input
-        type="checkbox"
-        id={id}
-        checked={internalChecked === "indeterminate" ? false : internalChecked}
-        aria-disabled={disabled}
-        aria-invalid={!isValid}
-        onChange={handleCheckedChange}
-        {...props}
-        disabled={disabled}
-        className="hidden"
-      />
+    <div className={className}>
+      <div className={checkBoxtyle} onClick={handleCheckedChange}>
+        <input
+          type="checkbox"
+          id={id}
+          checked={
+            internalChecked === "indeterminate" ? false : internalChecked
+          }
+          aria-disabled={disabled}
+          aria-invalid={!isValid}
+          onChange={handleCheckedChange}
+          {...props}
+          disabled={disabled}
+          className="hidden"
+        />
 
-      <span className="material-symbols-rounded">
-        {internalChecked === "indeterminate" ? (
-          <span className={cn("icon-fill", isNormalStyle && "text-main")}>
-            indeterminate_check_box
-          </span>
-        ) : internalChecked ? (
-          <span className={cn("icon-fill", isNormalStyle && "text-main")}>
-            check_box
-          </span>
-        ) : (
-          <span className={cn(isNormalStyle && "text-black-sub")}>
-            check_box_outline_blank
-          </span>
-        )}
-      </span>
+        <span className="material-symbols-rounded">
+          {internalChecked === "indeterminate" ? (
+            <span className={cn("icon-fill", isNormalStyle && "text-main")}>
+              indeterminate_check_box
+            </span>
+          ) : internalChecked ? (
+            <span className={cn("icon-fill", isNormalStyle && "text-main")}>
+              check_box
+            </span>
+          ) : (
+            <span className={cn(isNormalStyle && "text-black-sub")}>
+              check_box_outline_blank
+            </span>
+          )}
+        </span>
+      </div>
     </div>
   );
 };

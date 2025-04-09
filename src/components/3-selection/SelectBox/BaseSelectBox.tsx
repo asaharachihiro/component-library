@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { ErrorText, FormLabel } from "../../0-common";
-import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface BaseSelectBoxProps {
   id: string;
@@ -14,6 +13,9 @@ interface BaseSelectBoxProps {
   disabled?: boolean;
   selectedValue?: React.ReactNode;
   children: React.ReactNode;
+  isOpen?: boolean;
+  onToggle?: (isOpen: boolean) => void;
+  size?: "s" | "m";
 }
 
 export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
@@ -27,20 +29,10 @@ export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
   disabled = false,
   selectedValue,
   children,
+  isOpen = false,
+  onToggle,
+  size = "m",
 }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  const handleToggle = () => {
-    if (disabled) return;
-    const newState = !isOpen;
-    setIsOpen(newState);
-  };
-
-  const listRef = React.useRef<HTMLDivElement>(null);
-  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
-    setIsOpen(false)
-  );
-
   const boxStyle = cn(
     "w-full cursor-pointer rounded-lg border p-2 bg-white flex items-center justify-between border-danger",
     {
@@ -48,7 +40,6 @@ export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
         !disabled,
       "text-black-sub pointer-events-none bg-black-3-opacity border-black-20-opacity":
         disabled,
-      "border-black-sub": isOpen,
       "border-danger": !isValid && !disabled,
       "border-black-20-opacity": !disabled,
     }
@@ -57,7 +48,10 @@ export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
   return (
     <div>
       {label && <FormLabel label={label} isRequired={isRequired} />}
-      <div className="group relative flex items-center" onClick={handleToggle}>
+      <div
+        className="group relative flex items-center"
+        onClick={() => onToggle?.(isOpen)}
+      >
         <input
           role="select"
           id={id}
@@ -65,7 +59,6 @@ export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
           tabIndex={0}
           aria-labelledby={label}
           aria-haspopup="listbox"
-          aria-expanded={isOpen}
           aria-disabled={disabled}
           aria-describedby={supportMessage}
           aria-invalid={!isValid}
@@ -94,7 +87,7 @@ export const BaseSelectBox: React.FC<BaseSelectBoxProps> = ({
           </span>
         </div>
       </div>
-      {isOpen && <div ref={listRef}>{children}</div>}
+      {isOpen && <>{children}</>}
       {supportMessage && (
         <span className="text-xs text-black-sub">{supportMessage}</span>
       )}

@@ -4,6 +4,8 @@ import { BaseSelectBox } from "./BaseSelectBox";
 import { useFormContext } from "../../2-input/Form";
 import { CheckIcon } from "../../0-common/CheckIcon";
 import { IconButton } from "../../1-action/IconButton";
+import { List } from "../../4-list/List";
+import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface MultiSelectBoxProps {
   id: string;
@@ -44,9 +46,21 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   const isValidStatus = isValid ? isValid : errors[id] == null;
   const handleInputChange = context?.handleInputChange || (() => {});
 
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const [selectedValues, setSelectedValues] = React.useState<
     { value: string; label: string }[]
   >(formData[id] || values);
+
+  const handleToggle = () => {
+    if (disabled) return;
+    setIsOpen((prev) => !prev);
+  };
+
+  const listRef = React.useRef<HTMLUListElement>(null);
+  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
+    setIsOpen(false)
+  );
 
   const handleChange = (value: string) => {
     const isSelected = selectedValues.some((item) => item.value === value);
@@ -75,13 +89,19 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
       isRequired={isRequired}
       isValid={isValidStatus}
       supportMessage={supportMessage}
-      errorMessage={errorMessage}
+      errorMessage={
+        errors[id] || errorMessage || "入力がエラーになっています。"
+      }
       disabled={disabled}
       placeholder={placeholder}
+      size="m"
+      onToggle={handleToggle}
+      isOpen={isOpen}
       selectedValue={
         selectedValues.length > 0 ? (
           <div className="flex space-x-2">
             {selectedValues.map((option) => (
+              // TODO: Tipに変更する
               <div
                 key={option.value}
                 className="flex items-center text-nowrap rounded-md bg-main-bg pl-2 text-xs"
@@ -104,35 +124,32 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
         ) : null
       }
     >
-      <div
+      <ul
         className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
-        role="listbox"
+        ref={listRef}
       >
         {options.map((option, index) => {
           const isSelected = selectedValues.some(
             (item) => item.value === option.value
           );
           return (
-            <button
-              type="button"
-              role="option"
+            <List
+              id={option.value}
+              selected={isSelected}
               aria-selected={isSelected}
               key={index}
-              className={cn(
-                "flex w-full cursor-pointer p-2 transition-all focus-visible:bg-black-5-opacity focus-visible:outline-none",
-                {
-                  "bg-main-bg hover:bg-main-bg": isSelected,
-                  "hover:bg-black-5-opacity": !isSelected,
-                }
-              )}
               onClick={() => handleChange(option.value)}
             >
-              <CheckIcon id={option.value} checked={isSelected} />
-              {option.label}
-            </button>
+              <CheckIcon
+                id={option.value}
+                checked={isSelected}
+                className="mr-1"
+              />
+              <span>{option.label}</span>
+            </List>
           );
         })}
-      </div>
+      </ul>
     </BaseSelectBox>
   );
 };
