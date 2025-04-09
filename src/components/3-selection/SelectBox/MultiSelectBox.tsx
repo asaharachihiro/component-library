@@ -2,7 +2,6 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { BaseSelectBox } from "./BaseSelectBox";
 import { useFormContext } from "../../2-input/Form";
-import { useClickOutside } from "../../../utils/useClickOutside";
 import { CheckIcon } from "../../0-common/CheckIcon";
 import { IconButton } from "../../1-action/IconButton";
 
@@ -45,17 +44,9 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   const isValidStatus = isValid ? isValid : errors[id] == null;
   const handleInputChange = context?.handleInputChange || (() => {});
 
-  const [isOpen, setIsOpen] = React.useState(false);
-
   const [selectedValues, setSelectedValues] = React.useState<
     { value: string; label: string }[]
   >(formData[id] || values);
-
-  const handleToggle = () => {
-    if (!disabled) {
-      setIsOpen((prev) => !prev);
-    }
-  };
 
   const handleChange = (value: string) => {
     const isSelected = selectedValues.some((item) => item.value === value);
@@ -77,11 +68,6 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
     handleInputChange(id, newValues.join(","));
   };
 
-  const listRef = React.useRef<HTMLDivElement>(null);
-  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
-    setIsOpen(false)
-  );
-
   return (
     <BaseSelectBox
       id={id}
@@ -91,8 +77,6 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
       supportMessage={supportMessage}
       errorMessage={errorMessage}
       disabled={disabled}
-      isOpen={isOpen}
-      onToggle={handleToggle}
       placeholder={placeholder}
       selectedValue={
         selectedValues.length > 0 ? (
@@ -104,10 +88,12 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
               >
                 {option.label}
                 <IconButton
+                  disabled={disabled}
                   icon="close"
                   size="s"
                   className="ml-1"
                   onClick={(e) => {
+                    if (disabled) return;
                     e.stopPropagation();
                     handleChange(option.value);
                   }}
@@ -121,7 +107,6 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
       <div
         className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
         role="listbox"
-        ref={listRef}
       >
         {options.map((option, index) => {
           const isSelected = selectedValues.some(
