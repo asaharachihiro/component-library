@@ -8,7 +8,7 @@ export interface IconButtonProps
   className?: string;
   checked?: boolean;
   size?: "s" | "m";
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isLoading?: boolean;
   disabled?: boolean;
 }
@@ -33,10 +33,10 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       setToggleChecked(checked);
     }, [checked]);
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       setToggleChecked((prev) => !prev);
       if (onClick) {
-        onClick();
+        onClick(e);
       }
     };
 
@@ -57,7 +57,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         <button
           ref={ref}
           className={cn(IconButtonStyle)}
-          onClick={handleClick}
+          onClick={(e) => handleClick(e)}
           aria-checked={toggleChecked}
           disabled={disabled || isLoading}
           {...props}

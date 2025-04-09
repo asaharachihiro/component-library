@@ -1,11 +1,12 @@
 import * as React from "react";
-import { cn } from "../../../utils/cn";
-import { ErrorText, FormLabel } from "../../0-common";
 import { useFormContext } from "../../2-input/Form";
 import { useClickOutside } from "../../../utils/useClickOutside";
+import { BaseSelectBox } from "./BaseSelectBox";
+import { List } from "../../4-list/List";
 
 interface SelectBoxProps {
   id: string;
+  className?: string;
   options: { value: string; label: string }[];
   placeholder?: string;
   value?: string;
@@ -24,6 +25,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   id,
   options,
   label,
+  className = "",
   placeholder = "未選択",
   value,
   isRequired = false,
@@ -58,10 +60,14 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   }, [selectedValue, options]);
 
   const handleToggle = () => {
-    if (!disabled) {
-      setIsOpen((prev) => !prev);
-    }
+    if (disabled) return;
+    setIsOpen(!isOpen);
   };
+
+  const SelectRef = React.useRef<HTMLInputElement>(null);
+  useClickOutside(SelectRef as React.RefObject<HTMLElement>, () => {
+    setIsOpen(false);
+  });
 
   const handleChange = (newValue: string) => {
     setSelectedValue(newValue);
@@ -72,9 +78,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     handleInputChange(id, newValue);
   };
 
-  const listRef = React.useRef<HTMLDivElement>(null);
-  const optionRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
-
+  const optionRefs = React.useRef<(HTMLLIElement | null)[]>([]);
   React.useEffect(() => {
     if (isOpen && selectedValue) {
       const selectedIndex = options.findIndex(
@@ -88,105 +92,69 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     }
   }, [isOpen, selectedValue, options]);
 
-  useClickOutside(listRef as React.RefObject<HTMLElement>, () =>
-    setIsOpen(false)
-  );
-
   const isValidStatus = isValid ? isValid : errors[id] == null;
-  const boxStyle = cn(
-    "relative w-full cursor-pointer rounded-lg border p-2  bg-white flex w-full items-center justify-between hover:bg-black-5-opacity",
-    {
-      "text-black-sub pointer-events-none bg-black-3-opacity": disabled,
-      "border-danger": !isValidStatus && !disabled,
-      "border-black-20-opacity focus:border-black-sub":
-        isValidStatus && !disabled,
-      "text-black": selectedValue,
-      "text-black-20-opacity": selectedValue === "none",
-      "text-sm p-1 pl-2 rounded-md border-none": size === "s",
-      "rounded-lg border p-2": size !== "s",
-    }
-  );
 
   return (
-    <div>
-      {label && <FormLabel label={label} isRequired={isRequired} />}
-      <button
-        type="button"
-        role="select"
-        id={id}
-        className={boxStyle}
-        onClick={handleToggle}
-        tabIndex={0}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-disabled={disabled}
+    <BaseSelectBox
+      ref={SelectRef}
+      className={className}
+      id={id}
+      label={label}
+      isRequired={isRequired}
+      isValid={isValidStatus}
+      supportMessage={supportMessage}
+      errorMessage={
+        errors[id] || errorMessage || "入力がエラーになっています。"
+      }
+      disabled={disabled}
+      placeholder={placeholder}
+      selectedValue={selectedLabel}
+      isOpen={isOpen}
+      onToggle={handleToggle}
+      size={size}
+    >
+      <ul
+        className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
+        role="listbox"
       >
-        <span>{selectedLabel || placeholder}</span>
-        <span
-          className={cn(
-            "material-symbols-rounded ml-2 text-black-sub transition-all",
-            isOpen ? "-rotate-180" : "rotate-0"
-          )}
-        >
-          expand_more
-        </span>
-      </button>
-      {isOpen && (
-        <div
-          ref={listRef}
-          className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
-          role="listbox"
-        >
-          {hasDefaultOption && (
-            <button
-              type="button"
-              role="option"
-              aria-selected={selectedValue === "none"}
-              aria-label={placeholder}
-              className="flex w-full cursor-pointer p-2 text-black-sub transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
-              onClick={() => handleChange("none")}
+        {hasDefaultOption && (
+          <List
+            id={"none"}
+            aria-selected={selectedValue === "none"}
+            aria-label={placeholder}
+            onClick={() => handleChange("none")}
+            className="font-regular text-black-sub"
+          >
+            {placeholder}
+          </List>
+        )}
+        {options.map((option, index) => {
+          const isSelected = selectedValue === option.value;
+          return (
+            <List
+              id={option.value}
+              aria-selected={isSelected}
+              aria-label={option.label}
+              key={index}
+              ref={(el) => {
+                if (el) {
+                  optionRefs.current[index] = el;
+                }
+              }}
+              className="font-regular"
+              onClick={() => handleChange(option.value)}
             >
-              {placeholder}
-            </button>
-          )}
-          {options.map((option, index) => {
-            const isSelected = selectedValue === option.value;
-            return (
-              <button
-                type="button"
-                role="option"
-                aria-selected={isSelected}
-                aria-label={option.label}
-                key={index}
-                ref={(el) => {
-                  if (el) {
-                    optionRefs.current[index] = el;
-                  }
-                }}
-                className="flex w-full cursor-pointer p-2 *:transition-all hover:bg-black-5-opacity focus-visible:bg-black-5-opacity focus-visible:outline-none"
-                onClick={() => handleChange(option.value)}
-              >
-                {isSelected && (
-                  <span className="mr-1 flex items-center text-lg text-main">
-                    <span className="material-symbols-rounded">check</span>
-                  </span>
-                )}
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
-      {supportMessage && (
-        <span className="text-xs text-black-sub">{supportMessage}</span>
-      )}
-      {!isValidStatus && (
-        <ErrorText
-          text={errors[id] || errorMessage || "入力がエラーになっています。"}
-        />
-      )}
-    </div>
+              {isSelected && (
+                <span className="mr-1 flex items-center text-lg text-main">
+                  <span className="material-symbols-rounded">check</span>
+                </span>
+              )}
+              {option.label}
+            </List>
+          );
+        })}
+      </ul>
+    </BaseSelectBox>
   );
 };
 
