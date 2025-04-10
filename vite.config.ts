@@ -7,11 +7,12 @@ export default defineConfig(({ mode }) => {
     // Storybook用のビルド設定
     return {
       plugins: [react()],
-      base: "/",
+      base: "/component-library/",
       build: {
         outDir: "storybook-static",
         sourcemap: true,
         chunkSizeWarningLimit: 2000,
+        logLevel: "silent",
         rollupOptions: {
           output: {
             manualChunks(id) {
