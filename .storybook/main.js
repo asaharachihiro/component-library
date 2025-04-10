@@ -57,6 +57,10 @@ module.exports = {
 
     config.resolve.extensions.push(".ts", ".tsx", ".js", ".jsx");
 
+    config.performance = {
+      hints: false,
+    };
+
     return config;
   },
 };

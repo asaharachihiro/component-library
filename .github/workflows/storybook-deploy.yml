@@ -25,6 +25,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # 4. Storybook用のビルド
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      # 5. Debug storybook-static directory
+      - name: Debug storybook-static directory
+        run: ls -la storybook-static || echo "storybook-static not found"
+
       # 6. deploy-storybook.mjs を実行
       - name: Run deploy script (build, fix paths)
         run: npm run deploy-storybook

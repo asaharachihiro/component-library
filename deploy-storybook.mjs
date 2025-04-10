@@ -7,18 +7,24 @@ import "zx/globals";
 const REPO_NAME = "component-library"; //
 
 // ビルド
-try {
-  await $`npm run build-storybook`;
-} catch (error) {
-  console.warn("Warning: build-storybook completed with warnings.");
-}
+await $`npm run build-storybook`;
 
 // ビルドされたものの修正
+if (!(await fs.exists("storybook-static"))) {
+  console.error("Error: storybook-static directory does not exist.");
+  process.exit(1);
+}
 await within(async () => {
   cd("storybook-static");
 
   // .nojekyllファイルを作成
   await $`touch .nojekyll`;
+
+  // iframe.htmlが存在するか確認
+  if (!(await fs.exists("iframe.html"))) {
+    console.error("Error: iframe.html does not exist.");
+    process.exit(1);
+  }
 
   // iframe.htmlがassets/iframe.*.jsを読み込めるように修正
   const iframehtml = await fs.readFile("iframe.html", "utf-8");
@@ -29,13 +35,13 @@ await within(async () => {
 
   // assets内の*.jsや*.map.jsファイルにも同様のパス修正が必要
   const assetjs_path = await glob("assets/*.@(map|js)");
-  await assetjs_path.forEach(async (path) => {
-    const assetjs = await fs.readFile("./" + path, "utf-8");
+  for (const path of assetjs_path) {
+    const assetjs = await fs.readFile(path, "utf-8");
     await fs.writeFile(
-      "./" + path,
+      path,
       assetjs.replace(/assets\//g, `${REPO_NAME}/assets/`)
     );
-  });
+  }
 });
 
 // キャッシュ削除
