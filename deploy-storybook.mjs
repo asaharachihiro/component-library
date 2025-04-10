@@ -7,7 +7,7 @@ import "zx/globals";
 const REPO_NAME = "component-library"; //
 
 // ビルド
-await $`npm run build-sb`;
+await $`npm run build-storybook`;
 
 // ビルドされたものの修正
 await within(async () => {
