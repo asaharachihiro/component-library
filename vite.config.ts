@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     // Storybook用のビルド設定
     return {
       plugins: [react()],
-      base: "/component-library/",
+      base: "/",
       build: {
         outDir: "storybook-static",
         sourcemap: true,
