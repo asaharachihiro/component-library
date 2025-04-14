@@ -1,6 +1,6 @@
 {
   "name": "@asaharachihiro/components-library",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "NSSOL標準で使用するためのUIコンポーネントをまとめたパッケージです。",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.esm.js",
@@ -25,6 +25,9 @@
       "require": "./dist/index.cjs.js",
       "default": "./dist/index.esm.js",
       "types": "./dist/index.d.ts"
+    },
+    "./styles": {
+      "default": "./dist/style.css"
     }
   },
   "scripts": {

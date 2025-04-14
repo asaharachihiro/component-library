@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
       ],
       build: {
         lib: {
-          entry: path.resolve(__dirname, "src/components/index.ts"),
+          entry: path.resolve(__dirname, "src/index.ts"),
           name: "ComponentLibrary",
           formats: ["es", "cjs"],
           fileName: (format) => {
@@ -76,6 +76,7 @@ export default defineConfig(({ mode }) => {
               react: "React",
               "react-dom": "ReactDOM",
             },
+            assetFileNames: "style.css",
           },
         },
         outDir: "dist",
