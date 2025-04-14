@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IconButton } from "../../1-action/IconButton";
+import { IconButton } from "@components/1-action/IconButton";
 import { cn } from "../../../utils/cn";
 
 interface SidebarProps {

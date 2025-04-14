@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "../../1-action/Button";
+import { Button } from "@components/1-action/Button";
 import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface FilterButtonProps {

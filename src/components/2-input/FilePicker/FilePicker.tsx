@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Button } from "../../1-action/Button";
-import { IconButton } from "../../1-action/IconButton";
+import { Button } from "@components/1-action/Button";
+import { IconButton } from "@components/1-action/IconButton";
 import { cn } from "../../../utils/cn";
 
 interface FilePickerProps {

@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
       "*": ["*"],
-      "components/*": ["components/*"]
+      "@components/*": ["src/components/*"]
     },
     "declaration": true, // 型定義ファイルを生成
-    "declarationDir": "./dist", // 型定義ファイルの出力先
+    "declarationDir": "./dist/types", // 型定義ファイルの出力先
     "emitDeclarationOnly": true, // 型定義ファイルのみを生成
     "outDir": "./dist", // 出力先ディレクトリ
     "module": "ESNext",

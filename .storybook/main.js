@@ -18,6 +18,11 @@ module.exports = {
     reactDocgen: "react-docgen-typescript",
   },
   webpackFinal: async (config) => {
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      "@components": path.resolve(__dirname, "../src/components"),
+    };
+
     config.module.rules = config.module.rules.filter(
       (rule) =>
         !(

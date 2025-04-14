@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Form, FormFooter } from ".";
 import { TextBox } from "../TextBox";
-import { Button } from "../../1-action/Button";
+import { Button } from "@components/1-action/Button";
 import { DatePicker } from "../DatePicker";
 
 const meta: Meta<typeof Form> = {

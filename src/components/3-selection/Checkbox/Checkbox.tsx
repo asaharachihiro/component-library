@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { useFormContext } from "../../2-input/Form";
+import { useFormContext } from "@components/2-input/Form";
 
 interface CheckboxProps {
   id: string;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { Spinner } from "../../8-loading/Spinner/Spinner";
+import { Spinner } from "@components/8-loading/Spinner/Spinner";
 
 export interface IconButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

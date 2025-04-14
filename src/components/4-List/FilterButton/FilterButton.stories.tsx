@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { FilterButton } from ".";
-import { TextBox } from "../../2-input/TextBox";
-import { SelectBox } from "../../3-selection/SelectBox";
-import { Button } from "../../1-action/Button";
+import { TextBox } from "@components/2-input/TextBox";
+import { SelectBox } from "@components/3-selection/SelectBox";
+import { Button } from "@components/1-action/Button";
 
 const meta: Meta<typeof FilterButton> = {
   title: "Components/List/FilterButton",

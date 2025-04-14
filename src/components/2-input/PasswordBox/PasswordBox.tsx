@@ -1,7 +1,7 @@
 import * as React from "react";
-import { ErrorText, FormLabel, InputBox } from "../../0-common";
+import { ErrorText, FormLabel, InputBox } from "@components/0-common";
 import { useFormContext } from "../Form/FormContext";
-import { IconButton } from "../../1-action/IconButton";
+import { IconButton } from "@components/1-action/IconButton";
 
 interface PasswordBoxProps {
   id: string;

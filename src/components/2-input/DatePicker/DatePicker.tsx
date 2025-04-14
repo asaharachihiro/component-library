@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ErrorText, FormLabel, InputBox } from "../../0-common";
+import { ErrorText, FormLabel, InputBox } from "@components/0-common";
 import { Calendar } from ".";
-import { IconButton } from "../../1-action/IconButton";
+import { IconButton } from "@components/1-action/IconButton";
 import { parseISO, isValid } from "date-fns";
-import { useFormContext } from "../../2-input/Form/FormContext";
+import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { formatDate } from "./formatDate";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { cn } from "../../../utils/cn";
-import { IconButton } from "../../1-action/IconButton";
+import { IconButton } from "@components/1-action/IconButton";
 
 interface ModalProps {
   id: string;

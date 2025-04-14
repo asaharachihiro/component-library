@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { ErrorText, FormLabel } from "../../0-common";
+import { ErrorText, FormLabel } from "@components/0-common";
 
 interface BaseSelectBoxProps {
   id: string;

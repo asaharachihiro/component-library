@@ -39,6 +39,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    resolve: {
+      alias: {
+        "@components": path.resolve(__dirname, "src/components"),
+      },
+    },
     build: {
       lib: {
         entry: path.resolve(__dirname, "src/components/index.ts"),

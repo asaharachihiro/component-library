@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { Button } from "../../1-action/Button";
+import { Button } from "@components/1-action/Button";
 
 interface FormFooterProps {
   id: string;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { InputBox } from "../../0-common";
+import { InputBox } from "@components/0-common";
 import { useFormContext } from "../Form";
 
 interface SearchBoxProps {
