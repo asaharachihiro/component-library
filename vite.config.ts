@@ -80,7 +80,7 @@ export default defineConfig(({ mode }) => {
         },
         outDir: "dist",
         sourcemap: true,
-        cssCodeSplit: false,
+        cssCodeSplit: true,
       },
     };
   }
