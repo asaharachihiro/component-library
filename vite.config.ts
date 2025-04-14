@@ -45,7 +45,7 @@ export default defineConfig(({ mode }) => {
         react(),
         dts({
           insertTypesEntry: true,
-          outDir: "dist/types",
+          outDir: "dist",
         }),
       ],
       resolve: {
