@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
         ...commonConfig.plugins,
         dts({
           insertTypesEntry: true,
-          outDir: "dist/types",
+          outDir: "dist",
         }),
       ],
       build: {
