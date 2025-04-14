@@ -4,10 +4,19 @@ import dts from "vite-plugin-dts";
 import path from "path";
 
 export default defineConfig(({ mode }) => {
+  const commonConfig = {
+    plugins: [react()],
+    resolve: {
+      alias: {
+        "@components": path.resolve(__dirname, "src/components"),
+      },
+    },
+  };
+
   if (mode === "storybook") {
     // Storybook用のビルド設定
     return {
-      plugins: [react()],
+      ...commonConfig,
       base: "/",
       build: {
         outDir: "storybook-static",
@@ -41,18 +50,14 @@ export default defineConfig(({ mode }) => {
   if (mode === "package") {
     // パッケージ用のビルド設定
     return {
+      ...commonConfig,
       plugins: [
-        react(),
+        ...commonConfig.plugins,
         dts({
           insertTypesEntry: true,
-          outDir: "dist",
+          outDir: "dist/types",
         }),
       ],
-      resolve: {
-        alias: {
-          "@components": path.resolve(__dirname, "src/components"),
-        },
-      },
       build: {
         lib: {
           entry: path.resolve(__dirname, "src/components/index.ts"),
@@ -75,16 +80,19 @@ export default defineConfig(({ mode }) => {
         },
         outDir: "dist",
         sourcemap: true,
+        cssCodeSplit: false,
       },
     };
   }
 
   // デフォルト設定
   return {
-    plugins: [react()],
-    resolve: {
-      alias: {
-        "@components": path.resolve(__dirname, "src/components"),
+    ...commonConfig,
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "./src/styles/global.scss";`,
+        },
       },
     },
   };

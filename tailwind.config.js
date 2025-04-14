@@ -4,6 +4,7 @@ module.exports = {
     "./index.html",
     "./src/**/*.{html,js,ts,jsx,tsx,mdx}",
     "./.storybook/**/*.{js,jsx,ts,tsx,mdx}",
+    "./src/styles/global.scss",
     "./storybook-static/**/*.html",
   ],
   safelist: [],

@@ -33,16 +33,9 @@ module.exports = {
     );
 
     config.module.rules.push({
-      test: /\.css$/,
+      test: /\.scss$/,
       include: path.resolve(__dirname, "../src"),
-      use: [
-        "style-loader",
-        {
-          loader: "css-loader",
-          options: { importLoaders: 1 },
-        },
-        "postcss-loader",
-      ],
+      use: ["style-loader", "css-loader", "sass-loader", "postcss-Loader"],
     });
 
     config.module.rules.push({
