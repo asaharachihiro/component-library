@@ -58,7 +58,11 @@ export default defineConfig(({ mode }) => {
           entry: path.resolve(__dirname, "src/components/index.ts"),
           name: "ComponentLibrary",
           formats: ["es", "cjs"],
-          fileName: (format) => `index.${format}.js`,
+          fileName: (format) => {
+            if (format === "es") return "index.esm.js";
+            if (format === "cjs") return "index.cjs.js";
+            return `index.${format}.js`;
+          },
         },
         rollupOptions: {
           external: ["react", "react-dom"],
