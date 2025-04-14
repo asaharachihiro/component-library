@@ -3,7 +3,7 @@ import { BaseSelectBox } from "./BaseSelectBox";
 import { useFormContext } from "@components/2-input/Form";
 import { CheckIcon } from "@components/0-common/CheckIcon";
 import { IconButton } from "@components/1-action/IconButton";
-import { List } from "src/components/4-list/List";
+import { List } from "@components/4-list/List";
 import { useClickOutside } from "../../../utils/useClickOutside";
 
 interface MultiSelectBoxProps {
