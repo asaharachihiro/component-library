@@ -2,7 +2,7 @@ import * as React from "react";
 import { useFormContext } from "../../2-input/Form";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { BaseSelectBox } from "./BaseSelectBox";
-import { List } from "../../4-list/List/List";
+import { List } from "../../index";
 
 interface SelectBoxProps {
   id: string;

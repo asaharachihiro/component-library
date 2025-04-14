@@ -2,9 +2,10 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "../../0-common";
 import { Calendar } from ".";
 import { IconButton } from "../../1-action/IconButton";
-import { format, parseISO, isValid } from "date-fns";
+import { parseISO, isValid } from "date-fns";
 import { useFormContext } from "../../2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
+import { formatDate } from "./formatDate";
 
 interface DatePickerProps {
   id: string;
@@ -44,24 +45,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     },
     ref
   ) => {
-    const formatDisplayDate = (dateInput: string, isJPlocale?: boolean) => {
-      if (!dateInput) return "";
-      const dateObj = parseISO(dateInput);
-      if (!isValid(dateObj)) return "";
-
-      if (isJPlocale) {
-        // 元号と曜日を取得し、元号X年MM月DD日(曜日)形式で返す
-        return dateObj.toLocaleDateString("ja-JP-u-ca-japanese", {
-          era: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          weekday: "narrow",
-        });
-      }
-      // YYYY/MM/DD形式で返す
-      return format(dateObj, "yyyy/MM/dd");
-    };
     const context = useFormContext();
 
     // FormContextが提供されていない場合のデフォルト動作
@@ -73,34 +56,19 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const [showCalendar, setShowCalendar] = React.useState(false);
     const [inputDate, setInputDate] = React.useState(
-      formData[id] || value || ""
-    );
-    const [displayDate, setDisplayDate] = React.useState(
       formData[id]
-        ? formatDisplayDate(formData[id], isJPLocale)
+        ? formatDate(formData[id], isJPLocale)
         : value
-          ? formatDisplayDate(value, isJPLocale)
+          ? formatDate(value, isJPLocale)
           : ""
     );
-
-    React.useEffect(() => {
-      setInputDate(formData[id] || value || "");
-      setDisplayDate(
-        formData[id]
-          ? formatDisplayDate(formData[id], isJPLocale)
-          : value
-            ? formatDisplayDate(value, isJPLocale)
-            : ""
-      );
-    }, [formData[id], value, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
 
     const onSelectChange = (id: string, date: string) => {
-      setInputDate(date);
-      setDisplayDate(formatDisplayDate(date, isJPLocale));
+      setInputDate(formatDate(date, isJPLocale));
       if (onChange) {
         onChange(id, date);
       }
@@ -109,7 +77,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const onInputChange = (id: string, value: string) => {
       setInputDate(value);
-      setDisplayDate(value);
       if (onChange) {
         onChange(id, value);
       }
@@ -118,8 +85,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     // Blur時に値をフォーマット
     const handleOnBlur = (id: string, value: string) => {
-      const formattedDate = formatDisplayDate(value, isJPLocale);
-      setDisplayDate(formattedDate);
+      const formattedDate = formatDate(value, isJPLocale);
+      setInputDate(formattedDate);
       if (onBlur) {
         onBlur(id, value);
       }
@@ -128,28 +95,26 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     // Focus時に入力値を表示
     const handleOnFocus = (id: string, value: string) => {
       setShowCalendar(true);
-
-      setDisplayDate(inputDate || "");
       if (onFocus) {
         onFocus(id, value);
       }
     };
 
-    // Calender外をクリックした時に閉じる
-    const panelRef = React.useRef<HTMLDivElement>(null);
-    useClickOutside(panelRef as React.RefObject<HTMLElement>, () =>
+    // コンポーネント外をクリックした時に閉じる
+    const InputRef = React.useRef<HTMLDivElement>(null);
+    useClickOutside(InputRef as React.RefObject<HTMLElement>, () =>
       setShowCalendar(false)
     );
 
     // TODO:useFloatingPosition
 
     return (
-      <div className={className}>
+      <div className={className} ref={InputRef}>
         {label && <FormLabel label={label} />}
         <div className="relative mb-1">
           <InputBox
             id={id}
-            value={displayDate}
+            value={inputDate}
             isValid={isValidStatus}
             disabled={disabled}
             type="tel"
@@ -180,30 +145,28 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           </div>
         </div>
         {showCalendar && (
-          <div ref={panelRef}>
-            <Calendar
-              id={id}
-              className="absolute z-10 rounded-lg bg-white shadow-low"
-              inputDate={
-                inputDate && isValid(parseISO(inputDate))
-                  ? parseISO(inputDate)
-                  : undefined
-              }
-              getCalendar={
-                getCalendar
-                  ? () =>
-                      getCalendar(
-                        inputDate && isValid(parseISO(inputDate))
-                          ? parseISO(inputDate)
-                          : new Date()
-                      )
-                  : undefined
-              }
-              onSelectDate={onSelectChange}
-              onClosed={setShowCalendar}
-              isStartOnMonday={isStartOnMonday}
-            />
-          </div>
+          <Calendar
+            id={id}
+            className="absolute z-10 rounded-lg bg-white shadow-low"
+            inputDate={
+              inputDate && isValid(parseISO(inputDate))
+                ? parseISO(inputDate)
+                : undefined
+            }
+            getCalendar={
+              getCalendar
+                ? () =>
+                    getCalendar(
+                      inputDate && isValid(parseISO(inputDate))
+                        ? parseISO(inputDate)
+                        : new Date()
+                    )
+                : undefined
+            }
+            onSelectDate={onSelectChange}
+            onClosed={setShowCalendar}
+            isStartOnMonday={isStartOnMonday}
+          />
         )}
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
