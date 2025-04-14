@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
 import path from "path";
 
 export default defineConfig(({ mode }) => {
@@ -37,31 +38,50 @@ export default defineConfig(({ mode }) => {
     };
   }
 
+  if (mode === "package") {
+    // パッケージ用のビルド設定
+    return {
+      plugins: [
+        react(),
+        dts({
+          insertTypesEntry: true,
+          outDir: "dist/types",
+        }),
+      ],
+      resolve: {
+        alias: {
+          "@components": path.resolve(__dirname, "src/components"),
+        },
+      },
+      build: {
+        lib: {
+          entry: path.resolve(__dirname, "src/components/index.ts"),
+          name: "ComponentLibrary",
+          formats: ["es", "cjs"],
+          fileName: (format) => `index.${format}.js`,
+        },
+        rollupOptions: {
+          external: ["react", "react-dom"],
+          output: {
+            globals: {
+              react: "React",
+              "react-dom": "ReactDOM",
+            },
+          },
+        },
+        outDir: "dist",
+        sourcemap: true,
+      },
+    };
+  }
+
+  // デフォルト設定
   return {
     plugins: [react()],
     resolve: {
       alias: {
         "@components": path.resolve(__dirname, "src/components"),
       },
-    },
-    build: {
-      lib: {
-        entry: path.resolve(__dirname, "src/components/index.ts"),
-        name: "ComponentLibrary",
-        formats: ["es", "cjs"],
-        fileName: (format) => `index.${format}.js`,
-      },
-      rollupOptions: {
-        external: ["react", "react-dom"],
-        output: {
-          globals: {
-            react: "React",
-            "react-dom": "ReactDOM",
-          },
-        },
-      },
-      outDir: "dist",
-      sourcemap: true,
     },
   };
 });
