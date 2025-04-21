@@ -89,12 +89,13 @@ export default defineConfig(({ mode }) => {
   // デフォルト設定
   return {
     ...commonConfig,
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@import "./src/styles/global.scss";`,
-        },
-      },
+    scss: {
+      additionalData: `
+        @use "tailwindcss/base";
+        @use "tailwindcss/components";
+        @use "tailwindcss/utilities";
+        @import "./src/styles/global.scss";
+      `,
     },
   };
 });
