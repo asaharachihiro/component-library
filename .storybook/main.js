@@ -35,7 +35,25 @@ module.exports = {
     config.module.rules.push({
       test: /\.scss$/,
       include: path.resolve(__dirname, "../src"),
-      use: ["style-loader", "css-loader", "sass-loader", "postcss-Loader"],
+      use: [
+        "style-loader",
+        {
+          loader: "css-loader",
+          options: {
+            importLoaders: 1,
+            sourceMap: true,
+          },
+        },
+        {
+          loader: "postcss-loader",
+          options: {
+            postcssOptions: {
+              plugins: [require("autoprefixer")],
+            },
+          },
+        },
+        "sass-loader",
+      ],
     });
 
     config.module.rules.push({
