@@ -23,6 +23,7 @@ interface MultiSelectBoxProps {
     id: string,
     values: Array<{ value: string; label: string }>
   ) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
@@ -37,6 +38,8 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   supportMessage,
   errorMessage,
   disabled = false,
+  tooltip,
+  ...props
 }) => {
   const context = useFormContext();
   // FormContextが提供されていない場合
@@ -97,6 +100,8 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
       size="m"
       onToggle={handleToggle}
       isOpen={isOpen}
+      tooltip={tooltip}
+      {...props}
       selectedValue={
         selectedValues.length > 0 ? (
           <div className="flex space-x-2">

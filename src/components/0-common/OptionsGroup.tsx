@@ -11,6 +11,7 @@ interface OptionsGroupProps {
   children?: React.ReactNode;
   supportText?: string;
   isHorizontal?: boolean;
+  tooltip?: React.ReactNode;
 }
 
 export const OptionsGroup = React.forwardRef<
@@ -27,13 +28,16 @@ export const OptionsGroup = React.forwardRef<
       children,
       supportText,
       isHorizontal = false,
+      tooltip,
       ...props
     },
     ref
   ) => {
     return (
       <div className={cn("", className)} {...props} ref={ref}>
-        {label && <FormLabel label={label} isRequired={isRequired} />}
+        {label && (
+          <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
+        )}
         {supportText && (
           <span className="text-xs text-black-sub">{supportText}</span>
         )}
