@@ -13,6 +13,7 @@ interface DatePickerProps {
   supportMessage?: string;
   errorMessage?: string;
   className?: string;
+  isRequired?: boolean;
   value?: string;
   isValidValue?: boolean;
   disabled?: boolean;
@@ -22,6 +23,7 @@ interface DatePickerProps {
   onChange?: (id: string, date: string) => void;
   onBlur?: (id: string, date: string) => void;
   onFocus?: (id: string, date: string) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -34,6 +36,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       className,
       value,
       isValidValue,
+      isRequired = false,
       disabled = false,
       isJPLocale = false,
       isStartOnMonday = false,
@@ -41,6 +44,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       onChange,
       onBlur,
       onFocus,
+      tooltip,
       ...props
     },
     ref
@@ -110,7 +114,9 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     return (
       <div className={className} ref={InputRef}>
-        {label && <FormLabel label={label} />}
+        {label && (
+          <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
+        )}
         <div className="relative mb-1">
           <InputBox
             id={id}

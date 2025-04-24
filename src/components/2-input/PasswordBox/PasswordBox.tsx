@@ -17,6 +17,7 @@ interface PasswordBoxProps {
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
@@ -35,6 +36,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
       onFocus,
       isValid,
       disabled = false,
+      tooltip,
       ...props
     },
     ref
@@ -76,7 +78,13 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
 
     return (
       <div className={className}>
-        {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
+        {label && (
+          <FormLabel
+            label={label}
+            isRequired={isRequired}
+            tooltip={tooltip}
+          ></FormLabel>
+        )}
         <div className="relative mb-1">
           <InputBox
             id={id}

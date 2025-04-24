@@ -19,6 +19,7 @@ export * from "./4-list/List";
 export * from "./4-list/Table";
 export * from "./5-notification/Badge";
 export * from "./5-notification/Tag";
+export * from "./5-notification/Tooltip";
 export * from "./5-notification/Toast";
 export * from "./6-navigation/Sidebar";
 export * from "./6-navigation/Topbar";

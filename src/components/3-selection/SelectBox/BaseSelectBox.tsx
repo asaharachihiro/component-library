@@ -17,6 +17,7 @@ interface BaseSelectBoxProps {
   isOpen?: boolean;
   onToggle?: () => void;
   size?: "s" | "m";
+  tooltip?: React.ReactNode;
 }
 
 export const BaseSelectBox = React.forwardRef<
@@ -38,6 +39,7 @@ export const BaseSelectBox = React.forwardRef<
       isOpen = false,
       onToggle,
       size = "m",
+      tooltip,
     },
     ref
   ) => {
@@ -57,7 +59,9 @@ export const BaseSelectBox = React.forwardRef<
 
     return (
       <div ref={ref}>
-        {label && <FormLabel label={label} isRequired={isRequired} />}
+        {label && (
+          <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
+        )}
         <div className="group relative flex items-center" onClick={onToggle}>
           <input
             role="select"

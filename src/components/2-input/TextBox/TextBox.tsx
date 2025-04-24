@@ -17,6 +17,7 @@ interface TextBoxProps {
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
@@ -36,6 +37,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       onFocus,
       isValid,
       disabled = false,
+      tooltip,
       ...props
     },
     ref
@@ -71,7 +73,13 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
 
     return (
       <div className={className}>
-        {label && <FormLabel label={label} isRequired={isRequired}></FormLabel>}
+        {label && (
+          <FormLabel
+            label={label}
+            isRequired={isRequired}
+            tooltip={tooltip}
+          ></FormLabel>
+        )}
         <InputBox
           id={id}
           value={inputValue}

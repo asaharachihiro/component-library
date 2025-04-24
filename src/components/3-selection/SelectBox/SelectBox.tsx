@@ -19,6 +19,7 @@ interface SelectBoxProps {
   disabled?: boolean;
   hasDefaultOption?: boolean;
   onChange?: (value: string) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
@@ -36,6 +37,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   errorMessage,
   disabled = false,
   hasDefaultOption = false,
+  tooltip,
+  ...props
 }) => {
   const context = useFormContext();
   // FormContextが提供されていない場合
@@ -112,6 +115,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       isOpen={isOpen}
       onToggle={handleToggle}
       size={size}
+      tooltip={tooltip}
+      {...props}
     >
       <ul
         className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
