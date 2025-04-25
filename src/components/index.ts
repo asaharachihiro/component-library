@@ -22,6 +22,7 @@ export * from "./5-notification/MeatballsMenu";
 export * from "./5-notification/Tag";
 export * from "./5-notification/Tooltip";
 export * from "./5-notification/Toast";
+export * from "./6-navigation/Breadcrumbs";
 export * from "./6-navigation/Sidebar";
 export * from "./6-navigation/Topbar";
 export * from "./7-display/Modal";
