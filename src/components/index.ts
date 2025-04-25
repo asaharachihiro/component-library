@@ -24,6 +24,7 @@ export * from "./5-notification/Tooltip";
 export * from "./5-notification/Toast";
 export * from "./6-navigation/Breadcrumbs";
 export * from "./6-navigation/Sidebar";
+export * from "./6-navigation/Stepper";
 export * from "./6-navigation/Topbar";
 export * from "./7-display/Modal";
 export * from "./7-display/Tab";
