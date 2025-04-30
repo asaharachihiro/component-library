@@ -7,6 +7,7 @@ export * from "./2-input/FilePicker";
 export * from "./2-input/Form";
 export * from "./2-input/PasswordBox";
 export * from "./2-input/SearchBox";
+export * from "./2-input/Slider";
 export * from "./2-input/TextBox";
 export * from "./3-selection/Checkbox";
 export * from "./3-selection/Radio";
