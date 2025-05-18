@@ -1,21 +1,27 @@
 import { flexRender, Cell } from "@tanstack/react-table";
+import { cn } from "../../../utils/cn";
 
 interface TableCellProps<TData> {
-  cell: Cell<TData, any>;
+  cell: Cell<TData, any> | null;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
 }
 
 export const TableCell = <TData,>({
   cell,
   children,
   style,
+  className = "",
 }: TableCellProps<TData>) => {
   return (
-    <td className="p-4" style={style}>
+    <td className={cn("p-4", className)} style={style}>
       {children
         ? children
-        : flexRender(cell.column.columnDef.cell, cell.getContext())}
+        : cell
+          ? flexRender(cell.column.columnDef.cell, cell.getContext())
+          : ""}
+      {""}
     </td>
   );
 };
