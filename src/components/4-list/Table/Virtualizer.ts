@@ -1,5 +1,13 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
-
+import { Header } from "@tanstack/react-table";
+interface VirtualColumn<TData> {
+  id: string;
+  size: number;
+  start: number;
+  end: number;
+  header: Header<TData, unknown>;
+  index: number;
+}
 interface VirtualizerProps {
   rowCount: number;
   columnCount: number;
@@ -11,7 +19,7 @@ interface VirtualizerProps {
   tableHeight: number;
 }
 
-export const useTableVirtualizer = ({
+export const useTableVirtualizer = <TData>({
   rowCount,
   columnCount,
   columnIds,
@@ -20,12 +28,13 @@ export const useTableVirtualizer = ({
   columnWidth,
   tableWidth,
   tableHeight,
-}: VirtualizerProps) => {
+  table,
+}: VirtualizerProps & { table: any }) => {
   const rowVirtualizer = useVirtualizer({
     count: rowCount,
     getScrollElement: () => containerRef.current,
     estimateSize: () => rowHeight,
-    overscan: 3,
+    overscan: 5,
     initialRect: { width: tableWidth, height: tableHeight },
   });
 
@@ -34,17 +43,30 @@ export const useTableVirtualizer = ({
     getScrollElement: () => containerRef.current,
     estimateSize: () => columnWidth,
     horizontal: true,
-    overscan: 3,
+    overscan: 10,
     initialRect: { width: tableWidth, height: tableHeight },
   });
 
   const virtualRows = rowVirtualizer.getVirtualItems();
-  const virtualColumns = columnVirtualizer
+  const virtualColumns: VirtualColumn<TData>[] = columnVirtualizer
     .getVirtualItems()
-    .map((column, index) => ({
-      ...column,
-      id: columnIds[index],
-    }));
+    .map((column, index) => {
+      const header = table
+        .getHeaderGroups()[0]
+        .headers.find(
+          (header: Header<TData, unknown>) => header.id === columnIds[index]
+        );
+
+      if (!header) {
+        throw new Error(`Header not found for column ID: ${columnIds[index]}`);
+      }
+
+      return {
+        ...column,
+        id: columnIds[index],
+        header,
+      };
+    });
 
   const virtualPaddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
   const virtualPaddingBottom =
