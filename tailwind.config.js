@@ -56,6 +56,7 @@ module.exports = {
         slideInTop: "slideInTop 0.3s ease-out",
         slideInBottom: "slideInBottom 0.3s ease-out",
         fadeSlideInTop: "fadeSlideInTop 0.3s ease-in-out",
+        shimmer: "shimmer 1.5s infinite",
       },
       keyframes: {
         fadeIn: {
@@ -73,6 +74,10 @@ module.exports = {
         fadeSlideInBottom: {
           "0%": { opacity: "0", transform: "translateY(100%)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
     },
