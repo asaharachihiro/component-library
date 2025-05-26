@@ -28,21 +28,20 @@ export const TableRow = <TData,>({
   onMouseEnter = () => {},
   onMouseLeave = () => {},
 }: TableRowProps<TData>) => {
-  const pinnedColumns: VirtualColumn<TData>[] = React.useMemo(
+  const pinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter((virtualColumn) =>
-        columnPinning[virtualColumn.id as keyof ColumnPinningState]?.includes(
-          "left"
-        )
+        columnPinning.left?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
 
-  const unpinnedColumns: VirtualColumn<TData>[] = React.useMemo(
+  const unpinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter(
         (virtualColumn) =>
-          !columnPinning[virtualColumn.id as keyof ColumnPinningState]
+          !columnPinning.left?.includes(virtualColumn.id) &&
+          !columnPinning.right?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );

@@ -133,11 +133,7 @@ export const Table = <TData,>({
         showPanel={showPanel}
         setShowPanel={setShowPanel}
         columnPinning={columnPinningState as Record<string, "left" | "right">}
-        setColumnPinning={
-          setColumnPinningState as React.Dispatch<
-            React.SetStateAction<Record<string, "left" | "right">>
-          >
-        }
+        setColumnPinning={setColumnPinningState}
         hoveredRowIndex={hoveredRowIndex}
         setHoveredRowIndex={setHoveredRowIndex}
         onMouseEnter={handleMouseEnter}
@@ -169,11 +165,7 @@ export const Table = <TData,>({
               columnPinning={
                 columnPinningState as Record<string, "left" | "right">
               }
-              setColumnPinning={
-                setColumnPinningState as React.Dispatch<
-                  React.SetStateAction<Record<string, "left" | "right">>
-                >
-              }
+              setColumnPinning={setColumnPinningState}
             />
             <tbody>
               {virtualPaddingTop > 0 && (

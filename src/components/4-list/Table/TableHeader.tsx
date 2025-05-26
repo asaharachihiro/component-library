@@ -16,11 +16,9 @@ interface TableHeaderProps<TData> {
   virtualColumns: VirtualColumn<TData>[];
   showPanel: string | null;
   setShowPanel: React.Dispatch<React.SetStateAction<string | null>>;
-  columnPinning: Record<string, "left" | "right">;
+  columnPinning: ColumnPinningState;
 
-  setColumnPinning: React.Dispatch<
-    React.SetStateAction<Record<string, "left" | "right">>
-  >;
+  setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
   isPinned?: boolean;
 }
 
@@ -41,14 +39,15 @@ export const TableHeader = <TData,>({
   }>({ top: 0, left: 0 });
 
   const togglePinColumn = (id: string) => {
-    const isPinned = columnPinning[id];
+    const isPinned = columnPinning.left?.includes(id);
     const newPinning = { ...columnPinning };
 
-    if (isPinned === "left") {
-      delete newPinning[id];
+    if (isPinned) {
+      newPinning.left = (newPinning.left || []).filter((colId) => colId !== id);
     } else {
-      newPinning[id] = "left";
+      newPinning.left = [...(newPinning.left || []), id];
     }
+
     setColumnPinning(newPinning);
     setShowPanel(null);
   };
@@ -68,9 +67,7 @@ export const TableHeader = <TData,>({
   const pinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter((virtualColumn) =>
-        columnPinning[virtualColumn.id as keyof ColumnPinningState]?.includes(
-          "left"
-        )
+        columnPinning.left?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -79,7 +76,8 @@ export const TableHeader = <TData,>({
     () =>
       virtualColumns.filter(
         (virtualColumn) =>
-          !columnPinning[virtualColumn.id as keyof ColumnPinningState]
+          !columnPinning.left?.includes(virtualColumn.id) &&
+          !columnPinning.right?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -98,7 +96,10 @@ export const TableHeader = <TData,>({
 
           {displayColumns.map((virtualColumn) => {
             const header = headerGroup.headers[virtualColumn.index];
-            const isFixed = columnPinning[header.id] === "left";
+            const isFixed =
+              columnPinning[header.id as keyof ColumnPinningState]?.includes(
+                "left"
+              );
             return (
               <th
                 key={header.id}

@@ -21,10 +21,8 @@ interface FixedTableProps<TData> {
   columnWidth: number;
   showPanel: string | null;
   setShowPanel: React.Dispatch<React.SetStateAction<string | null>>;
-  setColumnPinning: React.Dispatch<
-    React.SetStateAction<Record<string, "left" | "right">>
-  >;
-  columnPinning: Record<string, "left" | "right">;
+  setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
+  columnPinning: ColumnPinningState;
   hoveredRowIndex: number | null;
   setHoveredRowIndex: React.Dispatch<React.SetStateAction<number | null>>;
   onMouseEnter?: (index: number) => void;
@@ -90,6 +88,10 @@ export const FixedTable = React.forwardRef<
       tableHeight,
     });
 
+    console.log(
+      "useReactTable columnPinning state:",
+      table.getState().columnPinning
+    );
     return (
       <div
         className="z-10 flex h-full w-full overflow-hidden overflow-y-auto border-r border-black-20-opacity bg-white text-left shadow-low"
@@ -110,12 +112,7 @@ export const FixedTable = React.forwardRef<
               virtualColumns={virtualColumns}
               showPanel={showPanel}
               setShowPanel={setShowPanel}
-              columnPinning={
-                table.getState().columnPinning as Record<
-                  string,
-                  "left" | "right"
-                >
-              }
+              columnPinning={table.getState().columnPinning}
               setColumnPinning={setColumnPinning}
             />
             <tbody>
