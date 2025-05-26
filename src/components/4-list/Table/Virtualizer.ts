@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Header } from "@tanstack/react-table";
-interface VirtualColumn<TData> {
+export interface VirtualColumn<TData> {
   id: string;
   size: number;
   start: number;

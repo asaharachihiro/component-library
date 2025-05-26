@@ -1,11 +1,20 @@
-import { Row } from "@tanstack/react-table";
+import * as React from "react";
+
+import { ColumnPinningState, Row } from "@tanstack/react-table";
 import { TableCell } from "./TableCell";
+import { VirtualColumn } from "./Virtualizer";
+import { cn } from "../../../utils/cn";
 
 interface TableRowProps<TData> {
   row: Row<TData>;
-  virtualColumns: { index: number; size: number }[];
+  virtualColumns: VirtualColumn<TData>[];
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
+  columnPinning: Record<string, "left" | "right">;
+  isPinned?: boolean;
+  isHovered?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 export const TableRow = <TData,>({
@@ -13,22 +22,65 @@ export const TableRow = <TData,>({
   virtualColumns,
   virtualPaddingLeft,
   virtualPaddingRight,
+  columnPinning,
+  isPinned = false,
+  isHovered = false,
+  onMouseEnter = () => {},
+  onMouseLeave = () => {},
 }: TableRowProps<TData>) => {
+  const pinnedColumns: VirtualColumn<TData>[] = React.useMemo(
+    () =>
+      virtualColumns.filter((virtualColumn) =>
+        columnPinning[virtualColumn.id as keyof ColumnPinningState]?.includes(
+          "left"
+        )
+      ),
+    [virtualColumns, columnPinning]
+  );
+
+  const unpinnedColumns: VirtualColumn<TData>[] = React.useMemo(
+    () =>
+      virtualColumns.filter(
+        (virtualColumn) =>
+          !columnPinning[virtualColumn.id as keyof ColumnPinningState]
+      ),
+    [virtualColumns, columnPinning]
+  );
+
+  const displayColumns: VirtualColumn<TData>[] = isPinned
+    ? pinnedColumns
+    : unpinnedColumns;
+
   return (
-    <tr key={row.id} className="hover:bg-black-5-opacity">
-      {virtualPaddingLeft > 0 && <td style={{ width: virtualPaddingLeft }} />}
-      {virtualColumns.map((virtualColumn) => {
-        const cell = row.getVisibleCells()[virtualColumn.index];
-        return (
-          <TableCell
-            key={cell.id}
-            cell={cell}
-            style={{ width: virtualColumn.size }}
-          />
-        );
-      })}
-      {virtualPaddingRight > 0 && <td style={{ width: virtualPaddingRight }} />}
-    </tr>
+    <>
+      <tr
+        key={row.id}
+        className={cn(isHovered && "bg-black-5-opacity")}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {virtualPaddingLeft > 0 && <td style={{ width: virtualPaddingLeft }} />}
+
+        {displayColumns.map((Column) => {
+          const cell = row
+            .getVisibleCells()
+            .find((cell) => cell.column.id === Column.id);
+
+          return (
+            <TableCell
+              key={cell?.id}
+              cell={cell || null}
+              // style={{
+              //   width: Column.size,
+              // }}
+            />
+          );
+        })}
+        {virtualPaddingRight > 0 && (
+          <td style={{ width: virtualPaddingRight }} />
+        )}
+      </tr>
+    </>
   );
 };
 TableRow.displayName = "TableRow";

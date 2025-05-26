@@ -10,17 +10,17 @@ const useTableSize = () => {
       if (containerRef.current) {
         const width = containerRef.current.offsetWidth;
         const height = containerRef.current.offsetHeight;
-        if (width > 0) {
+        if (width > 0 && width !== tableWidth) {
           setTableWidth(width);
         }
-        if (height > 0) {
+        if (height > 0 && height !== tableHeight) {
           setTableHeight(height);
         }
       }
     };
 
-    // 初期サイズを設定
-    updateTableWidth();
+    // 初期サイズを遅延設定
+    setTimeout(updateTableWidth, 100);
 
     // ResizeObserverを使用してサイズ変更を監視
     const resizeObserver = new ResizeObserver(() => {

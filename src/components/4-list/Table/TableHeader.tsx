@@ -1,12 +1,27 @@
-import { flexRender, HeaderGroup } from "@tanstack/react-table";
+import {
+  ColumnPinningState,
+  flexRender,
+  HeaderGroup,
+} from "@tanstack/react-table";
 import { SortButton } from "./SortButton";
 import { cn } from "../../../utils/cn";
+import * as React from "react";
+import { ColumnPanel } from "./ColumnPanel";
+import { VirtualColumn } from "./Virtualizer";
 
 interface TableHeaderProps<TData> {
   headerGroups: HeaderGroup<TData>[];
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
-  virtualColumns: { index: number; size: number }[];
+  virtualColumns: VirtualColumn<TData>[];
+  showPanel: string | null;
+  setShowPanel: React.Dispatch<React.SetStateAction<string | null>>;
+  columnPinning: Record<string, "left" | "right">;
+
+  setColumnPinning: React.Dispatch<
+    React.SetStateAction<Record<string, "left" | "right">>
+  >;
+  isPinned?: boolean;
 }
 
 export const TableHeader = <TData,>({
@@ -14,26 +29,89 @@ export const TableHeader = <TData,>({
   virtualPaddingLeft,
   virtualPaddingRight,
   virtualColumns,
+  showPanel = null,
+  setShowPanel,
+  columnPinning,
+  setColumnPinning,
+  isPinned = false,
 }: TableHeaderProps<TData>) => {
+  const [panelPosition, setPanelPosition] = React.useState<{
+    top: number;
+    left: number;
+  }>({ top: 0, left: 0 });
+
+  const togglePinColumn = (id: string) => {
+    const isPinned = columnPinning[id];
+    const newPinning = { ...columnPinning };
+
+    if (isPinned === "left") {
+      delete newPinning[id];
+    } else {
+      newPinning[id] = "left";
+    }
+    setColumnPinning(newPinning);
+    setShowPanel(null);
+  };
+
+  // ColumsPanelの表示
+  const togglePanel = (id: string, e: React.MouseEvent) => {
+    if (showPanel === id) {
+      setShowPanel(null);
+      return;
+    }
+
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setPanelPosition({ top: rect.bottom, left: rect.left });
+    setShowPanel(id);
+  };
+
+  const pinnedColumns = React.useMemo(
+    () =>
+      virtualColumns.filter((virtualColumn) =>
+        columnPinning[virtualColumn.id as keyof ColumnPinningState]?.includes(
+          "left"
+        )
+      ),
+    [virtualColumns, columnPinning]
+  );
+
+  const unpinnedColumns = React.useMemo(
+    () =>
+      virtualColumns.filter(
+        (virtualColumn) =>
+          !columnPinning[virtualColumn.id as keyof ColumnPinningState]
+      ),
+    [virtualColumns, columnPinning]
+  );
+
+  const displayColumns: VirtualColumn<TData>[] = isPinned
+    ? pinnedColumns
+    : unpinnedColumns;
+
   return (
-    <thead className="transi text-sm font-medium text-black-sub">
+    <thead className="text-sm font-medium text-black-sub transition-all">
       {headerGroups.map((headerGroup) => (
         <tr key={headerGroup.id} className="sticky top-0 z-10 bg-white">
           {virtualPaddingLeft > 0 && (
             <th style={{ width: virtualPaddingLeft }} />
           )}
-          {virtualColumns.map((virtualColumn) => {
+
+          {displayColumns.map((virtualColumn) => {
             const header = headerGroup.headers[virtualColumn.index];
+            const isFixed = columnPinning[header.id] === "left";
             return (
               <th
                 key={header.id}
-                style={{ width: virtualColumn.size }}
+                // style={{ width: virtualColumns.size }}
                 className={cn(
                   header.column.getIsSorted() && "font-bold text-main",
-                  "border-b border-black-20-opacity bg-black-3-opacity p-4"
+                  "relative border-b border-black-20-opacity bg-black-3-opacity"
                 )}
               >
-                <div className="flex items-center">
+                <div
+                  className="inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
+                  onClick={(e) => togglePanel(header.id, e)}
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
@@ -43,13 +121,32 @@ export const TableHeader = <TData,>({
                       className="ml-1"
                       sorting={header.column.getIsSorted() as string}
                       nextSortOrder={header.column.getNextSortingOrder()}
-                      onClick={header.column.getToggleSortingHandler()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const toggleSorting =
+                          header.column.getToggleSortingHandler();
+                        if (toggleSorting) {
+                          toggleSorting(e);
+                        }
+                      }}
                     />
                   )}
                 </div>
+                {showPanel === header.id && (
+                  <ColumnPanel
+                    id={`${header.id}-columnPanel`}
+                    panelPosition={{
+                      top: panelPosition.top,
+                      left: panelPosition.left,
+                    }}
+                    onClick={() => togglePinColumn(header.id)}
+                    isFixed={isFixed}
+                  />
+                )}
               </th>
             );
           })}
+          {/* </div> */}
           {virtualPaddingRight > 0 && (
             <th style={{ width: virtualPaddingRight }} />
           )}
