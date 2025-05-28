@@ -14,11 +14,11 @@ interface TableHeaderProps<TData> {
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
   virtualColumns: VirtualColumn<TData>[];
-  showPanel: string | null;
-  setShowPanel: React.Dispatch<React.SetStateAction<string | null>>;
-  columnPinning: ColumnPinningState;
+  showPanel?: string | null;
+  setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
+  columnPinning?: ColumnPinningState;
 
-  setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
+  setColumnPinning?: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
   isPinned?: boolean;
 }
 
@@ -39,7 +39,7 @@ export const TableHeader = <TData,>({
   }>({ top: 0, left: 0 });
 
   const togglePinColumn = (id: string) => {
-    const isPinned = columnPinning.left?.includes(id);
+    const isPinned = columnPinning?.left?.includes(id);
     const newPinning = { ...columnPinning };
 
     if (isPinned) {
@@ -48,26 +48,26 @@ export const TableHeader = <TData,>({
       newPinning.left = [...(newPinning.left || []), id];
     }
 
-    setColumnPinning(newPinning);
-    setShowPanel(null);
+    setColumnPinning && newPinning;
+    setShowPanel && setShowPanel(null);
   };
 
   // ColumsPanelの表示
   const togglePanel = (id: string, e: React.MouseEvent) => {
     if (showPanel === id) {
-      setShowPanel(null);
+      setShowPanel && setShowPanel(null);
       return;
     }
 
     const rect = (e.target as HTMLElement).getBoundingClientRect();
     setPanelPosition({ top: rect.bottom, left: rect.left });
-    setShowPanel(id);
+    setShowPanel && setShowPanel(id);
   };
 
   const pinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter((virtualColumn) =>
-        columnPinning.left?.includes(virtualColumn.id)
+        columnPinning?.left?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -76,8 +76,8 @@ export const TableHeader = <TData,>({
     () =>
       virtualColumns.filter(
         (virtualColumn) =>
-          !columnPinning.left?.includes(virtualColumn.id) &&
-          !columnPinning.right?.includes(virtualColumn.id)
+          !columnPinning?.left?.includes(virtualColumn.id) &&
+          !columnPinning?.right?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -89,7 +89,7 @@ export const TableHeader = <TData,>({
   return (
     <thead className="text-sm font-medium text-black-sub transition-all">
       {headerGroups.map((headerGroup) => (
-        <tr key={headerGroup.id} className="sticky top-0 z-10 bg-white">
+        <tr key={headerGroup.id} className="z-5 sticky top-0 bg-white">
           {virtualPaddingLeft > 0 && (
             <th style={{ width: virtualPaddingLeft }} />
           )}
@@ -97,7 +97,7 @@ export const TableHeader = <TData,>({
           {displayColumns.map((virtualColumn) => {
             const header = headerGroup.headers[virtualColumn.index];
             const isFixed =
-              columnPinning[header.id as keyof ColumnPinningState]?.includes(
+              columnPinning?.[header.id as keyof ColumnPinningState]?.includes(
                 "left"
               );
             return (

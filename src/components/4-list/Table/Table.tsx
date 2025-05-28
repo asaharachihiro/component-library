@@ -122,23 +122,26 @@ export const Table = <TData,>({
   const handleMouseLeave = () => {
     setHoveredRowIndex(null);
   };
-
+  const hasFixedColumn = (columnPinning?.left ?? []).length > 0;
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
-      <FixedTable
-        ref={fixedTableRef}
-        data={data}
-        columns={columns as ColumnDef<unknown>[]}
-        columnWidth={columnWidth}
-        showPanel={showPanel}
-        setShowPanel={setShowPanel}
-        columnPinning={columnPinningState as Record<string, "left" | "right">}
-        setColumnPinning={setColumnPinningState}
-        hoveredRowIndex={hoveredRowIndex}
-        setHoveredRowIndex={setHoveredRowIndex}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      />
+      {hasFixedColumn && (
+        <FixedTable
+          ref={fixedTableRef}
+          data={data}
+          columns={columns as ColumnDef<unknown>[]}
+          columnWidth={columnWidth}
+          showPanel={showPanel}
+          setShowPanel={setShowPanel}
+          columnPinning={columnPinningState as Record<string, "left" | "right">}
+          setColumnPinning={setColumnPinningState}
+          hoveredRowIndex={hoveredRowIndex}
+          setHoveredRowIndex={setHoveredRowIndex}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+      )}
+
       <div
         ref={scrollableTableRef}
         className={cn(
