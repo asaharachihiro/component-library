@@ -14,19 +14,21 @@ import { TableRow } from "./TableRow";
 import { useTableVirtualizer } from "./Virtualizer";
 import useTableSize from "../../../utils/useTableSize";
 
-interface FixedTableProps<TData> {
+export interface FixedTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
   rowHeight?: number;
-  columnWidth: number;
-  showPanel: string | null;
-  setShowPanel: React.Dispatch<React.SetStateAction<string | null>>;
+  columnWidth?: number;
+  showPanel?: string | null;
+  setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
   setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
   columnPinning: ColumnPinningState;
-  hoveredRowIndex: number | null;
-  setHoveredRowIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  hoveredRowIndex?: number | null;
+  setHoveredRowIndex?: React.Dispatch<React.SetStateAction<number | null>>;
   onMouseEnter?: (index: number) => void;
   onMouseLeave?: () => void;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
 }
 
 export const FixedTable = React.forwardRef<
@@ -38,7 +40,7 @@ export const FixedTable = React.forwardRef<
       data,
       columns,
       rowHeight = 52,
-      columnWidth,
+      columnWidth = 100,
       showPanel,
       setShowPanel,
       columnPinning,
@@ -47,11 +49,12 @@ export const FixedTable = React.forwardRef<
       setHoveredRowIndex,
       onMouseEnter = () => {},
       onMouseLeave = () => {},
+      sorting,
+      setSorting,
     }: FixedTableProps<TData>,
     ref: React.Ref<HTMLDivElement>
   ) => {
     const { containerRef, tableWidth, tableHeight } = useTableSize();
-    const [sorting, setSorting] = React.useState<SortingState>([]);
     const fixedTableRef = ref as React.RefObject<HTMLDivElement | null>;
     const internalRef = React.useRef<HTMLDivElement>(null);
     const resolvedRef = fixedTableRef || internalRef;
@@ -60,7 +63,7 @@ export const FixedTable = React.forwardRef<
       data,
       columns,
       state: { sorting, columnPinning },
-      onColumnPinningChange: setColumnPinning as OnChangeFn<ColumnPinningState>,
+      onColumnPinningChange: setColumnPinning,
       onSortingChange: setSorting,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
@@ -88,18 +91,74 @@ export const FixedTable = React.forwardRef<
       tableHeight,
     });
 
-    console.log(
-      "useReactTable columnPinning state:",
-      table.getState().columnPinning
-    );
+    const [totalWidth, setTotalWidth] = React.useState<number>(0);
+
+    const getTextWidth = (text: string, font = "16px Noto Sans JP"): number => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      if (!context) return 0;
+      context.font = font;
+      return context.measureText(text).width;
+    };
+
+    const getMaxcolumnWidth = (
+      visibleRows: any[],
+      pinnedColumns: string[],
+      columns: ColumnDef<any>[]
+    ): number[] => {
+      return pinnedColumns.map((colId) => {
+        const column = columns.find((col) => col.id === colId);
+        if (!column) return 0;
+
+        // Header Width (HeaderText + SortButton)
+        const headerWidth =
+          getTextWidth(String(column.header || ""), "14px Noto Sans JP") + 36;
+
+        // Cell Width
+        const maxCellWidth = visibleRows.reduce((maxWidth, row) => {
+          const cellValue = String(row.getValue(colId) || "");
+          return Math.max(maxWidth, getTextWidth(cellValue));
+        }, 0);
+
+        // Header Width ＋ Cell Width
+        return Math.max(headerWidth, maxCellWidth);
+      });
+    };
+
+    const getTotalWidth = (
+      visibleRows: any[],
+      pinnedColumns: string[],
+      columns: ColumnDef<any>[]
+    ): number => {
+      const columnWidths = getMaxcolumnWidth(
+        visibleRows,
+        pinnedColumns,
+        columns
+      );
+      return columnWidths.reduce((total, width) => total + width, 0);
+    };
+
+    React.useEffect(() => {
+      const visibleRows = fixedVirtualRows.map((virtualRow) => {
+        return table.getRowModel().rows[virtualRow.index];
+      });
+      const pinnedColumns = columnPinning.left || [];
+      const newTotalWidth = getTotalWidth(visibleRows, pinnedColumns, columns);
+
+      setTotalWidth(newTotalWidth);
+    }, [fixedVirtualRows, columnPinning, columns]);
+
     return (
       <div
-        className="z-10 flex h-full w-full overflow-hidden overflow-y-auto border-r border-black-20-opacity bg-white text-left shadow-low"
+        className="z-10 flex h-full w-full overflow-hidden overflow-x-auto overflow-y-auto border-r border-black-20-opacity bg-white text-left shadow-high"
         ref={fixedTableRef}
+        style={{
+          width: totalWidth,
+        }}
       >
         <div ref={containerRef} className="h-full w-full">
           <table
-            className="h-full w-full border-separate border-spacing-0"
+            className="h-full w-full table-auto border-separate border-spacing-0"
             style={{
               height: fixedRowVirtualizer.getTotalSize(),
             }}
@@ -112,9 +171,12 @@ export const FixedTable = React.forwardRef<
               virtualColumns={virtualColumns}
               showPanel={showPanel}
               setShowPanel={setShowPanel}
-              columnPinning={table.getState().columnPinning}
+              columnPinning={columnPinning}
               setColumnPinning={setColumnPinning}
+              sorting={sorting}
+              setSorting={setSorting}
             />
+
             <tbody>
               {virtualPaddingTop > 0 && (
                 <tr>
@@ -132,18 +194,13 @@ export const FixedTable = React.forwardRef<
                     virtualColumns={virtualColumns}
                     virtualPaddingLeft={virtualPaddingLeft}
                     virtualPaddingRight={virtualPaddingRight}
-                    columnPinning={
-                      table.getState().columnPinning as Record<
-                        string,
-                        "left" | "right"
-                      >
-                    }
+                    columnPinning={columnPinning}
                     onMouseEnter={() => {
-                      setHoveredRowIndex(virtualRow.index);
+                      setHoveredRowIndex?.(virtualRow.index);
                       onMouseEnter(virtualRow.index);
                     }}
                     onMouseLeave={() => {
-                      setHoveredRowIndex(null);
+                      setHoveredRowIndex?.(null);
                       onMouseLeave();
                     }}
                     isHovered={hoveredRowIndex === virtualRow.index}

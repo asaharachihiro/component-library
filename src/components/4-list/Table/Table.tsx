@@ -47,8 +47,7 @@ export const Table = <TData,>({
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onColumnPinningChange:
-      setColumnPinningState as OnChangeFn<ColumnPinningState>,
+    onColumnPinningChange: setColumnPinningState,
   });
 
   const fixedTableRef = React.useRef<HTMLDivElement>(null);
@@ -86,7 +85,7 @@ export const Table = <TData,>({
     let isSyncingFromScrollable = false;
     let isSyncingFromFixed = false;
 
-    // 通常列のスクロールを固定列に同期
+    // 通常列のスクロール同期
     const handleScrollableScroll = () => {
       if (isSyncingFromFixed) {
         isSyncingFromFixed = false;
@@ -96,7 +95,7 @@ export const Table = <TData,>({
       fixedTable.scrollTop = scrollableTable.scrollTop;
     };
 
-    // 固定列のスクロールを通常列に同期
+    // 固定列のスクロール同期
     const handleFixedScroll = () => {
       if (isSyncingFromScrollable) {
         isSyncingFromScrollable = false;
@@ -122,7 +121,9 @@ export const Table = <TData,>({
   const handleMouseLeave = () => {
     setHoveredRowIndex(null);
   };
+
   const hasFixedColumn = (columnPinning?.left ?? []).length > 0;
+
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
       {hasFixedColumn && (
@@ -133,12 +134,14 @@ export const Table = <TData,>({
           columnWidth={columnWidth}
           showPanel={showPanel}
           setShowPanel={setShowPanel}
-          columnPinning={columnPinningState as Record<string, "left" | "right">}
+          columnPinning={columnPinningState}
           setColumnPinning={setColumnPinningState}
           hoveredRowIndex={hoveredRowIndex}
           setHoveredRowIndex={setHoveredRowIndex}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          sorting={sorting}
+          setSorting={setSorting}
         />
       )}
 
@@ -165,10 +168,10 @@ export const Table = <TData,>({
               virtualColumns={virtualColumns}
               showPanel={showPanel}
               setShowPanel={setShowPanel}
-              columnPinning={
-                columnPinningState as Record<string, "left" | "right">
-              }
+              columnPinning={columnPinningState}
               setColumnPinning={setColumnPinningState}
+              sorting={sorting}
+              setSorting={setSorting}
             />
             <tbody>
               {virtualPaddingTop > 0 && (
@@ -186,9 +189,7 @@ export const Table = <TData,>({
                     virtualColumns={virtualColumns}
                     virtualPaddingLeft={virtualPaddingLeft}
                     virtualPaddingRight={virtualPaddingRight}
-                    columnPinning={
-                      columnPinningState as Record<string, "left" | "right">
-                    }
+                    columnPinning={columnPinningState}
                     onMouseEnter={() => handleMouseEnter(virtualRow.index)}
                     onMouseLeave={handleMouseLeave}
                     isHovered={hoveredRowIndex === virtualRow.index}

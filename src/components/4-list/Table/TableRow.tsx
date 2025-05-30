@@ -10,7 +10,7 @@ interface TableRowProps<TData> {
   virtualColumns: VirtualColumn<TData>[];
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
-  columnPinning: Record<string, "left" | "right">;
+  columnPinning: ColumnPinningState;
   isPinned?: boolean;
   isHovered?: boolean;
   onMouseEnter?: () => void;
@@ -65,15 +65,7 @@ export const TableRow = <TData,>({
             .getVisibleCells()
             .find((cell) => cell.column.id === Column.id);
 
-          return (
-            <TableCell
-              key={cell?.id}
-              cell={cell || null}
-              // style={{
-              //   width: Column.size,
-              // }}
-            />
-          );
+          return <TableCell key={cell?.id} cell={cell || null} />;
         })}
         {virtualPaddingRight > 0 && (
           <td style={{ width: virtualPaddingRight }} />

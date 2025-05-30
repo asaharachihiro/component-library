@@ -1,7 +1,10 @@
 import {
   ColumnPinningState,
   flexRender,
+  Header,
   HeaderGroup,
+  OnChangeFn,
+  SortingState,
 } from "@tanstack/react-table";
 import { SortButton } from "./SortButton";
 import { cn } from "../../../utils/cn";
@@ -16,10 +19,11 @@ interface TableHeaderProps<TData> {
   virtualColumns: VirtualColumn<TData>[];
   showPanel?: string | null;
   setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
-  columnPinning?: ColumnPinningState;
-
-  setColumnPinning?: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
+  columnPinning: ColumnPinningState;
+  setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
   isPinned?: boolean;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
 }
 
 export const TableHeader = <TData,>({
@@ -32,6 +36,8 @@ export const TableHeader = <TData,>({
   columnPinning,
   setColumnPinning,
   isPinned = false,
+  sorting,
+  setSorting,
 }: TableHeaderProps<TData>) => {
   const [panelPosition, setPanelPosition] = React.useState<{
     top: number;
@@ -39,7 +45,7 @@ export const TableHeader = <TData,>({
   }>({ top: 0, left: 0 });
 
   const togglePinColumn = (id: string) => {
-    const isPinned = columnPinning?.left?.includes(id);
+    const isPinned = columnPinning.left?.includes(id);
     const newPinning = { ...columnPinning };
 
     if (isPinned) {
@@ -47,9 +53,8 @@ export const TableHeader = <TData,>({
     } else {
       newPinning.left = [...(newPinning.left || []), id];
     }
-
-    setColumnPinning && newPinning;
-    setShowPanel && setShowPanel(null);
+    setColumnPinning(newPinning);
+    setShowPanel?.(null);
   };
 
   // ColumsPanelの表示
@@ -64,10 +69,21 @@ export const TableHeader = <TData,>({
     setShowPanel && setShowPanel(id);
   };
 
+  const toggleSort = (header: Header<TData, any>) => {
+    if (!setSorting) return;
+    const nextSortOrder = header.column.getNextSortingOrder();
+    setSorting(() => {
+      if (!nextSortOrder) {
+        return [];
+      }
+      return [{ id: header.id, desc: nextSortOrder === "desc" }];
+    });
+  };
+
   const pinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter((virtualColumn) =>
-        columnPinning?.left?.includes(virtualColumn.id)
+        columnPinning.left?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -75,9 +91,7 @@ export const TableHeader = <TData,>({
   const unpinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter(
-        (virtualColumn) =>
-          !columnPinning?.left?.includes(virtualColumn.id) &&
-          !columnPinning?.right?.includes(virtualColumn.id)
+        (virtualColumn) => !columnPinning.left?.includes(virtualColumn.id)
       ),
     [virtualColumns, columnPinning]
   );
@@ -95,18 +109,26 @@ export const TableHeader = <TData,>({
           )}
 
           {displayColumns.map((virtualColumn) => {
-            const header = headerGroup.headers[virtualColumn.index];
-            const isFixed =
-              columnPinning?.[header.id as keyof ColumnPinningState]?.includes(
-                "left"
+            const header = headerGroup.headers.find(
+              (header) => header.id === virtualColumn.id
+            );
+
+            if (!header) {
+              console.error(
+                "Header not found for Virtual Column ID:",
+                virtualColumn.id
               );
+              return null;
+            }
+
+            const isFixed = columnPinning.left?.includes(header.id as string);
+
             return (
               <th
                 key={header.id}
-                // style={{ width: virtualColumns.size }}
                 className={cn(
                   header.column.getIsSorted() && "font-bold text-main",
-                  "relative border-b border-black-20-opacity bg-black-3-opacity"
+                  "relative w-full border-b border-black-20-opacity bg-black-3-opacity"
                 )}
               >
                 <div
@@ -124,11 +146,7 @@ export const TableHeader = <TData,>({
                       nextSortOrder={header.column.getNextSortingOrder()}
                       onClick={(e) => {
                         e.stopPropagation();
-                        const toggleSorting =
-                          header.column.getToggleSortingHandler();
-                        if (toggleSorting) {
-                          toggleSorting(e);
-                        }
+                        toggleSort(header);
                       }}
                     />
                   )}
@@ -147,7 +165,6 @@ export const TableHeader = <TData,>({
               </th>
             );
           })}
-          {/* </div> */}
           {virtualPaddingRight > 0 && (
             <th style={{ width: virtualPaddingRight }} />
           )}

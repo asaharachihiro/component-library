@@ -21,7 +21,6 @@ export const TableCell = <TData,>({
         : cell
           ? flexRender(cell.column.columnDef.cell, cell.getContext())
           : ""}
-      {""}
     </td>
   );
 };
