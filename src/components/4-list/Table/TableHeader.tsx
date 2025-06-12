@@ -1,12 +1,29 @@
-import { flexRender, HeaderGroup } from "@tanstack/react-table";
-import { SortButton } from "./SortButton";
-import { cn } from "../../../utils/cn";
+import {
+  ColumnPinningState,
+  ColumnSizingState,
+  Header,
+  HeaderGroup,
+  OnChangeFn,
+  SortingState,
+} from "@tanstack/react-table";
+import * as React from "react";
+import { VirtualColumn } from "./Virtualizer";
+import { HeaderCell } from "./TableHeaderCell";
 
 interface TableHeaderProps<TData> {
   headerGroups: HeaderGroup<TData>[];
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
-  virtualColumns: { index: number; size: number }[];
+  virtualColumns: VirtualColumn<TData>[];
+  columnPinning: ColumnPinningState;
+  setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
+  showPanel?: string | null;
+  setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
+  isFixed?: boolean;
+  sorting?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
+  columnSizing?: ColumnSizingState;
+  setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
 }
 
 export const TableHeader = <TData,>({
@@ -14,40 +31,105 @@ export const TableHeader = <TData,>({
   virtualPaddingLeft,
   virtualPaddingRight,
   virtualColumns,
+  showPanel = null,
+  setShowPanel,
+  columnPinning,
+  setColumnPinning,
+  isFixed = false,
+  sorting,
+  setSorting,
+  columnSizing,
+  setColumnSizing,
 }: TableHeaderProps<TData>) => {
+  const [panelPosition, setPanelPosition] = React.useState({ top: 0, left: 0 });
+  const [resizing, setResizing] = React.useState({
+    isResizing: false,
+    offset: 0,
+  });
+
+  // isFixedで表示を切り替える
+  const displayColumns = React.useMemo(() => {
+    return virtualColumns.filter((virtualColumn) =>
+      isFixed
+        ? columnPinning.left?.includes(virtualColumn.id)
+        : !columnPinning.left?.includes(virtualColumn.id)
+    );
+  }, [virtualColumns, columnPinning.left, isFixed]);
+
+  // カラム幅を手動変更するハンドラー
+  const handleMouseDown = (
+    e: React.MouseEvent | React.TouchEvent,
+    header: Header<TData, any>
+  ) => {
+    e.stopPropagation();
+    setResizing((prev) => ({
+      ...prev,
+      isResizing: true,
+    }));
+
+    const mouseMoveHandler = (event: MouseEvent) => {
+      if (!resizing.isResizing) return;
+
+      const rect = (event.target as HTMLElement).getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      setResizing((prev) => {
+        return {
+          ...prev,
+          offset: offsetX,
+        };
+      });
+    };
+
+    const mouseUpHandler = () => {
+      setColumnSizing?.((prev) => ({
+        ...prev,
+        [header.id]: Math.max(50, (prev[header.id] || 0) + resizing.offset),
+      }));
+      setResizing({
+        isResizing: false,
+        offset: 0,
+      });
+      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener("mouseup", mouseUpHandler);
+    };
+
+    document.addEventListener("mousemove", mouseMoveHandler);
+    document.addEventListener("mouseup", mouseUpHandler, { once: true });
+
+    header.getResizeHandler()(e);
+  };
+
   return (
-    <thead className="transi text-sm font-medium text-black-sub">
+    <thead className="w-full text-sm font-medium text-black-sub transition-all">
       {headerGroups.map((headerGroup) => (
-        <tr key={headerGroup.id} className="sticky top-0 z-10 bg-white">
+        <tr key={headerGroup.id} className="z-5 sticky top-0 bg-white">
           {virtualPaddingLeft > 0 && (
             <th style={{ width: virtualPaddingLeft }} />
           )}
-          {virtualColumns.map((virtualColumn) => {
-            const header = headerGroup.headers[virtualColumn.index];
+
+          {displayColumns.map((virtualColumn) => {
+            const header = headerGroup.headers.find(
+              (header) => header.id === virtualColumn.id
+            );
+            if (!header) {
+              return null;
+            }
             return (
-              <th
+              <HeaderCell
+                header={header}
                 key={header.id}
-                style={{ width: virtualColumn.size }}
-                className={cn(
-                  header.column.getIsSorted() && "font-bold text-main",
-                  "border-b border-black-20-opacity bg-black-3-opacity p-4"
-                )}
-              >
-                <div className="flex items-center">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {header.column.getCanSort() && (
-                    <SortButton
-                      className="ml-1"
-                      sorting={header.column.getIsSorted() as string}
-                      nextSortOrder={header.column.getNextSortingOrder()}
-                      onClick={header.column.getToggleSortingHandler()}
-                    />
-                  )}
-                </div>
-              </th>
+                sorting={sorting || []}
+                columnSizing={columnSizing || {}}
+                resizing={resizing}
+                isPinned={columnPinning.left?.includes(header.id) || false}
+                showPanel={showPanel}
+                setShowPanel={setShowPanel || (() => {})}
+                panelPosition={panelPosition}
+                setPanelPosition={setPanelPosition}
+                setColumnPinning={setColumnPinning}
+                setSorting={setSorting || (() => {})}
+                handleMouseDown={(e) => handleMouseDown(e, header)}
+              />
             );
           })}
           {virtualPaddingRight > 0 && (
