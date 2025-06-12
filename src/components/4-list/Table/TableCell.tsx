@@ -15,7 +15,10 @@ export const TableCell = <TData,>({
   className = "",
 }: TableCellProps<TData>) => {
   return (
-    <td className={cn("p-4", className)} style={style}>
+    <td
+      className={cn("overflow-hidden text-ellipsis p-4", className)}
+      style={style}
+    >
       {children
         ? children
         : cell
