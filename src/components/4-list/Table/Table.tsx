@@ -141,7 +141,7 @@ export const Table = <TData,>({
     setHoveredRowIndex(null);
   };
 
-  const hasFixedColumn = (columnPinning?.left ?? []).length > 0;
+  const hasFixedColumn = (columnPinningState.left ?? []).length > 0;
 
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
