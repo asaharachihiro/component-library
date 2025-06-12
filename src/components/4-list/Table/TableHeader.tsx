@@ -13,24 +13,21 @@ import * as React from "react";
 import { VirtualColumn } from "./Virtualizer";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { ColumnPanel } from "./ColumnPanel";
-import Portal from "../../../utils/Portal";
 
 interface TableHeaderProps<TData> {
   headerGroups: HeaderGroup<TData>[];
   virtualPaddingLeft: number;
   virtualPaddingRight: number;
   virtualColumns: VirtualColumn<TData>[];
-  showPanel?: string | null;
-  setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
   columnPinning: ColumnPinningState;
   setColumnPinning: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
-  isPinned?: boolean;
+  showPanel?: string | null;
+  setShowPanel?: React.Dispatch<React.SetStateAction<string | null>>;
+  isFixed?: boolean;
   sorting?: SortingState;
   setSorting?: OnChangeFn<SortingState>;
   columnSizing?: ColumnSizingState;
   setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
-  offset?: number;
-  resizeMode?: "onChange" | "onEnd";
 }
 
 export const TableHeader = <TData,>({
@@ -42,78 +39,39 @@ export const TableHeader = <TData,>({
   setShowPanel,
   columnPinning,
   setColumnPinning,
-  isPinned = false,
+  isFixed = false,
   sorting,
   setSorting,
   columnSizing,
   setColumnSizing,
-  offset = 0,
-  resizeMode = "onEnd",
 }: TableHeaderProps<TData>) => {
-  const [panelPosition, setPanelPosition] = React.useState<{
-    top: number;
-    left: number;
-  }>({ top: 0, left: 0 });
+  const [panelPosition, setPanelPosition] = React.useState({ top: 0, left: 0 });
+  const [resizing, setResizing] = React.useState({
+    isResizing: false,
+    offset: 0,
+  });
 
-  const togglePinColumn = (id: string) => {
-    const isPinned = columnPinning.left?.includes(id);
-    const newPinning = { ...columnPinning };
+  // isFixedで表示を切り替える
+  const displayColumns = React.useMemo(() => {
+    return virtualColumns.filter((virtualColumn) =>
+      isFixed
+        ? columnPinning.left?.includes(virtualColumn.id)
+        : !columnPinning.left?.includes(virtualColumn.id)
+    );
+  }, [virtualColumns, columnPinning.left, isFixed]);
 
-    if (isPinned) {
-      newPinning.left = (newPinning.left || []).filter((colId) => colId !== id);
-    } else {
-      newPinning.left = [...(newPinning.left || []), id];
+  //ColumsPanelの表示
+  const togglePanel = (id: string, e: React.MouseEvent) => {
+    if (resizing.isResizing) return;
+    if (showPanel === id) {
+      setShowPanel && setShowPanel(null);
+      return;
     }
-    setColumnPinning(newPinning);
-    setShowPanel?.(null);
+
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setPanelPosition({ top: rect.bottom, left: rect.left });
+    setShowPanel && setShowPanel(id);
   };
-
-  const [isResizing, setIsResizing] = React.useState(false);
-  const [resizeOffset, setResizeOffset] = React.useState(0);
-
-  // ColumsPanelの表示
-  // const togglePanel = (id: string, e: React.MouseEvent) => {
-  //   if (isResizing) return;
-  //   if (showPanel === id) {
-  //     setShowPanel && setShowPanel(null);
-  //     return;
-  //   }
-
-  //   const rect = (e.target as HTMLElement).getBoundingClientRect();
-  //   setPanelPosition({ top: rect.bottom, left: rect.left });
-  //   setShowPanel && setShowPanel(id);
-  // };
-
-  // const toggleSort = (header: Header<TData, any>) => {
-  //   if (!setSorting) return;
-  //   const nextSortOrder = header.column.getNextSortingOrder();
-  //   setSorting(() => {
-  //     if (!nextSortOrder) {
-  //       return [];
-  //     }
-  //     return [{ id: header.id, desc: nextSortOrder === "desc" }];
-  //   });
-  // };
-
-  const pinnedColumns = React.useMemo(
-    () =>
-      virtualColumns.filter((virtualColumn) =>
-        columnPinning.left?.includes(virtualColumn.id)
-      ),
-    [virtualColumns, columnPinning]
-  );
-
-  const unpinnedColumns = React.useMemo(
-    () =>
-      virtualColumns.filter(
-        (virtualColumn) => !columnPinning.left?.includes(virtualColumn.id)
-      ),
-    [virtualColumns, columnPinning]
-  );
-
-  const displayColumns: VirtualColumn<TData>[] = isPinned
-    ? pinnedColumns
-    : unpinnedColumns;
 
   const panelRef = React.useRef<HTMLDivElement>(null);
   useClickOutside(
@@ -121,32 +79,60 @@ export const TableHeader = <TData,>({
     () => setShowPanel && setShowPanel(null)
   );
 
+  const togglePinColumn = (id: string, isPinned: boolean) => {
+    setColumnPinning((prev) => ({
+      ...prev,
+      left: isPinned
+        ? prev.left?.filter((colId) => colId !== id)
+        : [...(prev.left || []), id],
+    }));
+    setShowPanel?.(null);
+  };
+
+  const toggleSort = (header: Header<TData, any>) => {
+    if (!setSorting) return;
+    const nextSortOrder = header.column.getNextSortingOrder();
+    setSorting(() => {
+      if (!nextSortOrder) {
+        return [];
+      }
+      return [{ id: header.id, desc: nextSortOrder === "desc" }];
+    });
+  };
+
+  // カラム幅を手動変更するハンドラー
   const handleMouseDown = (
     e: React.MouseEvent | React.TouchEvent,
-    header: Header<TData, any>,
-    setIsResizing: React.Dispatch<React.SetStateAction<boolean>>,
-    getResizeHandler: (e: React.MouseEvent | React.TouchEvent) => void
+    header: Header<TData, any>
   ) => {
     e.stopPropagation();
-    setIsResizing(true);
+    setResizing((prev) => ({
+      ...prev,
+      isResizing: true,
+    }));
 
     const mouseMoveHandler = (event: MouseEvent) => {
-      if (!isResizing) return;
+      if (!resizing.isResizing) return;
 
       const rect = (event.target as HTMLElement).getBoundingClientRect();
       const offsetX = event.clientX - rect.left;
-      setResizeOffset(offsetX);
+      setResizing((prev) => {
+        return {
+          ...prev,
+          offset: offsetX,
+        };
+      });
     };
 
     const mouseUpHandler = () => {
-      setIsResizing(false);
-      console.log("set column sizing");
       setColumnSizing?.((prev) => ({
         ...prev,
-        [header.id]: Math.max(50, (prev[header.id] || 0) + resizeOffset),
+        [header.id]: Math.max(50, (prev[header.id] || 0) + resizing.offset),
       }));
-
-      setResizeOffset(0);
+      setResizing({
+        isResizing: false,
+        offset: 0,
+      });
       document.removeEventListener("mousemove", mouseMoveHandler);
       document.removeEventListener("mouseup", mouseUpHandler);
     };
@@ -154,14 +140,8 @@ export const TableHeader = <TData,>({
     document.addEventListener("mousemove", mouseMoveHandler);
     document.addEventListener("mouseup", mouseUpHandler, { once: true });
 
-    getResizeHandler(e);
+    header.getResizeHandler()(e);
   };
-
-  React.useEffect(() => {
-    //デバッグ用
-    console.log("isResizing:", isResizing);
-    console.log(columnSizing?.distribution);
-  }, [isResizing, resizeOffset]);
 
   return (
     <thead className="w-full text-sm font-medium text-black-sub transition-all">
@@ -175,15 +155,9 @@ export const TableHeader = <TData,>({
             const header = headerGroup.headers.find(
               (header) => header.id === virtualColumn.id
             );
-
             if (!header) {
-              console.error(
-                "Header not found for Virtual Column ID:",
-                virtualColumn.id
-              );
               return null;
             }
-
             return (
               <th
                 key={header.id}
@@ -198,7 +172,7 @@ export const TableHeader = <TData,>({
               >
                 <div
                   className="inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
-                  // onClick={(e) => togglePanel(header.id, e)}
+                  onClick={(e) => togglePanel(header.id, e)}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -209,10 +183,10 @@ export const TableHeader = <TData,>({
                       className="ml-1"
                       sorting={header.column.getIsSorted() as string}
                       nextSortOrder={header.column.getNextSortingOrder()}
-                      // onClick={(e) => {
-                      //   e.stopPropagation();
-                      //   toggleSort(header);
-                      // }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSort(header);
+                      }}
                     />
                   )}
                 </div>
@@ -220,22 +194,8 @@ export const TableHeader = <TData,>({
                   //リサイズハンドル
                   <div
                     draggable="true"
-                    onMouseDown={(e) =>
-                      handleMouseDown(
-                        e,
-                        header,
-                        setIsResizing,
-                        header.getResizeHandler()
-                      )
-                    }
-                    onTouchStart={(e) =>
-                      handleMouseDown(
-                        e,
-                        header,
-                        setIsResizing,
-                        header.getResizeHandler()
-                      )
-                    }
+                    onMouseDown={(e) => handleMouseDown(e, header)}
+                    onTouchStart={(e) => handleMouseDown(e, header)}
                     onDragStart={(e) => e.preventDefault()}
                     className={cn(
                       "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-main-bg",
@@ -243,24 +203,25 @@ export const TableHeader = <TData,>({
                     )}
                     style={{
                       transform: header.column.getIsResizing()
-                        ? `translateX(${resizeOffset}px)`
+                        ? `translateX(${resizing.offset}px)`
                         : "",
                     }}
                   />
                 )}
                 {showPanel === header.id &&
                   (() => {
-                    const isFixed = columnPinning.left?.includes(header.id);
+                    const isPinned =
+                      columnPinning.left?.includes(header.id) || false;
                     return (
                       <ColumnPanel
-                        ref={panelRef}
                         id={`${header.id}-columnPanel`}
+                        ref={panelRef}
+                        isFixed={isPinned}
+                        onClick={() => togglePinColumn(header.id, isPinned)}
                         panelPosition={{
                           top: panelPosition.top,
                           left: panelPosition.left,
                         }}
-                        onClick={() => togglePinColumn(header.id)}
-                        isFixed={isFixed}
                       />
                     );
                   })()}

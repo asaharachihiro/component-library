@@ -167,7 +167,7 @@ export const FixedTable = React.forwardRef<
             }}
           >
             <TableHeader
-              isPinned={true}
+              isFixed={true}
               headerGroups={table.getHeaderGroups() as HeaderGroup<any>[]}
               virtualPaddingLeft={virtualPaddingLeft}
               virtualPaddingRight={virtualPaddingRight}

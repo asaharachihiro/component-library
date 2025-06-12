@@ -142,8 +142,6 @@ export const Table = <TData,>({
   };
 
   const hasFixedColumn = (columnPinning?.left ?? []).length > 0;
-  const resizeMode = table.options.columnResizeMode;
-  const deltaOffset = table.getState().columnSizingInfo.deltaOffset ?? 0;
 
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
@@ -184,7 +182,7 @@ export const Table = <TData,>({
             }}
           >
             <TableHeader
-              isPinned={false}
+              isFixed={false}
               headerGroups={table.getHeaderGroups() as HeaderGroup<any>[]}
               virtualPaddingLeft={virtualPaddingLeft}
               virtualPaddingRight={virtualPaddingRight}
@@ -197,8 +195,6 @@ export const Table = <TData,>({
               setSorting={setSorting}
               columnSizing={columnSizingState}
               setColumnSizing={setColumnSizingState}
-              resizeMode={resizeMode}
-              offset={deltaOffset}
             />
             <tbody>
               {virtualPaddingTop > 0 && (
