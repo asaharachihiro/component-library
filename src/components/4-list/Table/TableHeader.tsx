@@ -133,8 +133,9 @@ export const TableHeader = <TData,>({
     const mouseMoveHandler = (event: MouseEvent) => {
       if (!isResizing) return;
 
-      const newOffset = event.clientX;
-      setResizeOffset(newOffset);
+      const rect = (event.target as HTMLElement).getBoundingClientRect();
+      const offsetX = event.clientX - rect.left;
+      setResizeOffset(offsetX);
     };
 
     const mouseUpHandler = () => {
@@ -155,12 +156,6 @@ export const TableHeader = <TData,>({
 
     getResizeHandler(e);
   };
-
-  React.useEffect(() => {
-    if (isResizing) {
-      setResizeOffset(offset);
-    }
-  }, [offset, isResizing]);
 
   React.useEffect(() => {
     //デバッグ用
@@ -222,6 +217,7 @@ export const TableHeader = <TData,>({
                   )}
                 </div>
                 {header.column.getCanResize() && (
+                  //リサイズハンドル
                   <div
                     draggable="true"
                     onMouseDown={(e) =>
@@ -240,13 +236,14 @@ export const TableHeader = <TData,>({
                         header.getResizeHandler()
                       )
                     }
+                    onDragStart={(e) => e.preventDefault()}
                     className={cn(
                       "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-main-bg",
                       header.column.getIsResizing() && "bg-main-bg"
                     )}
                     style={{
                       transform: header.column.getIsResizing()
-                        ? `translateX(${columnSizing?.[header.id]}px)`
+                        ? `translateX(${resizeOffset}px)`
                         : "",
                     }}
                   />
