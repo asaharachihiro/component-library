@@ -11,43 +11,40 @@ interface ColumnPanelProps {
   isFixed?: boolean;
 }
 
-export const ColumnPanel: React.FC<ColumnPanelProps> = ({
-  id,
-  panelPosition,
-  onClick,
-  isFixed = false,
-}) => {
-  return (
-    <Portal>
-      <div
-        id={id}
-        className="absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low"
-        onClick={() => onClick(id)}
-        style={{
-          top: panelPosition.top,
-          left: panelPosition.left,
-          zIndex: 1000,
-        }}
-      >
-        <div className="flex items-center rounded-lg p-4 hover:bg-black-5-opacity active:bg-black-10-opacity">
-          {isFixed ? (
-            <>
-              <span className="material-symbols-rounded mr-2 select-none">
-                keep_off
-              </span>
-              <span className="text-base font-regular">固定を解除</span>
-            </>
-          ) : (
-            <>
-              <span className="material-symbols-rounded mr-2 select-none">
-                keep
-              </span>
-              <span className="text-base font-regular">列を固定</span>
-            </>
-          )}
+export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
+  ({ id, panelPosition, onClick, isFixed = false }, ref) => {
+    return (
+      <Portal>
+        <div
+          id={id}
+          className="absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low"
+          onClick={() => onClick(id)}
+          style={{
+            top: panelPosition.top,
+            left: panelPosition.left,
+            zIndex: 1000,
+          }}
+        >
+          <div className="flex items-center rounded-lg p-4 hover:bg-black-5-opacity active:bg-black-10-opacity">
+            {isFixed ? (
+              <>
+                <span className="material-symbols-rounded mr-2 select-none">
+                  keep_off
+                </span>
+                <span className="text-base font-regular">固定を解除</span>
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-rounded mr-2 select-none">
+                  keep
+                </span>
+                <span className="text-base font-regular">列を固定</span>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </Portal>
-  );
-};
+      </Portal>
+    );
+  }
+);
 ColumnPanel.displayName = "ColumnPanel";

@@ -2,6 +2,7 @@ import React from "react";
 import {
   ColumnDef,
   ColumnPinningState,
+  ColumnSizingState,
   getCoreRowModel,
   getSortedRowModel,
   HeaderGroup,
@@ -29,6 +30,8 @@ export interface FixedTableProps<TData> {
   onMouseLeave?: () => void;
   sorting?: SortingState;
   setSorting?: OnChangeFn<SortingState>;
+  columnSizing?: ColumnSizingState;
+  setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
 }
 
 export const FixedTable = React.forwardRef<

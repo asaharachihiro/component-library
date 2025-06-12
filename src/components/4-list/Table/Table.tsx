@@ -1,10 +1,10 @@
 import {
   ColumnDef,
   ColumnPinningState,
+  ColumnSizingInfoState,
   getCoreRowModel,
   getSortedRowModel,
   HeaderGroup,
-  OnChangeFn,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -39,15 +39,34 @@ export const Table = <TData,>({
   const [hoveredRowIndex, setHoveredRowIndex] = React.useState<number | null>(
     null
   );
+  const [columnSizingState, setColumnSizingState] = React.useState({});
+  const [columnSizingInfoState, setColumnSizingInfoState] =
+    React.useState<ColumnSizingInfoState>({
+      columnSizingStart: [],
+      deltaOffset: 0,
+      deltaPercentage: 0,
+      isResizingColumn: false,
+      startOffset: 0,
+      startSize: 0,
+    });
 
   const table = useReactTable<TData>({
     data,
     columns,
-    state: { sorting, columnPinning: columnPinningState },
+    state: {
+      sorting,
+      columnPinning: columnPinningState,
+      columnSizing: columnSizingState,
+      columnSizingInfo: columnSizingInfoState,
+    },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnPinningChange: setColumnPinningState,
+    onColumnSizingChange: setColumnSizingState,
+    onColumnSizingInfoChange: setColumnSizingInfoState,
+    columnResizeDirection: "ltr",
+    columnResizeMode: "onChange",
   });
 
   const fixedTableRef = React.useRef<HTMLDivElement>(null);
@@ -123,6 +142,8 @@ export const Table = <TData,>({
   };
 
   const hasFixedColumn = (columnPinning?.left ?? []).length > 0;
+  const resizeMode = table.options.columnResizeMode;
+  const deltaOffset = table.getState().columnSizingInfo.deltaOffset ?? 0;
 
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
@@ -142,6 +163,8 @@ export const Table = <TData,>({
           onMouseLeave={handleMouseLeave}
           sorting={sorting}
           setSorting={setSorting}
+          columnSizing={columnSizingState}
+          setColumnSizing={setColumnSizingState}
         />
       )}
 
@@ -154,7 +177,7 @@ export const Table = <TData,>({
       >
         <div ref={containerRef}>
           <table
-            className="border-separate border-spacing-0"
+            className="table-fixed border-separate border-spacing-0"
             style={{
               width: columnVirtualizer.getTotalSize(),
               height: normalRowVirtualizer.getTotalSize(),
@@ -172,6 +195,10 @@ export const Table = <TData,>({
               setColumnPinning={setColumnPinningState}
               sorting={sorting}
               setSorting={setSorting}
+              columnSizing={columnSizingState}
+              setColumnSizing={setColumnSizingState}
+              resizeMode={resizeMode}
+              offset={deltaOffset}
             />
             <tbody>
               {virtualPaddingTop > 0 && (
