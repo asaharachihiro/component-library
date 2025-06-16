@@ -6,6 +6,7 @@ import { parseISO, isValid } from "date-fns";
 import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { formatDate } from "./formatDate";
+import { cn } from "../../../utils/cn";
 
 interface DatePickerProps {
   id: string;
@@ -117,7 +118,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {label && (
           <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
         )}
-        <div className="relative mb-1">
+        <div className="relative">
           <InputBox
             id={id}
             value={inputDate}
@@ -136,7 +137,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             {...props}
           />
           {!inputDate && (
-            <div className="absolute inset-y-0 left-0 flex select-none items-center pl-2 text-black-20-opacity">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex select-none items-center pl-2 text-black-20-opacity">
               <span>年 / 月 / 日</span>
             </div>
           )}
@@ -153,7 +154,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {showCalendar && (
           <Calendar
             id={id}
-            className="absolute z-10 rounded-lg bg-white shadow-low"
+            className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
             inputDate={
               inputDate && isValid(parseISO(inputDate))
                 ? parseISO(inputDate)
@@ -174,14 +175,18 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             isStartOnMonday={isStartOnMonday}
           />
         )}
-        {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
-        )}
-        {!isValidStatus && (
-          <ErrorText
-            text={errors[id] || errorMessage || "入力がエラーになっています。"}
-          />
-        )}
+        <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
+          {supportMessage && (
+            <span className="text-xs text-black-sub">{supportMessage}</span>
+          )}
+          {!isValidStatus && (
+            <ErrorText
+              text={
+                errors[id] || errorMessage || "入力がエラーになっています。"
+              }
+            />
+          )}
+        </div>
       </div>
     );
   }
