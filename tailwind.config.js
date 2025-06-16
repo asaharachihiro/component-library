@@ -57,6 +57,7 @@ module.exports = {
         slideInBottom: "slideInBottom 0.3s ease-out",
         fadeSlideInTop: "fadeSlideInTop 0.3s ease-in-out",
         shimmer: "shimmer 1.5s infinite",
+        progress: "indeterminateAnimation 1.5s infinite linear",
       },
       keyframes: {
         fadeIn: {
@@ -78,6 +79,17 @@ module.exports = {
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
+        },
+        indeterminateAnimation: {
+          "0%": {
+            transform: "translateX(-100%) scaleX(0)",
+          },
+          "40%": {
+            transform: "translateX(-100%) scaleX(0.4)",
+          },
+          "100%": {
+            transform: "translateX(100%) scaleX(0.5)",
+          },
         },
       },
     },
