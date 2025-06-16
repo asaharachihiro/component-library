@@ -6,6 +6,7 @@ export * from "./2-input/DatePicker";
 export * from "./2-input/FilePicker";
 export * from "./2-input/Form";
 export * from "./2-input/PasswordBox";
+export * from "./2-input/RangeInput";
 export * from "./2-input/SearchBox";
 export * from "./2-input/Slider";
 export * from "./2-input/TextBox";
