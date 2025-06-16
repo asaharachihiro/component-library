@@ -32,3 +32,4 @@ export * from "./7-display/Pagenation";
 export * from "./7-display/Tab";
 export * from "./8-loading/Skelton";
 export * from "./8-loading/Spinner";
+export * from "./8-loading/Progressbar";
