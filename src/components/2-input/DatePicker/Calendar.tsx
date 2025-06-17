@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { DateButton } from "./DateButton";
+import { NumberButton } from "../../0-common";
 import { Button } from "@components/1-action/Button";
 import { IconButton } from "@components/1-action/IconButton";
 import { SelectBox } from "@components/3-selection/SelectBox/SelectBox";
@@ -172,7 +172,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
             ))}
             {datesList().map(({ date, disabled }) => {
               return (
-                <DateButton
+                <NumberButton
                   onClick={() => onSelectDate(id, format(date, "yyyy-MM-dd"))}
                   number={format(date, "dd")}
                   key={format(date, "yyyy-MM-dd")}
