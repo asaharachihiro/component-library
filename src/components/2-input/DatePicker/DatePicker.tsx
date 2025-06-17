@@ -2,10 +2,9 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "@components/0-common";
 import { Calendar } from ".";
 import { IconButton } from "@components/1-action/IconButton";
-import { parseISO, isValid } from "date-fns";
 import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
-import { formatDate } from "./formatDate";
+import { dateFormat, formatDate } from "./formatDate";
 import { cn } from "../../../utils/cn";
 
 interface DatePickerProps {
@@ -67,7 +66,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           ? formatDate(value, isJPLocale)
           : ""
     );
-
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
@@ -155,19 +153,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Calendar
             id={id}
             className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
-            inputDate={
-              inputDate && isValid(parseISO(inputDate))
-                ? parseISO(inputDate)
-                : undefined
-            }
+            inputDate={inputDate ? dateFormat(inputDate) : undefined}
             getCalendar={
               getCalendar
                 ? () =>
-                    getCalendar(
-                      inputDate && isValid(parseISO(inputDate))
-                        ? parseISO(inputDate)
-                        : new Date()
-                    )
+                    getCalendar(inputDate ? dateFormat(inputDate) : new Date())
                 : undefined
             }
             onSelectDate={onSelectChange}
