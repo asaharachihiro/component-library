@@ -3,6 +3,7 @@ export * from "./1-action/Button";
 export * from "./1-action/IconButton";
 export * from "./1-action/Link";
 export * from "./2-input/DatePicker";
+export * from "./2-input/DateRange";
 export * from "./2-input/FilePicker";
 export * from "./2-input/Form";
 export * from "./2-input/PasswordBox";

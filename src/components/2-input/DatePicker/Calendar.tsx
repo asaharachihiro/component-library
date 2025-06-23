@@ -8,6 +8,7 @@ import {
   format,
   getDay,
   getDaysInMonth,
+  isValid,
   setDate,
   setMonth,
   setYear,
@@ -16,12 +17,13 @@ import {
 
 interface CalendarProps {
   id: string;
-  inputDate?: Date;
+  inputDate?: Date | Date[];
   className?: string;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onSelectDate: (id: string, date: string) => void;
-  onClosed?: (isCanceled: boolean) => void;
+  onSelectDate: (id: string, date: string | string[]) => void;
+  onClosed: (isCanceled: boolean) => void;
+  isRange?: boolean;
   // strategy?: "absolute" | "fixed";
   // x?: number | null;
   // y?: number | null;
@@ -37,18 +39,26 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       onSelectDate,
       onClosed,
       isStartOnMonday = false,
+      isRange = false,
       // strategy = "absolute",
       // x = 0,
       // y = 0,
     },
     ref
   ) => {
-    const [currentDate, setCurrentDate] = React.useState(
-      inputDate || new Date()
-    );
+    const initialDate = () => {
+      if (!inputDate) {
+        return new Date();
+      }
+      const d = Array.isArray(inputDate) ? inputDate[0] : inputDate;
+      return isValid(d) ? d : new Date();
+    };
+
+    const [currentDate, setCurrentDate] = React.useState(initialDate);
+    const [clickedDates, setClickedDates] = React.useState<string[]>([]);
 
     React.useEffect(() => {
-      setCurrentDate(inputDate || new Date());
+      setCurrentDate(initialDate);
     }, [inputDate]);
 
     // 年のSelectBoxリスト
@@ -67,7 +77,8 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     // 日付のリストを取得
     const datesList = (): { date: Date; disabled: boolean }[] => {
       if (getCalendar) {
-        return getCalendar(currentDate);
+        // getCalendarの戻り値も必ずdateがDate型かつisValidかチェック
+        return getCalendar(currentDate).filter((item) => isValid(item.date));
       }
       const dates = Array.from(
         { length: getDaysInMonth(currentDate) },
@@ -76,8 +87,8 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
           disabled: false,
         })
       );
-
-      return dates;
+      // ここでも念のためフィルタ
+      return dates.filter((item) => isValid(item.date));
     };
 
     // 表示の1日目の曜日を取得
@@ -105,6 +116,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
 
     // 今日の日付かどうかを判定
     const isToday = (date: Date): boolean => {
+      if (!isValid(date)) return false;
       const today = format(new Date(), "yyyy-MM-dd");
       const inputDate = format(date, "yyyy-MM-dd");
       return today === inputDate;
@@ -115,6 +127,47 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       const newDate = direction === "prev" ? -1 : 1;
       const nextMonth = setMonth(currentDate, currentDate.getMonth() + newDate);
       setCurrentDate(nextMonth);
+    };
+
+    const handleDateClick = (id: string, date: Date) => {
+      const dateStr = format(date, "yyyy-MM-dd");
+      if (isRange) {
+        setClickedDates((prev) => {
+          let next: string[];
+          if (prev.length === 0 || prev.length === 2) {
+            next = [dateStr];
+            onSelectDate(id, next);
+          } else {
+            next = [prev[0], dateStr].slice(-2);
+            onSelectDate(id, next);
+          }
+          return next;
+        });
+        // ★ ここでreturnして、下のonClosedを実行しない
+        return;
+      }
+
+      onSelectDate(id, format(date, "yyyy-MM-dd"));
+      onClosed(false);
+    };
+
+    const isSelected = (date: Date): boolean => {
+      if (!isValid(date)) return false;
+      const dateStr = format(date, "yyyy-MM-dd");
+      if (isRange && clickedDates.length === 2) {
+        // 2つクリック済みなら、その範囲をハイライト
+        const [start, end] = clickedDates.slice().sort(); // 昇順
+        return start <= dateStr && dateStr <= end;
+      }
+      if (isRange && clickedDates.length === 1) {
+        // 1つだけクリック済みなら、その日だけハイライト
+        return clickedDates[0] === dateStr;
+      }
+      if (!inputDate) return false;
+      if (Array.isArray(inputDate)) {
+        return inputDate.some((d) => format(d, "yyyy-MM-dd") === dateStr);
+      }
+      return format(inputDate, "yyyy-MM-dd") === dateStr;
     };
 
     return (
@@ -170,35 +223,44 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
             {Array.from({ length: getStartDayOfMonth() }).map((_, i) => (
               <div key={`empty-${i}`} className="h-7 w-7" />
             ))}
-            {datesList().map(({ date, disabled }) => {
+            {datesList().map(({ date, disabled }, i) => {
+              if (!date || !isValid(date)) return null;
+              let number = "";
+              try {
+                number = format(date, "dd");
+              } catch {
+                return null;
+              }
               return (
                 <NumberButton
-                  onClick={() => onSelectDate(id, format(date, "yyyy-MM-dd"))}
-                  number={format(date, "dd")}
+                  onClick={() => handleDateClick(id, date)}
+                  number={number}
                   key={format(date, "yyyy-MM-dd")}
                   id={format(date, "yyyy-MM-dd")}
-                  selected={
-                    inputDate
-                      ? format(inputDate, "yyyy-MM-dd") ===
-                        format(date, "yyyy-MM-dd")
-                      : false
-                  }
+                  selected={isSelected(date)}
                   isToday={isToday(date)}
                   disabled={disabled}
                 />
               );
             })}
           </div>
-          <div className="flex justify-end space-x-4">
-            <Button
-              variant="textSecondary"
-              type="reset"
-              onClick={() => onClosed && onClosed(false)}
-              label="キャンセル"
-            />
-            {/* TODO: 日付範囲指定のためのボタン
-          <Button variant="primary" size="sm" type="submit" label="決定"}/> */}
-          </div>
+          {isRange && (
+            <div className="flex justify-end space-x-4">
+              <Button
+                variant="textSecondary"
+                type="reset"
+                onClick={() => onClosed(false)}
+                label="キャンセル"
+              />
+              <Button
+                variant="primary"
+                size="s"
+                type="submit"
+                onClick={() => onClosed(false)}
+                label="決定"
+              />
+            </div>
+          )}
         </div>
       </div>
     );

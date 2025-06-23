@@ -6,6 +6,7 @@ import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { dateFormat, formatDate } from "./formatDate";
 import { cn } from "../../../utils/cn";
+import { format, isValid, parse } from "date-fns";
 
 interface DatePickerProps {
   id: string;
@@ -15,15 +16,20 @@ interface DatePickerProps {
   className?: string;
   isRequired?: boolean;
   value?: string;
+  selectedDates?: Date[];
   isValidValue?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onChange?: (id: string, date: string) => void;
+  onChange?: (
+    id: string,
+    date: string | { start: string; end: string }
+  ) => void;
   onBlur?: (id: string, date: string) => void;
   onFocus?: (id: string, date: string) => void;
   tooltip?: React.ReactNode;
+  isRange?: boolean;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -35,6 +41,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       errorMessage,
       className,
       value,
+      selectedDates = [],
       isValidValue,
       isRequired = false,
       disabled = false,
@@ -45,6 +52,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       onBlur,
       onFocus,
       tooltip,
+      isRange = false,
       ...props
     },
     ref
@@ -59,37 +67,71 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
     const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputDate, setInputDate] = React.useState(
-      formData[id]
-        ? formatDate(formData[id], isJPLocale)
-        : value
-          ? formatDate(value, isJPLocale)
-          : ""
+    const [inputDate, setInputDate] = React.useState(() =>
+      value ? formatDate(value, isJPLocale) : ""
     );
+
+    React.useEffect(() => {
+      if (formData[id]) {
+        setInputDate(formatDate(formData[id], isJPLocale));
+      } else {
+        setInputDate(value ? formatDate(value, isJPLocale) : "");
+      }
+    }, [formData, id, value, isJPLocale]);
+
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
 
-    const onSelectChange = (id: string, date: string) => {
-      setInputDate(formatDate(date, isJPLocale));
-      if (onChange) {
-        onChange(id, date);
+    const onSelectChange = (id: string, dates: string | string[]) => {
+      if (Array.isArray(dates)) {
+        if (dates.length === 1) {
+          if (!dates[0] || !isValid(dateFormat(dates[0]))) {
+            setInputDate("");
+            onChange?.(id, { start: "", end: "" });
+          } else {
+            setInputDate(dates[0]);
+            onChange?.(id, { start: dates[0], end: "" });
+          }
+        } else if (dates.length === 2) {
+          const validStart = dates[0] && isValid(dateFormat(dates[0]));
+          const validEnd = dates[1] && isValid(dateFormat(dates[1]));
+          if (!validStart || !validEnd) {
+            setInputDate("");
+            onChange?.(id, { start: "", end: "" });
+          } else {
+            setInputDate(`${dates[0]} 〜 ${dates[1]}`);
+            onChange?.(id, { start: dates[0], end: dates[1] });
+          }
+        }
+      } else {
+        if (!dates || !isValid(dateFormat(dates))) {
+          setInputDate("");
+          onChange?.(id, "");
+        } else {
+          setInputDate(formatDate(dates, isJPLocale));
+          onChange?.(id, dates);
+          setShowCalendar(false);
+        }
       }
-      setShowCalendar(false);
     };
 
     const onInputChange = (id: string, value: string) => {
       setInputDate(value);
-      if (onChange) {
-        onChange(id, value);
-      }
       handleInputChange(id, value);
     };
 
     // Blur時に値をフォーマット
     const handleOnBlur = (id: string, value: string) => {
-      const formattedDate = formatDate(value, isJPLocale);
-      setInputDate(formattedDate);
+      if (onChange) {
+        const parsed = parse(inputDate, "yyyy/MM/dd", new Date());
+        if (isValid(parsed)) {
+          const formatted = format(parsed, "yyyy-MM-dd");
+          onChange(id, formatted);
+        } else {
+          onChange(id, "");
+        }
+      }
       if (onBlur) {
         onBlur(id, value);
       }
@@ -102,6 +144,25 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         onFocus(id, value);
       }
     };
+
+    const selectedDatesForCalendar = React.useMemo(() => {
+      if (selectedDates && selectedDates.length > 0) {
+        return selectedDates;
+      }
+      if (inputDate) {
+        const d = dateFormat(inputDate);
+        return isValid(d) ? [d] : [];
+      }
+      return [];
+    }, [selectedDates, inputDate]);
+
+    const calendarInputDate = React.useMemo(() => {
+      if (inputDate) {
+        const d = dateFormat(inputDate);
+        return isValid(d) ? d : new Date();
+      }
+      return new Date();
+    }, [inputDate]);
 
     // コンポーネント外をクリックした時に閉じる
     const InputRef = React.useRef<HTMLDivElement>(null);
@@ -153,16 +214,14 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Calendar
             id={id}
             className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
-            inputDate={inputDate ? dateFormat(inputDate) : undefined}
+            inputDate={selectedDatesForCalendar}
             getCalendar={
-              getCalendar
-                ? () =>
-                    getCalendar(inputDate ? dateFormat(inputDate) : new Date())
-                : undefined
+              getCalendar ? () => getCalendar(calendarInputDate) : undefined
             }
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
             isStartOnMonday={isStartOnMonday}
+            isRange={isRange}
           />
         )}
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
