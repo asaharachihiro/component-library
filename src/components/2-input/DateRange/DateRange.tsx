@@ -2,7 +2,7 @@ import * as React from "react";
 import { ErrorText } from "@components/0-common";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "../Form";
-import { addDays, format, isAfter, isValid, parse, parseISO } from "date-fns";
+import { addDays, isAfter, isValid, parseISO } from "date-fns";
 
 interface DateRangeProps {
   id: string;
@@ -27,68 +27,67 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const formData = context?.formData || {};
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
-
-  const [value, setValue] = React.useState<{
+  type DateRange = {
     start: string | null;
     end: string | null;
-  }>({
+  };
+  const [value, setValue] = React.useState<DateRange>({
     start: "",
     end: "",
   });
-  const [selectedDates, setSelectedDates] = React.useState<string[]>([]);
+
+  const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
+
+  // value, selectedDates の更新ログ
+  React.useEffect(() => {
+    // console.log("[DateRange] value updated:", value);
+  }, [value.start, value.end]);
+
+  React.useEffect(() => {
+    // console.log("[DateRange] selectedDates updated:", selectedDates);
+  }, [selectedDates]);
 
   const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
-  const handleRangeChange = (
-    id: string,
-    range: { start: string; end: string }
-  ) => {
-    const { start, end } = range;
-
-    // どちらかが空、または不正な日付の場合はクリア
-    const startDate = start ? parseISO(start) : null;
-    const endDate = end ? parseISO(end) : null;
-    if (!start || !end || !isValid(startDate) || !isValid(endDate)) {
-      setValue({ start: "", end: "" });
-      return;
-    }
-
-    // 前後関係を整理してstateにセット
-    if (start > end) {
-      setValue({ start: end, end: start });
-    } else {
-      setValue({ start, end });
-    }
+  const handleRangeChange = (id: string, value: DateRange) => {
+    setValue((prev) => fixReversedDates(getNextRange(id, value, prev)));
   };
 
-  const getSelectedDate = React.useCallback(() => {
-    // どちらか片方でも値がある場合
+  const handleInputBlur = (id: string, value: string) => {
+    setValue((prev) => {
+      const next = getNextRange(id, value, prev);
+      const fixed = fixReversedDates(next);
+      // console.log("[handleInputBlur] next:", next, "fixed:", fixed);
+      return fixed;
+    });
+  };
+
+  const getSelectedDate = React.useCallback((): Date[] => {
     if (!value.start && !value.end) return [];
 
-    // どちらかが空の場合は、その日だけ返す
     if (value.start && !value.end) {
       const startDate = parseISO(value.start);
       if (!isValid(startDate)) return [];
-      return [format(startDate, "yyyy/MM/dd")];
+      return [startDate];
     }
     if (!value.start && value.end) {
       const endDate = parseISO(value.end);
       if (!isValid(endDate)) return [];
-      return [format(endDate, "yyyy/MM/dd")];
+      return [endDate];
     }
 
     if (value.start && value.end) {
-      // 両方ある場合は範囲
       const startDate = parseISO(value.start);
       const endDate = parseISO(value.end);
 
       if (!isValid(startDate) || !isValid(endDate)) return [];
+      // start > end の場合は空配列
       if (isAfter(startDate, endDate)) return [];
 
-      const result: string[] = [];
+      const result: Date[] = [];
       let current = startDate;
       while (!isAfter(current, endDate)) {
-        result.push(format(current, "yyyy/MM/dd"));
+        result.push(current);
         current = addDays(current, 1);
       }
       return result;
@@ -96,24 +95,56 @@ export const DateRange: React.FC<DateRangeProps> = ({
     return [];
   }, [value.start, value.end]);
 
+  const getNextRange = (
+    id: string,
+    value: string | DateRange,
+    prev: DateRange
+  ): DateRange => {
+    let next = { ...prev };
+    if (typeof value === "string") {
+      if (id.includes("start")) {
+        next.start = value;
+      } else if (id.includes("end")) {
+        next.end = value;
+      }
+    } else if (typeof value === "object" && value !== null) {
+      next = { start: value.start, end: value.end };
+    }
+    return next;
+  };
+
+  const fixReversedDates = (range: DateRange): DateRange => {
+    if (!range.start || !range.end || range.start === "" || range.end === "")
+      return range;
+    const startDate = parseISO(range.start);
+    const endDate = parseISO(range.end);
+    if (isValid(startDate) && isValid(endDate) && isAfter(startDate, endDate)) {
+      return { start: range.end, end: range.start };
+    }
+
+    return range;
+  };
+
   React.useEffect(() => {
     setSelectedDates(getSelectedDate());
-  }, [getSelectedDate]);
+  }, [value.start, value.end]);
 
   const childArray = React.useMemo(
     () =>
       React.Children.toArray(children).map((child, index) => {
         if (React.isValidElement(child)) {
+          const childValue =
+            index === 0 ? (value.start ?? "") : (value.end ?? "");
           return React.cloneElement(child as React.ReactElement<any>, {
             onChange: handleRangeChange,
-            value: index === 0 ? (value.start ?? "") : (value.end ?? ""),
+            onBlur: handleInputBlur,
+            value: childValue,
             selectedDates,
-            isRange: true,
           });
         }
         return child;
       }),
-    [children, value.start, value.end, selectedDates]
+    [children, value.start, value.end]
   );
 
   return (

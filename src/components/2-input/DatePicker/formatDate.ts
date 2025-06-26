@@ -1,7 +1,7 @@
 import { format, isValid, parseISO } from "date-fns";
 
 // 元号と曜日を含む形式で表示する関数
-const displayDate = (dateObj: Date, isJPLocale: boolean): string => {
+const toDisplayFormat = (dateObj: Date, isJPLocale: boolean): string => {
   // 日付として有効な場合
   if (isJPLocale) {
     // 元号と曜日を取得し、元号X年MM月DD日(曜日)形式で返す
@@ -18,7 +18,7 @@ const displayDate = (dateObj: Date, isJPLocale: boolean): string => {
 };
 
 // 日付をyyyy/MM/dd形式のstringにフォーマット
-export const formatDate = (value: string, isJPLocale?: boolean): string => {
+export const toStringFormat = (value: string, isJPLocale?: boolean): string => {
   if (!value) return "";
 
   // 全角を半角に修正
@@ -38,14 +38,14 @@ export const formatDate = (value: string, isJPLocale?: boolean): string => {
     if (!isValid(createdDateObj)) return "";
 
     //stringに戻す
-    return displayDate(createdDateObj, isJPLocale || false);
+    return toDisplayFormat(createdDateObj, isJPLocale || false);
   }
 
-  return displayDate(dateObj, isJPLocale || false);
+  return toDisplayFormat(dateObj, isJPLocale || false);
 };
 
 // 日付をISO形式のDateオブジェクトに変換
-export const dateFormat = (value: string): Date => {
+export const toDateFormat = (value: string): Date => {
   const replacedValue = value.replaceAll(/\//g, "-");
   const dateObj = parseISO(replacedValue);
 

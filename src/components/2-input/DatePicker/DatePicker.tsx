@@ -4,9 +4,9 @@ import { Calendar } from ".";
 import { IconButton } from "@components/1-action/IconButton";
 import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
-import { dateFormat, formatDate } from "./formatDate";
+import { toDateFormat, toStringFormat } from "./formatDate";
 import { cn } from "../../../utils/cn";
-import { format, isValid, parse } from "date-fns";
+import { isValid } from "date-fns";
 
 interface DatePickerProps {
   id: string;
@@ -22,14 +22,10 @@ interface DatePickerProps {
   isJPLocale?: boolean;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onChange?: (
-    id: string,
-    date: string | { start: string; end: string }
-  ) => void;
+  onChange?: (id: string, date: string) => void;
   onBlur?: (id: string, date: string) => void;
   onFocus?: (id: string, date: string) => void;
   tooltip?: React.ReactNode;
-  isRange?: boolean;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -52,7 +48,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       onBlur,
       onFocus,
       tooltip,
-      isRange = false,
       ...props
     },
     ref
@@ -68,73 +63,38 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const [showCalendar, setShowCalendar] = React.useState(false);
     const [inputDate, setInputDate] = React.useState(() =>
-      value ? formatDate(value, isJPLocale) : ""
+      value ? toStringFormat(value, isJPLocale) : ""
     );
 
     React.useEffect(() => {
-      if (formData[id]) {
-        setInputDate(formatDate(formData[id], isJPLocale));
-      } else {
-        setInputDate(value ? formatDate(value, isJPLocale) : "");
-      }
-    }, [formData, id, value, isJPLocale]);
+      setInputDate(value ? toStringFormat(value, isJPLocale) : "");
+    }, [value, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
 
-    const onSelectChange = (id: string, dates: string | string[]) => {
-      if (Array.isArray(dates)) {
-        if (dates.length === 1) {
-          if (!dates[0] || !isValid(dateFormat(dates[0]))) {
-            setInputDate("");
-            onChange?.(id, { start: "", end: "" });
-          } else {
-            setInputDate(dates[0]);
-            onChange?.(id, { start: dates[0], end: "" });
-          }
-        } else if (dates.length === 2) {
-          const validStart = dates[0] && isValid(dateFormat(dates[0]));
-          const validEnd = dates[1] && isValid(dateFormat(dates[1]));
-          if (!validStart || !validEnd) {
-            setInputDate("");
-            onChange?.(id, { start: "", end: "" });
-          } else {
-            setInputDate(`${dates[0]} 〜 ${dates[1]}`);
-            onChange?.(id, { start: dates[0], end: dates[1] });
-          }
-        }
-      } else {
-        if (!dates || !isValid(dateFormat(dates))) {
-          setInputDate("");
-          onChange?.(id, "");
-        } else {
-          setInputDate(formatDate(dates, isJPLocale));
-          onChange?.(id, dates);
-          setShowCalendar(false);
-        }
+    const onSelectChange = (id: string, date: string) => {
+      setInputDate(toStringFormat(date, isJPLocale));
+      if (onChange) {
+        onChange(id, date);
       }
+      setShowCalendar(false);
     };
 
     const onInputChange = (id: string, value: string) => {
       setInputDate(value);
-      handleInputChange(id, value);
     };
 
     // Blur時に値をフォーマット
     const handleOnBlur = (id: string, value: string) => {
-      if (onChange) {
-        const parsed = parse(inputDate, "yyyy/MM/dd", new Date());
-        if (isValid(parsed)) {
-          const formatted = format(parsed, "yyyy-MM-dd");
-          onChange(id, formatted);
-        } else {
-          onChange(id, "");
-        }
-      }
+      const formattedDate = toStringFormat(value, isJPLocale);
+      const dateStr = toStringFormat(value, false).replaceAll(/[^0-9]/g, "-");
+      setInputDate(formattedDate);
       if (onBlur) {
-        onBlur(id, value);
+        onBlur(id, dateStr);
       }
+      handleInputChange(id, value);
     };
 
     // Focus時に入力値を表示
@@ -146,19 +106,12 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     };
 
     const selectedDatesForCalendar = React.useMemo(() => {
-      if (selectedDates && selectedDates.length > 0) {
-        return selectedDates;
-      }
-      if (inputDate) {
-        const d = dateFormat(inputDate);
-        return isValid(d) ? [d] : [];
-      }
-      return [];
-    }, [selectedDates, inputDate]);
+      return selectedDates && selectedDates.length > 0 ? selectedDates : [];
+    }, [selectedDates]);
 
     const calendarInputDate = React.useMemo(() => {
       if (inputDate) {
-        const d = dateFormat(inputDate);
+        const d = toDateFormat(inputDate);
         return isValid(d) ? d : new Date();
       }
       return new Date();
@@ -214,14 +167,14 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Calendar
             id={id}
             className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
-            inputDate={selectedDatesForCalendar}
+            inputDate={calendarInputDate}
+            selectedDates={selectedDatesForCalendar}
             getCalendar={
               getCalendar ? () => getCalendar(calendarInputDate) : undefined
             }
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
             isStartOnMonday={isStartOnMonday}
-            isRange={isRange}
           />
         )}
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>

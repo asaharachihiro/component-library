@@ -17,13 +17,13 @@ import {
 
 interface CalendarProps {
   id: string;
-  inputDate?: Date | Date[];
+  inputDate?: Date;
   className?: string;
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
-  onSelectDate: (id: string, date: string | string[]) => void;
+  onSelectDate: (id: string, date: string) => void;
   onClosed: (isCanceled: boolean) => void;
-  isRange?: boolean;
+  selectedDates?: Date[];
   // strategy?: "absolute" | "fixed";
   // x?: number | null;
   // y?: number | null;
@@ -39,23 +39,24 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       onSelectDate,
       onClosed,
       isStartOnMonday = false,
-      isRange = false,
+      selectedDates,
       // strategy = "absolute",
       // x = 0,
       // y = 0,
     },
     ref
   ) => {
+    const hasRange = selectedDates && selectedDates.length > 0;
     const initialDate = () => {
-      if (!inputDate) {
-        return new Date();
+      if (!inputDate) return new Date();
+      if (Array.isArray(inputDate)) {
+        const d = inputDate[0];
+        return isValid(d) ? d : new Date();
       }
-      const d = Array.isArray(inputDate) ? inputDate[0] : inputDate;
-      return isValid(d) ? d : new Date();
+      return isValid(inputDate) ? inputDate : new Date();
     };
 
     const [currentDate, setCurrentDate] = React.useState(initialDate);
-    const [clickedDates, setClickedDates] = React.useState<string[]>([]);
 
     React.useEffect(() => {
       setCurrentDate(initialDate);
@@ -87,8 +88,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
           disabled: false,
         })
       );
-      // ここでも念のためフィルタ
-      return dates.filter((item) => isValid(item.date));
+      return dates;
     };
 
     // 表示の1日目の曜日を取得
@@ -118,8 +118,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     const isToday = (date: Date): boolean => {
       if (!isValid(date)) return false;
       const today = format(new Date(), "yyyy-MM-dd");
-      const inputDate = format(date, "yyyy-MM-dd");
-      return today === inputDate;
+      return today === format(date, "yyyy-MM-dd");
     };
 
     // 表示する月の移動
@@ -131,42 +130,20 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
 
     const handleDateClick = (id: string, date: Date) => {
       const dateStr = format(date, "yyyy-MM-dd");
-      if (isRange) {
-        setClickedDates((prev) => {
-          let next: string[];
-          if (prev.length === 0 || prev.length === 2) {
-            next = [dateStr];
-            onSelectDate(id, next);
-          } else {
-            next = [prev[0], dateStr].slice(-2);
-            onSelectDate(id, next);
-          }
-          return next;
-        });
-        // ★ ここでreturnして、下のonClosedを実行しない
-        return;
-      }
-
-      onSelectDate(id, format(date, "yyyy-MM-dd"));
+      onSelectDate(id, dateStr);
       onClosed(false);
     };
 
     const isSelected = (date: Date): boolean => {
       if (!isValid(date)) return false;
       const dateStr = format(date, "yyyy-MM-dd");
-      if (isRange && clickedDates.length === 2) {
-        // 2つクリック済みなら、その範囲をハイライト
-        const [start, end] = clickedDates.slice().sort(); // 昇順
-        return start <= dateStr && dateStr <= end;
-      }
-      if (isRange && clickedDates.length === 1) {
-        // 1つだけクリック済みなら、その日だけハイライト
-        return clickedDates[0] === dateStr;
+
+      if (selectedDates && selectedDates.length > 0) {
+        return selectedDates.some(
+          (d) => isValid(d) && format(d, "yyyy-MM-dd") === dateStr
+        );
       }
       if (!inputDate) return false;
-      if (Array.isArray(inputDate)) {
-        return inputDate.some((d) => format(d, "yyyy-MM-dd") === dateStr);
-      }
       return format(inputDate, "yyyy-MM-dd") === dateStr;
     };
 
@@ -244,7 +221,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               );
             })}
           </div>
-          {isRange && (
+          {hasRange && (
             <div className="flex justify-end space-x-4">
               <Button
                 variant="textSecondary"
