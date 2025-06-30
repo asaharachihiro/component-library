@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IconButton } from "@components/1-action/IconButton";
-import { DateButton } from "@components/2-input/DatePicker";
+import { NumberButton } from "@components/0-common";
 import { cn } from "../../../utils/cn";
 
 interface PagenationProps {
@@ -99,7 +99,7 @@ export const Pagenation: React.FC<PagenationProps> = ({
                       : ""
                   )}
                 >
-                  <DateButton
+                  <NumberButton
                     id={page.toString()}
                     number={page.toString()}
                     onClick={() => handleChange(page)}

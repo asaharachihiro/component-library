@@ -2,11 +2,11 @@ import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "@components/0-common";
 import { Calendar } from ".";
 import { IconButton } from "@components/1-action/IconButton";
-import { parseISO, isValid } from "date-fns";
 import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
-import { formatDate } from "./formatDate";
+import { toDateFormat, toStringFormat } from "./formatDate";
 import { cn } from "../../../utils/cn";
+import { isValid } from "date-fns";
 
 interface DatePickerProps {
   id: string;
@@ -16,6 +16,7 @@ interface DatePickerProps {
   className?: string;
   isRequired?: boolean;
   value?: string;
+  selectedDates?: Date[];
   isValidValue?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
@@ -36,6 +37,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       errorMessage,
       className,
       value,
+      selectedDates = [],
       isValidValue,
       isRequired = false,
       disabled = false,
@@ -60,41 +62,51 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
     const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputDate, setInputDate] = React.useState(
-      formData[id]
-        ? formatDate(formData[id], isJPLocale)
-        : value
-          ? formatDate(value, isJPLocale)
-          : ""
+    const [inputStr, setInputStr] = React.useState(() =>
+      value ? toStringFormat(value, isJPLocale) : ""
     );
+    const [inputDate, setInputDate] = React.useState(() =>
+      value ? toDateFormat(value) : undefined
+    );
+
+    const hasRange = selectedDates && selectedDates.length > 0;
+
+    React.useEffect(() => {
+      if (document.activeElement !== inputRef.current) {
+        setInputStr(value ? toStringFormat(value, isJPLocale) : "");
+        setInputDate(value ? toDateFormat(value) : undefined);
+      }
+    }, [value, isJPLocale]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
 
     const onSelectChange = (id: string, date: string) => {
-      setInputDate(formatDate(date, isJPLocale));
+      setInputStr(toStringFormat(date, isJPLocale));
+      setInputDate(toDateFormat(date));
       if (onChange) {
         onChange(id, date);
       }
-      setShowCalendar(false);
+      if (!hasRange) {
+        setTimeout(() => setShowCalendar(false), 100);
+      }
     };
 
     const onInputChange = (id: string, value: string) => {
-      setInputDate(value);
-      if (onChange) {
-        onChange(id, value);
-      }
-      handleInputChange(id, value);
+      setInputStr(value);
+      setInputDate(toDateFormat(value));
     };
 
     // Blur時に値をフォーマット
     const handleOnBlur = (id: string, value: string) => {
-      const formattedDate = formatDate(value, isJPLocale);
-      setInputDate(formattedDate);
+      const dateStr = toStringFormat(value, false).replaceAll(/[^0-9]/g, "-");
+      setInputStr(toStringFormat(value, isJPLocale));
+      setInputDate(toDateFormat(value));
       if (onBlur) {
-        onBlur(id, value);
+        onBlur(id, dateStr);
       }
+      handleInputChange(id, value);
     };
 
     // Focus時に入力値を表示
@@ -110,8 +122,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     useClickOutside(InputRef as React.RefObject<HTMLElement>, () =>
       setShowCalendar(false)
     );
-
-    // TODO:useFloatingPosition
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     return (
       <div className={className} ref={InputRef}>
@@ -121,7 +132,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         <div className="relative">
           <InputBox
             id={id}
-            value={inputDate}
+            value={inputStr}
             isValid={isValidStatus}
             disabled={disabled}
             type="tel"
@@ -133,10 +144,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}
             autoComplete="off"
-            ref={ref}
+            ref={inputRef}
             {...props}
           />
-          {!inputDate && (
+          {!inputStr && (
             <div className="pointer-events-none absolute inset-y-0 left-0 flex select-none items-center pl-2 text-black-20-opacity">
               <span>年 / 月 / 日</span>
             </div>
@@ -155,19 +166,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <Calendar
             id={id}
             className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
-            inputDate={
-              inputDate && isValid(parseISO(inputDate))
-                ? parseISO(inputDate)
-                : undefined
-            }
+            inputDate={inputDate && isValid(inputDate) ? inputDate : undefined}
+            selectedDates={selectedDates}
             getCalendar={
-              getCalendar
-                ? () =>
-                    getCalendar(
-                      inputDate && isValid(parseISO(inputDate))
-                        ? parseISO(inputDate)
-                        : new Date()
-                    )
+              inputDate && getCalendar
+                ? () => getCalendar(inputDate)
                 : undefined
             }
             onSelectDate={onSelectChange}

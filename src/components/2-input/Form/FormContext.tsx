@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
 
-interface FormContextProps {
-  formData: Record<string, any>;
+interface FormContextProps<T = any> {
+  formData: Record<string, T>;
   errors: Record<string, string | null>;
-  handleInputChange: (id: string, value: string) => void;
+  handleInputChange: (id: string, value: T) => void;
 }
 
 export const FormContext = createContext<FormContextProps | undefined>(

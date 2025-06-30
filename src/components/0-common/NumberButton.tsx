@@ -1,7 +1,7 @@
 import * as React from "react";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../utils/cn";
 
-interface DateButtonProps {
+interface NumberButtonProps {
   id: string;
   number?: string;
   selected?: boolean;
@@ -10,7 +10,10 @@ interface DateButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
+export const NumberButton = React.forwardRef<
+  HTMLButtonElement,
+  NumberButtonProps
+>(
   (
     {
       id,
@@ -39,7 +42,7 @@ export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
         id={id}
         className={className}
         ref={ref}
-        aria-label={`date ${number}`}
+        aria-label={`${number}`}
         aria-pressed={selected}
         disabled={disabled}
         type="button"
@@ -50,4 +53,4 @@ export const DateButton = React.forwardRef<HTMLButtonElement, DateButtonProps>(
     );
   }
 );
-DateButton.displayName = "DateButton";
+NumberButton.displayName = "NumberButton";

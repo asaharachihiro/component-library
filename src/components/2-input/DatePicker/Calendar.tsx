@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { DateButton } from "./DateButton";
-import { Button } from "@components/1-action/Button";
+import { NumberButton } from "../../0-common";
 import { IconButton } from "@components/1-action/IconButton";
 import { SelectBox } from "@components/3-selection/SelectBox/SelectBox";
 import {
   format,
   getDay,
   getDaysInMonth,
+  isValid,
   setDate,
   setMonth,
   setYear,
@@ -21,7 +21,8 @@ interface CalendarProps {
   isStartOnMonday?: boolean;
   getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
   onSelectDate: (id: string, date: string) => void;
-  onClosed?: (isCanceled: boolean) => void;
+  onClosed: (isCanceled: boolean) => void;
+  selectedDates?: Date[];
   // strategy?: "absolute" | "fixed";
   // x?: number | null;
   // y?: number | null;
@@ -37,22 +38,20 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       onSelectDate,
       onClosed,
       isStartOnMonday = false,
+      selectedDates,
       // strategy = "absolute",
       // x = 0,
       // y = 0,
     },
     ref
   ) => {
-    const [currentDate, setCurrentDate] = React.useState(
-      inputDate || new Date()
-    );
-
-    React.useEffect(() => {
-      setCurrentDate(inputDate || new Date());
-    }, [inputDate]);
+    const initialDate = inputDate
+      ? setDate(inputDate, 1)
+      : setDate(new Date(), 1);
+    const [currentDate, setCurrentDate] = React.useState(initialDate);
 
     // 年のSelectBoxリスト
-    const currentYear = parseInt(format(new Date(), "yyyy"));
+    const currentYear = parseInt(format(currentDate, "yyyy"));
     const yearsList = Array.from({ length: 201 }, (_, i) => ({
       value: (currentYear - 100 + i).toString(),
       label: (currentYear - 100 + i).toString(),
@@ -67,7 +66,8 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     // 日付のリストを取得
     const datesList = (): { date: Date; disabled: boolean }[] => {
       if (getCalendar) {
-        return getCalendar(currentDate);
+        // getCalendarの戻り値も必ずdateがDate型かつisValidかチェック
+        return getCalendar(currentDate).filter((item) => isValid(item.date));
       }
       const dates = Array.from(
         { length: getDaysInMonth(currentDate) },
@@ -76,7 +76,6 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
           disabled: false,
         })
       );
-
       return dates;
     };
 
@@ -105,9 +104,9 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
 
     // 今日の日付かどうかを判定
     const isToday = (date: Date): boolean => {
+      if (!isValid(date)) return false;
       const today = format(new Date(), "yyyy-MM-dd");
-      const inputDate = format(date, "yyyy-MM-dd");
-      return today === inputDate;
+      return today === format(date, "yyyy-MM-dd");
     };
 
     // 表示する月の移動
@@ -115,6 +114,25 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       const newDate = direction === "prev" ? -1 : 1;
       const nextMonth = setMonth(currentDate, currentDate.getMonth() + newDate);
       setCurrentDate(nextMonth);
+    };
+
+    const handleDateClick = (id: string, date: Date) => {
+      const dateStr = format(date, "yyyy-MM-dd");
+      onSelectDate(id, dateStr);
+      onClosed(false);
+    };
+
+    const isSelected = (date: Date): boolean => {
+      const dateStr = format(date, "yyyy-MM-dd");
+      if (selectedDates && selectedDates.length > 0) {
+        return selectedDates.some(
+          (d) => isValid(d) && format(d, "yyyy-MM-dd") === dateStr
+        );
+      }
+      if (inputDate) {
+        return format(inputDate, "yyyy-MM-dd") === dateStr;
+      }
+      return false;
     };
 
     return (
@@ -170,34 +188,26 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
             {Array.from({ length: getStartDayOfMonth() }).map((_, i) => (
               <div key={`empty-${i}`} className="h-7 w-7" />
             ))}
-            {datesList().map(({ date, disabled }) => {
+            {datesList().map(({ date, disabled }, i) => {
+              if (!date || !isValid(date)) return null;
+              let number = "";
+              try {
+                number = format(date, "dd");
+              } catch {
+                return null;
+              }
               return (
-                <DateButton
-                  onClick={() => onSelectDate(id, format(date, "yyyy-MM-dd"))}
-                  number={format(date, "dd")}
+                <NumberButton
+                  onClick={() => handleDateClick(id, date)}
+                  number={number}
                   key={format(date, "yyyy-MM-dd")}
                   id={format(date, "yyyy-MM-dd")}
-                  selected={
-                    inputDate
-                      ? format(inputDate, "yyyy-MM-dd") ===
-                        format(date, "yyyy-MM-dd")
-                      : false
-                  }
+                  selected={isSelected(date)}
                   isToday={isToday(date)}
                   disabled={disabled}
                 />
               );
             })}
-          </div>
-          <div className="flex justify-end space-x-4">
-            <Button
-              variant="textSecondary"
-              type="reset"
-              onClick={() => onClosed && onClosed(false)}
-              label="キャンセル"
-            />
-            {/* TODO: 日付範囲指定のためのボタン
-          <Button variant="primary" size="sm" type="submit" label="決定"}/> */}
           </div>
         </div>
       </div>
