@@ -47,13 +47,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const handleInputChange = context?.handleInputChange || (() => {});
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(
-    formData[id] || value
-  );
-
-  React.useEffect(() => {
-    setSelectedValue(formData[id] || value);
-  }, [formData[id], value]);
+  const selectedValue = value ? value : formData[id];
 
   const selectedLabel = React.useMemo(() => {
     const selectedOption = options.find(
@@ -73,7 +67,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   });
 
   const handleChange = (newValue: string) => {
-    setSelectedValue(newValue);
     setIsOpen(false);
     if (onChange) {
       onChange(newValue);

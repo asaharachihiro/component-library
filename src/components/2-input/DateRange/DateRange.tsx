@@ -3,10 +3,10 @@ import { ErrorText } from "@components/0-common";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "../Form";
 import { addDays, isAfter, isValid, parseISO } from "date-fns";
+import { DatePicker } from "../DatePicker";
 
 interface DateRangeProps {
   id: string;
-  children: [React.ReactElement, React.ReactElement];
   className?: string;
   isValidValue?: boolean;
   supportMessage?: string;
@@ -16,7 +16,6 @@ interface DateRangeProps {
 export const DateRange: React.FC<DateRangeProps> = ({
   id,
   isValidValue,
-  children,
   className,
   supportMessage,
   errorMessage,
@@ -38,28 +37,14 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
 
-  // value, selectedDates の更新ログ
-  React.useEffect(() => {
-    // console.log("[DateRange] value updated:", value);
-  }, [value.start, value.end]);
-
-  React.useEffect(() => {
-    // console.log("[DateRange] selectedDates updated:", selectedDates);
-  }, [selectedDates]);
-
   const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
-  const handleRangeChange = (id: string, value: DateRange) => {
+  const handleRangeChange = (id: string, value: string) => {
     setValue((prev) => fixReversedDates(getNextRange(id, value, prev)));
   };
 
   const handleInputBlur = (id: string, value: string) => {
-    setValue((prev) => {
-      const next = getNextRange(id, value, prev);
-      const fixed = fixReversedDates(next);
-      // console.log("[handleInputBlur] next:", next, "fixed:", fixed);
-      return fixed;
-    });
+    setValue((prev) => fixReversedDates(getNextRange(id, value, prev)));
   };
 
   const getSelectedDate = React.useCallback((): Date[] => {
@@ -97,18 +82,15 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   const getNextRange = (
     id: string,
-    value: string | DateRange,
+    value: string,
     prev: DateRange
   ): DateRange => {
     let next = { ...prev };
-    if (typeof value === "string") {
-      if (id.includes("start")) {
-        next.start = value;
-      } else if (id.includes("end")) {
-        next.end = value;
-      }
-    } else if (typeof value === "object" && value !== null) {
-      next = { start: value.start, end: value.end };
+
+    if (id.includes("start")) {
+      next.start = value;
+    } else if (id.includes("end")) {
+      next.end = value;
     }
     return next;
   };
@@ -129,37 +111,27 @@ export const DateRange: React.FC<DateRangeProps> = ({
     setSelectedDates(getSelectedDate());
   }, [value.start, value.end]);
 
-  const childArray = React.useMemo(
-    () =>
-      React.Children.toArray(children).map((child, index) => {
-        if (React.isValidElement(child)) {
-          const childValue =
-            index === 0 ? (value.start ?? "") : (value.end ?? "");
-          return React.cloneElement(child as React.ReactElement<any>, {
-            onChange: handleRangeChange,
-            onBlur: handleInputBlur,
-            value: childValue,
-            selectedDates,
-          });
-        }
-        return child;
-      }),
-    [children, value.start, value.end]
-  );
-
   return (
     <div className={className} id={id}>
       <div className={"flex items-end"}>
-        {childArray.map((child, index) => (
-          <React.Fragment key={index}>
-            {child}
-            {index === 0 && (
-              <span className="mx-2 flex h-10 items-center text-xs text-black-sub">
-                〜
-              </span>
-            )}
-          </React.Fragment>
-        ))}
+        <DatePicker
+          id={"DateRange-DatePicker-start"}
+          onChange={handleRangeChange}
+          onBlur={handleInputBlur}
+          value={value.start ? value.start : ""}
+          selectedDates={selectedDates}
+        />
+
+        <span className="mx-2 flex h-10 items-center text-xs text-black-sub">
+          〜
+        </span>
+        <DatePicker
+          id={"DateRange-DatePicker-end"}
+          onChange={handleRangeChange}
+          onBlur={handleInputBlur}
+          value={value.end ? value.end : ""}
+          selectedDates={selectedDates}
+        />
       </div>
       <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
         {supportMessage && (

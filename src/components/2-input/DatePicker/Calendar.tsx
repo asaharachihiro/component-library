@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { NumberButton } from "../../0-common";
-import { Button } from "@components/1-action/Button";
 import { IconButton } from "@components/1-action/IconButton";
 import { SelectBox } from "@components/3-selection/SelectBox/SelectBox";
 import {
@@ -46,24 +45,13 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     },
     ref
   ) => {
-    const hasRange = selectedDates && selectedDates.length > 0;
-    const initialDate = () => {
-      if (!inputDate) return new Date();
-      if (Array.isArray(inputDate)) {
-        const d = inputDate[0];
-        return isValid(d) ? d : new Date();
-      }
-      return isValid(inputDate) ? inputDate : new Date();
-    };
-
+    const initialDate = inputDate
+      ? setDate(inputDate, 1)
+      : setDate(new Date(), 1);
     const [currentDate, setCurrentDate] = React.useState(initialDate);
 
-    React.useEffect(() => {
-      setCurrentDate(initialDate);
-    }, [inputDate]);
-
     // 年のSelectBoxリスト
-    const currentYear = parseInt(format(new Date(), "yyyy"));
+    const currentYear = parseInt(format(currentDate, "yyyy"));
     const yearsList = Array.from({ length: 201 }, (_, i) => ({
       value: (currentYear - 100 + i).toString(),
       label: (currentYear - 100 + i).toString(),
@@ -135,16 +123,16 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     };
 
     const isSelected = (date: Date): boolean => {
-      if (!isValid(date)) return false;
       const dateStr = format(date, "yyyy-MM-dd");
-
       if (selectedDates && selectedDates.length > 0) {
         return selectedDates.some(
           (d) => isValid(d) && format(d, "yyyy-MM-dd") === dateStr
         );
       }
-      if (!inputDate) return false;
-      return format(inputDate, "yyyy-MM-dd") === dateStr;
+      if (inputDate) {
+        return format(inputDate, "yyyy-MM-dd") === dateStr;
+      }
+      return false;
     };
 
     return (
@@ -221,23 +209,6 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               );
             })}
           </div>
-          {hasRange && (
-            <div className="flex justify-end space-x-4">
-              <Button
-                variant="textSecondary"
-                type="reset"
-                onClick={() => onClosed(false)}
-                label="キャンセル"
-              />
-              <Button
-                variant="primary"
-                size="s"
-                type="submit"
-                onClick={() => onClosed(false)}
-                label="決定"
-              />
-            </div>
-          )}
         </div>
       </div>
     );
