@@ -6,7 +6,7 @@ import { useFormContext } from "@components/2-input/Form/FormContext";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { toDateFormat, toStringFormat } from "./formatDate";
 import { cn } from "../../../utils/cn";
-import { format, isValid, set } from "date-fns";
+import { isValid } from "date-fns";
 
 interface DatePickerProps {
   id: string;

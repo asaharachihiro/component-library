@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DateRange } from ".";
 import { DatePicker } from "../DatePicker";
-import { Form, FormFooter } from "../Form";
-import { Button } from "@components/1-action/Button";
+import { Form } from "../Form";
 
 const meta: Meta<typeof DateRange> = {
   title: "Components/Input/DateRange",
@@ -45,6 +44,7 @@ export const Default: Story = {
   ...Template,
   args: {
     id: "date-range",
+    label: "対象期間",
     className: "w-[400px]",
     isValidValue: false,
     supportMessage: "指定できる日数は最大30日間です。",

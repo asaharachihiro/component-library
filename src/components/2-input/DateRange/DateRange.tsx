@@ -5,20 +5,53 @@ import { useFormContext } from "../Form";
 import { addDays, isAfter, isValid, parseISO } from "date-fns";
 import { DatePicker } from "../DatePicker";
 
+export interface DateRangeValue {
+  start: string;
+  end: string;
+}
+
 interface DateRangeProps {
   id: string;
+  label?: string;
+  value?: DateRangeValue;
+  isJPLocale?: boolean;
   className?: string;
   isValidValue?: boolean;
+  isRequired?: {
+    start?: boolean;
+    end?: boolean;
+  };
+  disabled?: {
+    start?: boolean;
+    end?: boolean;
+  };
   supportMessage?: string;
   errorMessage?: string;
+  isStartOnMonday?: boolean;
+  getCalendar?: (inputData: Date) => { date: Date; disabled: boolean }[];
+  onChange?: (range: DateRangeValue) => void;
+  onBlur?: (range: DateRangeValue) => void;
+  onFocus?: (range: DateRangeValue) => void;
+  tooltip?: React.ReactNode;
 }
 
 export const DateRange: React.FC<DateRangeProps> = ({
   id,
+  label,
+  value,
   isValidValue,
   className,
   supportMessage,
   errorMessage,
+  isRequired,
+  disabled,
+  isStartOnMonday,
+  isJPLocale,
+  getCalendar,
+  onChange,
+  onBlur,
+  onFocus,
+  tooltip,
 }) => {
   const context = useFormContext();
 
@@ -26,44 +59,61 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const formData = context?.formData || {};
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
-  type DateRange = {
-    start: string | null;
-    end: string | null;
-  };
-  const [value, setValue] = React.useState<DateRange>({
-    start: "",
-    end: "",
-  });
+
+  const [dateRange, setDateRange] = React.useState<DateRangeValue>(
+    value ?? formData[id] ?? { start: "", end: "" }
+  );
 
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
 
   const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
   const handleRangeChange = (id: string, value: string) => {
-    setValue((prev) => fixReversedDates(getNextRange(id, value, prev)));
+    setDateRange((prev) => {
+      const next = fixReversedDates(getNextRange(id, value, prev));
+      if (onChange) onChange(next);
+      if (context) {
+        handleInputChange(id, next);
+      }
+      return next;
+    });
   };
 
   const handleInputBlur = (id: string, value: string) => {
-    setValue((prev) => fixReversedDates(getNextRange(id, value, prev)));
+    setDateRange((prev) => {
+      const next = fixReversedDates(getNextRange(id, value, prev));
+      if (onBlur) onBlur(next);
+      return next;
+    });
+  };
+
+  const handleOnFocus = (id: string, value: string) => {
+    if (onFocus) {
+      setDateRange((prev) => {
+        const next = fixReversedDates(getNextRange(id, value, prev));
+        onFocus(next);
+        return next;
+      });
+    }
   };
 
   const getSelectedDate = React.useCallback((): Date[] => {
-    if (!value.start && !value.end) return [];
+    if (!dateRange.start && !dateRange.end) return [];
 
-    if (value.start && !value.end) {
-      const startDate = parseISO(value.start);
+    if (dateRange.start && !dateRange.end) {
+      const startDate = parseISO(dateRange.start);
       if (!isValid(startDate)) return [];
       return [startDate];
     }
-    if (!value.start && value.end) {
-      const endDate = parseISO(value.end);
+    if (!dateRange.start && dateRange.end) {
+      const endDate = parseISO(dateRange.end);
       if (!isValid(endDate)) return [];
       return [endDate];
     }
 
-    if (value.start && value.end) {
-      const startDate = parseISO(value.start);
-      const endDate = parseISO(value.end);
+    if (dateRange.start && dateRange.end) {
+      const startDate = parseISO(dateRange.start);
+      const endDate = parseISO(dateRange.end);
 
       if (!isValid(startDate) || !isValid(endDate)) return [];
       // start > end の場合は空配列
@@ -78,24 +128,24 @@ export const DateRange: React.FC<DateRangeProps> = ({
       return result;
     }
     return [];
-  }, [value.start, value.end]);
+  }, [dateRange.start, dateRange.end]);
 
   const getNextRange = (
     id: string,
-    value: string,
-    prev: DateRange
-  ): DateRange => {
+    dateRange: string,
+    prev: DateRangeValue
+  ): DateRangeValue => {
     let next = { ...prev };
 
     if (id.includes("start")) {
-      next.start = value;
+      next.start = dateRange;
     } else if (id.includes("end")) {
-      next.end = value;
+      next.end = dateRange;
     }
     return next;
   };
 
-  const fixReversedDates = (range: DateRange): DateRange => {
+  const fixReversedDates = (range: DateRangeValue): DateRangeValue => {
     if (!range.start || !range.end || range.start === "" || range.end === "")
       return range;
     const startDate = parseISO(range.start);
@@ -109,7 +159,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   React.useEffect(() => {
     setSelectedDates(getSelectedDate());
-  }, [value.start, value.end]);
+  }, [dateRange.start, dateRange.end]);
 
   return (
     <div className={className} id={id}>
@@ -118,8 +168,16 @@ export const DateRange: React.FC<DateRangeProps> = ({
           id={"DateRange-DatePicker-start"}
           onChange={handleRangeChange}
           onBlur={handleInputBlur}
-          value={value.start ? value.start : ""}
+          onFocus={handleOnFocus}
+          value={dateRange.start ? dateRange.start : ""}
           selectedDates={selectedDates}
+          isRequired={isRequired?.start}
+          disabled={disabled?.start}
+          label={label}
+          isJPLocale={isJPLocale}
+          isValidValue={isValidValue}
+          isStartOnMonday={isStartOnMonday}
+          getCalendar={getCalendar}
         />
 
         <span className="mx-2 flex h-10 items-center text-xs text-black-sub">
@@ -129,8 +187,15 @@ export const DateRange: React.FC<DateRangeProps> = ({
           id={"DateRange-DatePicker-end"}
           onChange={handleRangeChange}
           onBlur={handleInputBlur}
-          value={value.end ? value.end : ""}
+          onFocus={handleOnFocus}
+          value={dateRange.end ? dateRange.end : ""}
           selectedDates={selectedDates}
+          isRequired={isRequired?.end}
+          disabled={disabled?.end}
+          isJPLocale={isJPLocale}
+          isValidValue={isValidValue}
+          isStartOnMonday={isStartOnMonday}
+          getCalendar={getCalendar}
         />
       </div>
       <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
