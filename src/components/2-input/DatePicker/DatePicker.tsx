@@ -63,10 +63,10 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const [showCalendar, setShowCalendar] = React.useState(false);
     const [inputStr, setInputStr] = React.useState(() =>
-      value ? toStringFormat(value, isJPLocale) : ""
+      value ? toStringFormat(value, isJPLocale) : formData[id]
     );
     const [inputDate, setInputDate] = React.useState(() =>
-      value ? toDateFormat(value) : undefined
+      value ? toDateFormat(value) : toDateFormat(formData[id]) || null
     );
 
     const hasRange = selectedDates && selectedDates.length > 0;
@@ -74,7 +74,9 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     React.useEffect(() => {
       if (document.activeElement !== inputRef.current) {
         setInputStr(value ? toStringFormat(value, isJPLocale) : "");
-        setInputDate(value ? toDateFormat(value) : undefined);
+        setInputDate(
+          value ? toDateFormat(value) : (toDateFormat(formData[id]) ?? null)
+        );
       }
     }, [value, isJPLocale]);
 
@@ -168,11 +170,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             className="absolute z-10 mt-1 rounded-lg bg-white shadow-low"
             inputDate={inputDate && isValid(inputDate) ? inputDate : undefined}
             selectedDates={selectedDates}
-            getCalendar={
-              inputDate && getCalendar
-                ? () => getCalendar(inputDate)
-                : undefined
-            }
+            getCalendar={getCalendar}
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
             isStartOnMonday={isStartOnMonday}
