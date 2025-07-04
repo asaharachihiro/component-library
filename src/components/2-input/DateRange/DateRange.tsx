@@ -4,6 +4,7 @@ import { cn } from "../../../utils/cn";
 import { useFormContext } from "../Form";
 import { addDays, isAfter, isValid, parseISO } from "date-fns";
 import { DatePicker } from "../DatePicker";
+import { toStringFormat } from "../DatePicker/formatDate";
 
 export interface DateRangeValue {
   start: string;
@@ -60,9 +61,21 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
 
-  const [dateRange, setDateRange] = React.useState<DateRangeValue>(
-    value ?? formData[id] ?? { start: "", end: "" }
-  );
+  const initialDateStr =
+    typeof value !== "undefined"
+      ? {
+          start: toStringFormat(value.start, isJPLocale),
+          end: toStringFormat(value.end, isJPLocale),
+        }
+      : typeof formData[id] !== "undefined"
+        ? {
+            start: toStringFormat(formData[id].start, isJPLocale),
+            end: toStringFormat(formData[id].end, isJPLocale),
+          }
+        : { start: "", end: "" };
+
+  const [dateRange, setDateRange] =
+    React.useState<DateRangeValue>(initialDateStr);
 
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
 
@@ -70,21 +83,20 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   const handleRangeChange = (id: string, value: string) => {
     setDateRange((prev) => {
-      const next = fixReversedDates(getNextRange(id, value, prev));
-      if (onChange) onChange(next);
-      if (context) {
-        handleInputChange(id, next);
-      }
+      const next = getNextRange(id, value, prev);
+      if (context) handleInputChange(id, next);
       return next;
     });
+    if (onChange) onChange(getNextRange(id, value, dateRange));
   };
 
   const handleInputBlur = (id: string, value: string) => {
     setDateRange((prev) => {
       const next = fixReversedDates(getNextRange(id, value, prev));
-      if (onBlur) onBlur(next);
+      if (context) handleInputChange(id, next);
       return next;
     });
+    if (onBlur) onBlur(fixReversedDates(getNextRange(id, value, dateRange)));
   };
 
   const handleOnFocus = (id: string, value: string) => {
@@ -153,6 +165,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
     if (isValid(startDate) && isValid(endDate) && isAfter(startDate, endDate)) {
       return { start: range.end, end: range.start };
     }
+    console.log("startDate:", startDate);
+    console.log("endDate:", endDate);
 
     return range;
   };

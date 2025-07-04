@@ -61,24 +61,36 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
+    const initialDateStr =
+      typeof value !== "undefined"
+        ? toStringFormat(value, isJPLocale)
+        : typeof formData[id] !== "undefined"
+          ? toStringFormat(formData[id], isJPLocale)
+          : "";
+
+    const initialDate =
+      typeof value !== "undefined"
+        ? toDateFormat(value)
+        : typeof formData[id] !== "undefined"
+          ? toDateFormat(formData[id])
+          : undefined;
+
     const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputStr, setInputStr] = React.useState(() =>
-      value ? toStringFormat(value, isJPLocale) : formData[id]
-    );
-    const [inputDate, setInputDate] = React.useState(() =>
-      value ? toDateFormat(value) : toDateFormat(formData[id]) || null
-    );
+    const [inputStr, setInputStr] = React.useState(initialDateStr);
+    const [inputDate, setInputDate] = React.useState(initialDate);
 
     const hasRange = selectedDates && selectedDates.length > 0;
 
     React.useEffect(() => {
       if (document.activeElement !== inputRef.current) {
-        setInputStr(value ? toStringFormat(value, isJPLocale) : "");
-        setInputDate(
-          value ? toDateFormat(value) : (toDateFormat(formData[id]) ?? null)
-        );
+        setInputStr(initialDateStr);
+        setInputDate(initialDate);
       }
-    }, [value, isJPLocale]);
+
+      if (typeof value !== "undefined" && value !== formData[id]) {
+        handleInputChange(id, value);
+      }
+    }, []);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
@@ -93,11 +105,18 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       if (!hasRange) {
         setTimeout(() => setShowCalendar(false), 100);
       }
+      if (context) {
+        handleInputChange(id, value);
+      }
     };
 
-    const onInputChange = (id: string, value: string) => {
+    const onInputChange = (value: string) => {
       setInputStr(value);
-      setInputDate(toDateFormat(value));
+      if (onChange) {
+        onChange(id, value);
+      } else if (context) {
+        handleInputChange(id, value);
+      }
     };
 
     // Blur時に値をフォーマット
@@ -107,11 +126,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       setInputDate(toDateFormat(value));
       if (onBlur) {
         onBlur(id, dateStr);
+      } else if (context) {
+        handleInputChange(id, dateStr);
       }
-      handleInputChange(id, value);
     };
 
-    // Focus時に入力値を表示
     const handleOnFocus = (id: string, value: string) => {
       setShowCalendar(true);
       if (onFocus) {
@@ -141,7 +160,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             aria-haspopup="dialog"
             aria-expanded={showCalendar}
             onChange={(e) => {
-              onInputChange(id, e.target.value);
+              onInputChange(e.target.value);
             }}
             onBlur={handleOnBlur}
             onFocus={handleOnFocus}

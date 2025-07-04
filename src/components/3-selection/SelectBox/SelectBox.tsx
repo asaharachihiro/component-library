@@ -47,7 +47,12 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const handleInputChange = context?.handleInputChange || (() => {});
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const selectedValue = value ? value : formData[id];
+  const selectedValue =
+    typeof value !== "undefined"
+      ? value
+      : typeof formData[id] !== "undefined"
+        ? formData[id]
+        : "none";
 
   const selectedLabel = React.useMemo(() => {
     const selectedOption = options.find(

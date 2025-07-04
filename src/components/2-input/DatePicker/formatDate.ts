@@ -45,7 +45,8 @@ export const toStringFormat = (value: string, isJPLocale?: boolean): string => {
 };
 
 // 日付をISO形式のDateオブジェクトに変換
-export const toDateFormat = (value: string): Date => {
+export const toDateFormat = (value: string): Date | undefined => {
+  if (!value) return undefined;
   const replacedValue = value.replaceAll(/\//g, "-");
   const dateObj = parseISO(replacedValue);
 

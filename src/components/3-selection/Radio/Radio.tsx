@@ -34,7 +34,13 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
-    const [selected, setSelected] = React.useState(formData[id] || value);
+    const initialValue =
+      typeof value !== "undefined"
+        ? value
+        : typeof formData[id] !== "undefined"
+          ? formData[id]
+          : "";
+    const [selected, setSelected] = React.useState(initialValue);
 
     const handleChange = (newValue: string) => {
       if (onChange) {

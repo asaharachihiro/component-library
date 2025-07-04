@@ -26,10 +26,6 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     },
     ref
   ) => {
-    const [internalChecked, setInternalChecked] = React.useState<
-      boolean | "indeterminate"
-    >(defaultChecked);
-
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
@@ -37,8 +33,19 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
+    const initialChecked =
+      typeof defaultChecked !== "undefined"
+        ? defaultChecked
+        : typeof formData[id] !== "undefined"
+          ? formData[id]
+          : false;
+
+    const [internalChecked, setInternalChecked] = React.useState<
+      boolean | "indeterminate"
+    >(initialChecked);
+
     React.useEffect(() => {
-      setInternalChecked(formData[id] || defaultChecked);
+      setInternalChecked(initialChecked);
     }, [formData[id], defaultChecked]);
 
     const handleCheckedChange = () => {

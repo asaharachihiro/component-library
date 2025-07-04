@@ -51,15 +51,20 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
 
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
-    const [inputValue, setInputValue] = React.useState(
-      formData[id] || value || ""
-    );
+    const initialValue =
+      typeof value !== "undefined"
+        ? value
+        : typeof formData[id] !== "undefined"
+          ? formData[id]
+          : "";
+
+    const [inputValue, setInputValue] = React.useState(initialValue);
 
     React.useEffect(() => {
-      if (value !== undefined || formData[id] !== undefined) {
-        setInputValue(formData[id] || value || "");
+      if (typeof value !== "undefined" && value !== formData[id]) {
+        handleInputChange(id, value);
       }
-    }, [formData[id], value]);
+    }, []);
 
     const toggleShowPassword = () => {
       setShowPassword(!showPassword);

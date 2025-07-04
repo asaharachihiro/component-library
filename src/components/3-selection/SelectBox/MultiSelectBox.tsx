@@ -48,11 +48,20 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   const isValidStatus = isValid ? isValid : errors[id] == null;
   const handleInputChange = context?.handleInputChange || (() => {});
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const initialSelected =
+    typeof values !== "undefined"
+      ? values
+      : typeof formData[id] !== "undefined"
+        ? formData[id]
+        : [];
 
-  const [selectedValues, setSelectedValues] = React.useState<
-    { value: string; label: string }[]
-  >(formData[id] || values);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedValues, setSelectedValues] =
+    React.useState<{ value: string; label: string }[]>(initialSelected);
+
+  React.useEffect(() => {
+    setSelectedValues(initialSelected);
+  }, [formData[id], values]);
 
   const handleToggle = () => {
     if (disabled) return;
@@ -81,7 +90,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
     if (onChange) {
       onChange(id, newValues);
     }
-    handleInputChange(id, newValues.join(","));
+    handleInputChange(id, sortedValues);
   };
 
   return (

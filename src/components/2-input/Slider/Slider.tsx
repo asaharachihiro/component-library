@@ -45,18 +45,17 @@ export const Slider: React.FC<SliderProps> = ({
   const formData = (context?.formData as Record<string, unknown>) || {};
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
-
-  const defaultValue = Number(formData[id] as number | string) || value || 0;
   const isValidStatus = isValid ? isValid : errors[id] == null;
 
-  const [currentValue, setCurrentValue] = React.useState(defaultValue);
-  const percentage = ((currentValue - min) / (max - min)) * 100;
+  const initialValue =
+    typeof value !== "undefined"
+      ? value
+      : typeof formData[id] !== "undefined"
+        ? Number(formData[id])
+        : 0;
 
-  React.useEffect(() => {
-    if (formData[id] !== undefined) {
-      setCurrentValue(Number(formData[id]));
-    }
-  }, [formData, id]);
+  const [currentValue, setCurrentValue] = React.useState(initialValue);
+  const percentage = ((currentValue - min) / (max - min)) * 100;
 
   // ドラッグ操作のハンドラ
   const handleMouseMove = (e: MouseEvent) => {

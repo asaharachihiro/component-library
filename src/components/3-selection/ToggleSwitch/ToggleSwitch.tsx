@@ -31,14 +31,22 @@ export const ToggleSwitch = React.forwardRef<
     },
     ref
   ) => {
-    const [toggle, setToggle] = React.useState<boolean>(defaultChecked);
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    const initialChecked =
+      typeof defaultChecked !== "undefined"
+        ? defaultChecked
+        : typeof formData[id] !== "undefined"
+          ? formData[id]
+          : false;
+
+    const [toggle, setToggle] = React.useState<boolean>(initialChecked);
+
     React.useEffect(() => {
-      setToggle(formData[id] || defaultChecked);
+      setToggle(initialChecked);
     }, [formData[id], defaultChecked]);
 
     const handleToggled = () => {

@@ -30,9 +30,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
     },
     ref
   ) => {
-    const [formData, setFormData] = React.useState<Record<string, any>>({
-      values,
-    });
+    const [formData, setFormData] = React.useState<Record<string, any>>(values);
     const [errors, setErrors] = React.useState<Record<string, string | null>>(
       {}
     );

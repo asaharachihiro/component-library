@@ -14,6 +14,7 @@ export const parameters = {
             "PasswordBox",
             "SearchBox",
             "DatePicker",
+            "DateRange",
             "FilePicker",
             "Slider",
             "Form",
