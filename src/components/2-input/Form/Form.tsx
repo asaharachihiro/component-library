@@ -56,6 +56,13 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      // フォーカス中の要素をblurさせる
+      if (
+        document.activeElement instanceof HTMLElement &&
+        e.currentTarget.contains(document.activeElement)
+      ) {
+        document.activeElement.blur();
+      }
       // _で始まるidを除外
       const filteredFormData = Object.fromEntries(
         Object.entries(formData).filter(([key]) => !key.startsWith("_"))
