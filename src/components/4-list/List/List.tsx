@@ -38,6 +38,7 @@ export const List = React.forwardRef<HTMLLIElement, ListProps>(
           disabled={disabled}
           aria-selected={selected}
           onClick={onClick}
+          type="button"
         >
           {children}
         </button>

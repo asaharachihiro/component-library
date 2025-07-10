@@ -56,8 +56,12 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      // _で始まるidを除外
+      const filteredFormData = Object.fromEntries(
+        Object.entries(formData).filter(([key]) => !key.startsWith("_"))
+      );
       if (validate) {
-        const validationResults = validate(formData);
+        const validationResults = validate(filteredFormData);
         const hasErrors = Object.values(validationResults).some(
           (error) => error !== null
         );
@@ -67,9 +71,9 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
         }
       }
       if (onSubmit) {
-        onSubmit(formData);
+        onSubmit(filteredFormData);
       }
-      localStorage.setItem(id, JSON.stringify(formData));
+      localStorage.setItem(id, JSON.stringify(filteredFormData));
     };
 
     return (

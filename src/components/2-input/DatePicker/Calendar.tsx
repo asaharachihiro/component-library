@@ -148,11 +148,15 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       >
         <div className={cn("flex max-w-[320px] flex-col space-y-2 p-4")}>
           <div className="flex items-center justify-between">
-            <IconButton icon="chevron_left" onClick={() => moveMonth("prev")} />
+            <IconButton
+              icon="chevron_left"
+              onClick={() => moveMonth("prev")}
+              type="button"
+            />
             <div className="mx-6 flex">
               <div className="w-[80px]">
                 <SelectBox
-                  id={"year-select"}
+                  id={"_year-select"}
                   options={yearsList}
                   value={format(currentDate, "yyyy")}
                   onChange={(value) => handleYearChange(value)}
@@ -161,7 +165,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               </div>
               <div className="w-[60px]">
                 <SelectBox
-                  id={"month-select"}
+                  id={"_month-select"}
                   options={monthsList}
                   value={format(currentDate, "MM")}
                   onChange={(value) => handleMonthChange(value)}
@@ -172,6 +176,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
             <IconButton
               icon="chevron_right"
               onClick={() => moveMonth("next")}
+              type="button"
             />
           </div>
           <div className="grid grid-cols-7 gap-1 border-b border-black-20-opacity">
