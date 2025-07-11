@@ -6,7 +6,7 @@ interface ToggleSwitchProps {
   id: string;
   className?: string;
   label?: string;
-  defaultChecked?: boolean;
+  checked?: boolean;
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
@@ -23,7 +23,7 @@ export const ToggleSwitch = React.forwardRef<
       className,
       label,
       children,
-      defaultChecked = false,
+      checked,
       onChange,
       disabled = false,
       isValid = true,
@@ -37,8 +37,8 @@ export const ToggleSwitch = React.forwardRef<
     const handleInputChange = context?.handleInputChange || (() => {});
 
     const initialChecked =
-      typeof defaultChecked !== "undefined"
-        ? defaultChecked
+      typeof checked !== "undefined"
+        ? checked
         : typeof formData[id] !== "undefined"
           ? formData[id]
           : false;
@@ -46,9 +46,16 @@ export const ToggleSwitch = React.forwardRef<
     const [toggle, setToggle] = React.useState<boolean>(initialChecked);
 
     React.useEffect(() => {
-      setToggle(initialChecked);
-    }, [formData[id], defaultChecked]);
+      if (typeof checked !== "undefined" && checked !== formData[id]) {
+        handleInputChange(id, checked);
+      }
+    }, []);
 
+    React.useEffect(() => {
+      if (typeof checked !== "undefined") {
+        setToggle(checked);
+      }
+    }, [checked]);
     const handleToggled = () => {
       let newChecked = !toggle;
       setToggle(newChecked);

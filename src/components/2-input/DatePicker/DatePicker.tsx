@@ -26,6 +26,7 @@ interface DatePickerProps {
   onBlur?: (id: string, date: string) => void;
   onFocus?: (id: string, date: string) => void;
   tooltip?: React.ReactNode;
+  hasRange?: boolean; // DateRange内で使用するためのフラグ
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
@@ -48,6 +49,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       onBlur,
       onFocus,
       tooltip,
+      hasRange = false, // DateRange内で使用するためのフラグ
       ...props
     },
     ref
@@ -61,72 +63,73 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
-    const initialDateStr =
+    const [showCalendar, setShowCalendar] = React.useState(false);
+
+    const initialValue =
       typeof value !== "undefined"
-        ? toStringFormat(value, isJPLocale)
-        : typeof formData[id] !== "undefined"
-          ? toStringFormat(formData[id], isJPLocale)
+        ? value
+        : !hasRange && typeof formData[id] !== "undefined"
+          ? formData[id]
           : "";
 
-    const initialDate =
-      typeof value !== "undefined"
-        ? toDateFormat(value)
-        : typeof formData[id] !== "undefined"
-          ? toDateFormat(formData[id])
-          : undefined;
+    const [inputStr, setInputStr] = React.useState(() =>
+      toStringFormat(initialValue, isJPLocale)
+    );
+    const [inputDate, setInputDate] = React.useState(
+      initialValue ? toDateFormat(initialValue) : undefined
+    );
 
-    const [showCalendar, setShowCalendar] = React.useState(false);
-    const [inputStr, setInputStr] = React.useState(initialDateStr);
-    const [inputDate, setInputDate] = React.useState(initialDate);
-
-    const hasRange = selectedDates && selectedDates.length > 0;
-
+    // 初期値を親・formContextに同期
     React.useEffect(() => {
-      if (document.activeElement !== inputRef.current) {
-        setInputStr(initialDateStr);
-        setInputDate(initialDate);
-      }
-
-      if (typeof value !== "undefined" && value !== formData[id]) {
+      if (typeof value !== "undefined" && formData[id] !== value) {
+        onChange && onChange(id, value);
         handleInputChange(id, value);
       }
     }, []);
+
+    // 外部からvalueの更新を受け取る
+    React.useEffect(() => {
+      if (hasRange && document.activeElement !== inputRef.current) {
+        setInputStr(toStringFormat(initialValue, isJPLocale));
+        setInputDate(initialValue ? toDateFormat(initialValue) : undefined);
+      }
+    }, [value]);
 
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
 
+    // カレンダー選択による値の更新
     const onSelectChange = (id: string, date: string) => {
       setInputStr(toStringFormat(date, isJPLocale));
       setInputDate(toDateFormat(date));
       if (onChange) {
         onChange(id, date);
       }
-      if (!hasRange) {
+      if (hasRange) {
         setTimeout(() => setShowCalendar(false), 100);
       }
-      if (context) {
-        handleInputChange(id, value);
+      if (!hasRange && context) {
+        handleInputChange(id, date);
       }
     };
 
-    const onInputChange = (value: string) => {
-      setInputStr(value);
-      if (onChange) {
-        onChange(id, value);
-      } else if (context) {
-        handleInputChange(id, value);
-      }
+    // 入力による値の更新
+    const onInputChange = (dateStr: string) => {
+      setInputStr(dateStr);
+      if (onChange) onChange(id, dateStr);
+      if (!hasRange && context) handleInputChange(id, dateStr);
     };
 
     // Blur時に値をフォーマット
     const handleOnBlur = (id: string, value: string) => {
+      if (showCalendar) return;
       const dateStr = toStringFormat(value, false).replaceAll(/[^0-9]/g, "-");
       setInputStr(toStringFormat(value, isJPLocale));
       setInputDate(toDateFormat(value));
       if (onBlur) {
         onBlur(id, dateStr);
-      } else if (context) {
+      } else if (!hasRange && context) {
         handleInputChange(id, dateStr);
       }
     };

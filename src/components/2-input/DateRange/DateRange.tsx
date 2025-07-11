@@ -4,7 +4,6 @@ import { cn } from "../../../utils/cn";
 import { useFormContext } from "../Form";
 import { addDays, isAfter, isValid, parseISO } from "date-fns";
 import { DatePicker } from "../DatePicker";
-import { toStringFormat } from "../DatePicker/formatDate";
 
 export interface DateRangeValue {
   start: string;
@@ -61,52 +60,75 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
 
+  // 日付の逆転を修正する
+  const fixReversedDates = (range: DateRangeValue): DateRangeValue => {
+    if (!range.start || !range.end || range.start === "" || range.end === "")
+      return range;
+    const startDate = parseISO(range.start);
+    const endDate = parseISO(range.end);
+    if (isValid(startDate) && isValid(endDate) && isAfter(startDate, endDate)) {
+      return { start: range.end, end: range.start };
+    }
+    return range;
+  };
+
   const initialDateStr =
     typeof value !== "undefined"
-      ? {
-          start: toStringFormat(value.start, isJPLocale),
-          end: toStringFormat(value.end, isJPLocale),
-        }
+      ? fixReversedDates({
+          start: value.start,
+          end: value.end,
+        })
       : typeof formData[id] !== "undefined"
-        ? {
-            start: toStringFormat(formData[id].start, isJPLocale),
-            end: toStringFormat(formData[id].end, isJPLocale),
-          }
+        ? fixReversedDates({
+            start: formData[id].start,
+            end: formData[id].end,
+          })
         : { start: "", end: "" };
 
   const [dateRange, setDateRange] =
     React.useState<DateRangeValue>(initialDateStr);
-
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
-
   const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
 
-  const handleRangeChange = (id: string, value: string) => {
-    setDateRange((prev) => {
-      const next = getNextRange(id, value, prev);
-      if (context) handleInputChange(id, next);
-      return next;
-    });
-    if (onChange) onChange(getNextRange(id, value, dateRange));
-  };
-
-  const handleInputBlur = (id: string, value: string) => {
-    setDateRange((prev) => {
-      const next = fixReversedDates(getNextRange(id, value, prev));
-      if (context) handleInputChange(id, next);
-      return next;
-    });
-    if (onBlur) onBlur(fixReversedDates(getNextRange(id, value, dateRange)));
-  };
-
-  const handleOnFocus = (id: string, value: string) => {
-    if (onFocus) {
-      setDateRange((prev) => {
-        const next = fixReversedDates(getNextRange(id, value, prev));
-        onFocus(next);
-        return next;
+  React.useEffect(() => {
+    if (
+      context &&
+      (formData[id]?.start !== initialDateStr.start ||
+        formData[id]?.end !== initialDateStr.end)
+    ) {
+      const fixed = fixReversedDates({
+        start: formData[id].start,
+        end: formData[id].end,
       });
+      if (fixed !== formData[id]) {
+        handleInputChange(id, fixed);
+      }
     }
+  }, []);
+
+  const handleRangeChange = (pickerId: string, value: string) => {
+    const isStart = pickerId.includes("start");
+    const next: DateRangeValue = {
+      start: isStart ? value : dateRange.start,
+      end: !isStart ? value : dateRange.end,
+    };
+    const fixed = fixReversedDates(next);
+    setDateRange(fixed);
+    if (context) handleInputChange(id, fixed);
+    if (onChange) onChange(fixed);
+  };
+
+  const handleInputBlur = (pickerId: string, value: string) => {
+    const isStart = pickerId.includes("start");
+    const next: DateRangeValue = {
+      start: isStart ? value : dateRange.start,
+      end: !isStart ? value : dateRange.end,
+    };
+    const fixed = fixReversedDates(next);
+
+    setDateRange(fixed);
+    if (context) handleInputChange(id, fixed);
+    if (onBlur) onBlur(fixed);
   };
 
   const getSelectedDate = React.useCallback((): Date[] => {
@@ -128,7 +150,6 @@ export const DateRange: React.FC<DateRangeProps> = ({
       const endDate = parseISO(dateRange.end);
 
       if (!isValid(startDate) || !isValid(endDate)) return [];
-      // start > end の場合は空配列
       if (isAfter(startDate, endDate)) return [];
 
       const result: Date[] = [];
@@ -142,35 +163,6 @@ export const DateRange: React.FC<DateRangeProps> = ({
     return [];
   }, [dateRange.start, dateRange.end]);
 
-  const getNextRange = (
-    id: string,
-    dateRange: string,
-    prev: DateRangeValue
-  ): DateRangeValue => {
-    let next = { ...prev };
-
-    if (id.includes("start")) {
-      next.start = dateRange;
-    } else if (id.includes("end")) {
-      next.end = dateRange;
-    }
-    return next;
-  };
-
-  const fixReversedDates = (range: DateRangeValue): DateRangeValue => {
-    if (!range.start || !range.end || range.start === "" || range.end === "")
-      return range;
-    const startDate = parseISO(range.start);
-    const endDate = parseISO(range.end);
-    if (isValid(startDate) && isValid(endDate) && isAfter(startDate, endDate)) {
-      return { start: range.end, end: range.start };
-    }
-    console.log("startDate:", startDate);
-    console.log("endDate:", endDate);
-
-    return range;
-  };
-
   React.useEffect(() => {
     setSelectedDates(getSelectedDate());
   }, [dateRange.start, dateRange.end]);
@@ -179,11 +171,11 @@ export const DateRange: React.FC<DateRangeProps> = ({
     <div className={className} id={id}>
       <div className={"flex items-end"}>
         <DatePicker
-          id={"DateRange-DatePicker-start"}
+          hasRange={true}
+          id={"_dateRange-start"}
           onChange={handleRangeChange}
           onBlur={handleInputBlur}
-          onFocus={handleOnFocus}
-          value={dateRange.start ? dateRange.start : ""}
+          value={dateRange.start}
           selectedDates={selectedDates}
           isRequired={isRequired?.start}
           disabled={disabled?.start}
@@ -198,11 +190,11 @@ export const DateRange: React.FC<DateRangeProps> = ({
           〜
         </span>
         <DatePicker
-          id={"DateRange-DatePicker-end"}
+          hasRange={true}
+          id={"_dateRange-end"}
           onChange={handleRangeChange}
           onBlur={handleInputBlur}
-          onFocus={handleOnFocus}
-          value={dateRange.end ? dateRange.end : ""}
+          value={dateRange.end}
           selectedDates={selectedDates}
           isRequired={isRequired?.end}
           disabled={disabled?.end}

@@ -46,13 +46,24 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const selectedValue =
+  const initialValue =
     typeof value !== "undefined"
       ? value
       : typeof formData[id] !== "undefined"
         ? formData[id]
         : "none";
+  const [selectedValue, setSelectedValue] = React.useState(initialValue);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof value !== "undefined" && value !== formData[id]) {
+      handleInputChange(id, value);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
 
   const selectedLabel = React.useMemo(() => {
     const selectedOption = options.find(
@@ -73,10 +84,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   const handleChange = (newValue: string) => {
     setIsOpen(false);
+    setSelectedValue(newValue);
     if (onChange) {
       onChange(newValue);
     }
-    handleInputChange(id, newValue);
+    if (context && formData[id] !== undefined) {
+      handleInputChange(id, newValue);
+    }
   };
 
   const optionRefs = React.useRef<(HTMLLIElement | null)[]>([]);

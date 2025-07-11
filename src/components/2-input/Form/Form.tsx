@@ -35,17 +35,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       {}
     );
 
-    React.useEffect(() => {
-      const savedData = localStorage.getItem(id);
-      if (savedData) {
-        setFormData((prevData) => ({
-          ...prevData,
-          ...JSON.parse(savedData),
-        }));
-      } else {
-        setFormData(values);
-      }
-    }, [id, children]);
+    const formInnerRef = React.useRef<HTMLFormElement>(null);
 
     const handleInputChange = (id: string, value: string) => {
       setFormData((prevData) => ({
@@ -57,30 +47,36 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // フォーカス中の要素をblurさせる
-      if (
-        document.activeElement instanceof HTMLElement &&
-        e.currentTarget.contains(document.activeElement)
-      ) {
-        document.activeElement.blur();
-      }
-      // _で始まるidを除外
-      const filteredFormData = Object.fromEntries(
-        Object.entries(formData).filter(([key]) => !key.startsWith("_"))
-      );
-      if (validate) {
-        const validationResults = validate(filteredFormData);
-        const hasErrors = Object.values(validationResults).some(
-          (error) => error !== null
-        );
-        if (hasErrors) {
-          setErrors(validationResults);
-          return;
+      if (formInnerRef.current) {
+        const elements = formInnerRef.current.elements;
+        for (let i = 0; i < elements.length; i++) {
+          const el = elements[i] as HTMLElement;
+          if (typeof el.blur === "function") {
+            el.blur();
+          }
         }
       }
-      if (onSubmit) {
-        onSubmit(filteredFormData);
-      }
-      localStorage.setItem(id, JSON.stringify(filteredFormData));
+      // _で始まるidを除外
+      setTimeout(() => {
+        // _で始まるidを除外
+        const filteredFormData = Object.fromEntries(
+          Object.entries(formData).filter(([key]) => !key.startsWith("_"))
+        );
+        if (validate) {
+          const validationResults = validate(filteredFormData);
+          const hasErrors = Object.values(validationResults).some(
+            (error) => error !== null
+          );
+          if (hasErrors) {
+            setErrors(validationResults);
+            return;
+          }
+        }
+        if (onSubmit) {
+          onSubmit(filteredFormData);
+        }
+        localStorage.setItem(id, JSON.stringify(filteredFormData));
+      }, 0);
     };
 
     return (
@@ -96,7 +92,14 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
             )}
           </div>
           <form
-            ref={ref}
+            ref={(node) => {
+              formInnerRef.current = node;
+              if (typeof ref === "function") ref(node);
+              else if (ref)
+                (
+                  ref as React.MutableRefObject<HTMLFormElement | null>
+                ).current = node;
+            }}
             {...props}
             className="flex-col space-y-2 pl-4"
             onSubmit={handleSubmit}

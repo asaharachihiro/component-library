@@ -60,8 +60,8 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
     React.useState<{ value: string; label: string }[]>(initialSelected);
 
   React.useEffect(() => {
-    setSelectedValues(initialSelected);
-  }, [formData[id], values]);
+    setSelectedValues(values);
+  }, [values]);
 
   const handleToggle = () => {
     if (disabled) return;
@@ -85,12 +85,14 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
         options.findIndex((option) => option.value === a.value) -
         options.findIndex((option) => option.value === b.value)
     );
-    setSelectedValues(sortedValues);
 
+    setSelectedValues(sortedValues);
     if (onChange) {
       onChange(id, newValues);
     }
-    handleInputChange(id, sortedValues);
+    if (context) {
+      handleInputChange(id, sortedValues);
+    }
   };
 
   return (
@@ -122,6 +124,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
               >
                 {option.label}
                 <IconButton
+                  type="button"
                   disabled={disabled}
                   icon="close"
                   size="s"

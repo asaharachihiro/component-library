@@ -22,7 +22,6 @@ export default meta;
 type Story = StoryObj<typeof Form>;
 
 const validate = (formData: Record<string, any>) => {
-  console.log("フォームデータ:", formData);
   return {
     name: null,
     birthdate: null,
@@ -30,9 +29,7 @@ const validate = (formData: Record<string, any>) => {
   };
 };
 
-const handleSubmit = (formData: Record<string, any>) => {
-  console.log("フォームデータ:", formData);
-};
+const handleSubmit = (formData: Record<string, any>) => {};
 
 const Template: Story = {
   render: (args) => {

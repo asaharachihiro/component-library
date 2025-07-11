@@ -5,7 +5,8 @@ import { useFormContext } from "@components/2-input/Form";
 interface CheckboxProps {
   id: string;
   className?: string;
-  defaultChecked?: boolean | "indeterminate";
+  label?: string;
+  checked?: boolean | "indeterminate";
   disabled?: boolean;
   isValid?: boolean;
   children?: React.ReactNode;
@@ -17,8 +18,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     {
       id,
       className,
+      label = "",
       children,
-      defaultChecked = false,
+      checked,
       onChange,
       disabled = false,
       isValid = true,
@@ -34,8 +36,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
     const initialChecked =
-      typeof defaultChecked !== "undefined"
-        ? defaultChecked
+      typeof checked !== "undefined"
+        ? checked
         : typeof formData[id] !== "undefined"
           ? formData[id]
           : false;
@@ -45,8 +47,16 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     >(initialChecked);
 
     React.useEffect(() => {
-      setInternalChecked(initialChecked);
-    }, [formData[id], defaultChecked]);
+      if (typeof checked !== "undefined" && checked !== formData[id]) {
+        handleInputChange(id, checked);
+      }
+    }, []);
+
+    React.useEffect(() => {
+      if (typeof checked !== "undefined") {
+        setInternalChecked(checked);
+      }
+    }, [checked]);
 
     const handleCheckedChange = () => {
       let newChecked: boolean | "indeterminate";
@@ -60,7 +70,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       if (onChange) {
         onChange(newChecked);
       }
-      handleInputChange(id, newChecked.toString());
+      if (context) {
+        handleInputChange(id, newChecked);
+      }
     };
 
     const disabledStyle =
@@ -111,7 +123,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           ref={ref}
           disabled={disabled}
         />
-        <span className={cn("ml-1 text-base")}>{children}</span>
+        <span className={cn("ml-1 text-base")}>{label}</span>
+        {children}
       </div>
     );
   }
