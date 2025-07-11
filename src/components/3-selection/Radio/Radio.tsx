@@ -72,10 +72,10 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
-    const radioStyle = cn("flex flex-col ", {
-      "text-black-20-opacity pointer-events-none": disabled,
-      "cursor-pointer": !disabled,
-    });
+    const radioStyle = cn(
+      "flex flex-col text-black-sub",
+      disabled ? "text-black-20-opacity pointer-events-none" : "cursor-pointer"
+    );
 
     return (
       <div
@@ -99,8 +99,10 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                 aria-label={option.label}
                 key={index}
                 className={cn(
-                  "group flex items-center rounded-lg p-2",
-                  !isSelected && "text-black-sub"
+                  "group flex items-center rounded-lg p-2 text-black-sub",
+                  isSelected && "text-black",
+                  disabled && isSelected && "text-black-sub",
+                  disabled && !isSelected && "text-20-opacity"
                 )}
                 onClick={() => handleChange(option.value)}
               >

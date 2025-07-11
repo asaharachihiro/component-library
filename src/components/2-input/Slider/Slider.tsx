@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ErrorText, FormLabel } from "@components/0-common";
 import { useFormContext } from "../Form";
+import { cn } from "../../../utils/cn";
 
 interface SliderProps {
   id: string;
@@ -81,6 +82,7 @@ export const Slider: React.FC<SliderProps> = ({
 
   // クリック位置から値を更新する関数
   const updateValueFromPosition = (clientX: number) => {
+    if (disabled) return;
     const slider = document.getElementById(id);
     if (!slider) return;
 
@@ -108,10 +110,15 @@ export const Slider: React.FC<SliderProps> = ({
         {label && (
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
-        <div className="">
+        <div>
           <div className="relative flex flex-col">
             <div
-              className="-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full bg-black-10-opacity px-1 text-xs font-regular text-black"
+              className={cn(
+                "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-regular",
+                disabled
+                  ? "bg-black-3-opacity text-black-sub"
+                  : "bg-black-10-opacity text-black"
+              )}
               style={{
                 marginLeft: `${percentage}%`,
                 transform: "translateX(-50%)",
@@ -121,7 +128,10 @@ export const Slider: React.FC<SliderProps> = ({
             </div>
             <div
               id={id}
-              className="relative flex h-2 w-full cursor-pointer"
+              className={cn(
+                "relative flex h-2 w-full cursor-pointer",
+                disabled && "pointer-events-none"
+              )}
               onClick={(e) => updateValueFromPosition(e.clientX)}
             >
               <div
@@ -130,7 +140,12 @@ export const Slider: React.FC<SliderProps> = ({
                   width: `calc(${percentage}%)`,
                 }}
               >
-                <div className="h-full w-full rounded-l-md rounded-r-sm bg-main" />
+                <div
+                  className={cn(
+                    "h-full w-full rounded-l-md rounded-r-sm",
+                    disabled ? "bg-black-20-opacity" : "bg-main"
+                  )}
+                />
               </div>
               <div
                 className="h-2 pl-[3px]"
@@ -138,10 +153,20 @@ export const Slider: React.FC<SliderProps> = ({
                   width: `calc(${100 - percentage}%)`,
                 }}
               >
-                <div className="h-full w-full rounded-l-sm rounded-r-md bg-main-bg" />
+                <div
+                  className={cn(
+                    "h-full w-full rounded-l-sm rounded-r-md",
+                    disabled ? "bg-black-5-opacity" : "bg-main-bg"
+                  )}
+                />
               </div>
               <div
-                className="absolute top-1/2 h-4 w-[2px] -translate-y-1/2 cursor-pointer rounded-full bg-main active:h-5"
+                className={cn(
+                  "absolute top-1/2 h-4 w-[2px] -translate-y-1/2 cursor-pointer rounded-full",
+                  disabled
+                    ? "pointer-events-none bg-black-sub"
+                    : "bg-main active:h-5"
+                )}
                 style={{ left: `calc(${percentage}% - 1px)` }}
                 onMouseDown={handleMouseDown}
               >

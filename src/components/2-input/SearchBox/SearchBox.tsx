@@ -9,6 +9,7 @@ interface SearchBoxProps {
   placeholder?: string;
   value?: string;
   isValid?: boolean;
+  disabled?: boolean;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
@@ -28,6 +29,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       onFocus,
       supportMessage,
       errorMessage,
+      disabled = false,
       isValid = true,
       ...props
     },
@@ -68,7 +70,10 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
 
     const ButtonStyle = cn(
       isValidStatus ? "border-black-20-opacity" : "border-danger",
-      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub transition-all"
+      disabled
+        ? "text-black-20-opacity bg-black-3-opacity pointer-events-none"
+        : "hover:bg-black-5-opacity active:bg-black-10-opacity",
+      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-2xl  text-black-sub transition-all"
     );
 
     return (
@@ -81,6 +86,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             onChange={(e) => handleChenge(e.target.value)}
             onBlur={onBlur}
             isValid={isValidStatus}
+            disabled={disabled}
             onFocus={onFocus}
             className="rounded-r-none"
             aria-label="Search Input"
@@ -92,6 +98,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             type="button"
             aria-label="Search Button"
             className={ButtonStyle}
+            disabled={disabled}
           >
             <span className="material-symbols-rounded">search</span>
           </button>
