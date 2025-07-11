@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ErrorText, FormLabel, InputBox } from "@components/0-common";
 import { useFormContext } from "../Form/FormContext";
+import { cn } from "../../../utils/cn";
 
 interface TextBoxProps {
   id: string;
@@ -99,14 +100,18 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
           asTextArea={type === "textArea"}
           {...props}
         />
-        {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
-        )}
-        {!isValidStatus && (
-          <ErrorText
-            text={errors[id] || errorMessage || "入力がエラーになっています。"}
-          />
-        )}
+        <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
+          {supportMessage && (
+            <span className="text-xs text-black-sub">{supportMessage}</span>
+          )}
+          {!isValidStatus && (
+            <ErrorText
+              text={
+                errors[id] || errorMessage || "入力がエラーになっています。"
+              }
+            />
+          )}
+        </div>
       </div>
     );
   }

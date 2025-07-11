@@ -61,8 +61,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
-    const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
-
+    const isValidStatus =
+      typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
     const [showCalendar, setShowCalendar] = React.useState(false);
 
     const initialValue =
@@ -202,7 +202,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           {supportMessage && (
             <span className="text-xs text-black-sub">{supportMessage}</span>
           )}
-          {!isValidStatus && (
+          {!hasRange && !isValidStatus && (
             <ErrorText
               text={
                 errors[id] || errorMessage || "入力がエラーになっています。"

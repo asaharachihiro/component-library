@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { InputBox } from "@components/0-common";
+import { ErrorText, InputBox } from "@components/0-common";
 import { useFormContext } from "../Form";
 
 interface SearchBoxProps {
@@ -8,9 +8,12 @@ interface SearchBoxProps {
   className?: string;
   placeholder?: string;
   value?: string;
+  isValid?: boolean;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
+  supportMessage?: string;
+  errorMessage?: string;
 }
 
 export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
@@ -23,6 +26,9 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       onChange,
       onBlur,
       onFocus,
+      supportMessage,
+      errorMessage,
+      isValid = true,
       ...props
     },
     ref
@@ -30,7 +36,9 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
+    const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+    const isValidStatus = isValid ? isValid : errors[id] == null;
 
     const initialValue =
       typeof value !== "undefined"
@@ -58,30 +66,48 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       }
     };
 
-    const ButtonStyle =
-      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0 border-black-20-opacity text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub transition-all";
+    const ButtonStyle = cn(
+      isValidStatus ? "border-black-20-opacity" : "border-danger",
+      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity text-black-sub transition-all"
+    );
+
     return (
-      <div className={cn("flex text-black", className)}>
-        <InputBox
-          id={id}
-          placeholder={placeholder}
-          value={inputValue}
-          onChange={(e) => handleChenge(e.target.value)}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          className="rounded-r-none"
-          aria-label="Search Input"
-          type={"text"}
-          ref={ref}
-          {...props}
-        />
-        <button
-          type="button"
-          aria-label="Search Button"
-          className={ButtonStyle}
-        >
-          <span className="material-symbols-rounded">search</span>
-        </button>
+      <div className={className}>
+        <div className={cn("flex text-black", className)}>
+          <InputBox
+            id={id}
+            placeholder={placeholder}
+            value={inputValue}
+            onChange={(e) => handleChenge(e.target.value)}
+            onBlur={onBlur}
+            isValid={isValidStatus}
+            onFocus={onFocus}
+            className="rounded-r-none"
+            aria-label="Search Input"
+            type={"text"}
+            ref={ref}
+            {...props}
+          />
+          <button
+            type="button"
+            aria-label="Search Button"
+            className={ButtonStyle}
+          >
+            <span className="material-symbols-rounded">search</span>
+          </button>
+        </div>
+        <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
+          {supportMessage && (
+            <span className="text-xs text-black-sub">{supportMessage}</span>
+          )}
+          {!isValidStatus && (
+            <ErrorText
+              text={
+                errors[id] || errorMessage || "入力がエラーになっています。"
+              }
+            />
+          )}
+        </div>
       </div>
     );
   }

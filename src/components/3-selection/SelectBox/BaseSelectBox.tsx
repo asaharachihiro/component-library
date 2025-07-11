@@ -29,11 +29,11 @@ export const BaseSelectBox = React.forwardRef<
       id,
       label,
       isRequired = false,
-      isValid = true,
+      isValid,
       placeholder = "未選択",
       supportMessage,
       errorMessage,
-      disabled = false,
+      disabled,
       selectedValue,
       children,
       isOpen = false,
@@ -44,19 +44,18 @@ export const BaseSelectBox = React.forwardRef<
     ref
   ) => {
     const boxStyle = cn(
-      "w-full cursor-pointer border bg-white flex items-center justify-between border-danger",
+      "w-full cursor-pointer border bg-white flex items-center justify-between",
       {
         "group-hover:bg-black-5-opacity cursor-pointer group focus:border-black-sub":
           !disabled,
         "text-black-sub pointer-events-none bg-black-3-opacity border-black-20-opacity":
           disabled,
-        "border-danger": !isValid && !disabled,
-        "border-black-20-opacity": !disabled,
+        "border-danger": !disabled && !isValid,
+        "border-black-20-opacity": !disabled && isValid,
         "text-sm p-1 pl-2 rounded-md border-none": size === "s",
         "rounded-lg p-2": size !== "s",
       }
     );
-
     return (
       <div ref={ref}>
         {label && (

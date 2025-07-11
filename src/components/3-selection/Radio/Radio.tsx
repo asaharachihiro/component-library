@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "@components/2-input/Form";
+import { ErrorText } from "@components/0-common";
 
 interface RadioProps {
   id: string;
@@ -11,6 +12,7 @@ interface RadioProps {
   disabled?: boolean;
   options: { label: string; value: string; children?: React.ReactNode }[];
   onChange?: (value: string) => void;
+  errorMessage?: string;
 }
 
 export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
@@ -20,10 +22,11 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       className = "",
       value,
       children,
-      isValid = true,
+      isValid,
       disabled = false,
       onChange,
       options = [],
+      errorMessage,
       ...props
     },
     ref
@@ -66,12 +69,12 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       }
     };
 
-    const isValidStatus = isValid ? isValid : errors[id] == null;
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     const radioStyle = cn("flex flex-col ", {
       "text-black-20-opacity pointer-events-none": disabled,
       "cursor-pointer": !disabled,
-      "text-danger": !disabled && !isValidStatus,
     });
 
     return (
@@ -123,6 +126,12 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             );
           })}
         </div>
+        {!isValidStatus && (
+          <ErrorText
+            className="mt-1"
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
+        )}
       </div>
     );
   }

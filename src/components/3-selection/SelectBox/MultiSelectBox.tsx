@@ -33,7 +33,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   placeholder = "未選択",
   values = [],
   isRequired = false,
-  isValid = true,
+  isValid,
   onChange,
   supportMessage,
   errorMessage,
@@ -45,8 +45,9 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
   // FormContextが提供されていない場合
   const formData = context?.formData || {};
   const errors = context?.errors || {};
-  const isValidStatus = isValid ? isValid : errors[id] == null;
   const handleInputChange = context?.handleInputChange || (() => {});
+  const isValidStatus =
+    typeof isValid === "boolean" ? isValid : errors[id] == null;
 
   const initialSelected =
     typeof values !== "undefined"
@@ -60,8 +61,10 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
     React.useState<{ value: string; label: string }[]>(initialSelected);
 
   React.useEffect(() => {
-    setSelectedValues(values);
-  }, [values]);
+    if (typeof values !== "undefined") {
+      setSelectedValues(values);
+    }
+  }, []);
 
   const handleToggle = () => {
     if (disabled) return;

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "@components/2-input/Form";
+import { ErrorText } from "@components/0-common";
 
 interface ToggleSwitchProps {
   id: string;
@@ -11,6 +12,7 @@ interface ToggleSwitchProps {
   isValid?: boolean;
   children?: React.ReactNode;
   onChange?: (checked: boolean) => void;
+  errorMessage?: string;
 }
 
 export const ToggleSwitch = React.forwardRef<
@@ -26,7 +28,8 @@ export const ToggleSwitch = React.forwardRef<
       checked,
       onChange,
       disabled = false,
-      isValid = true,
+      isValid,
+      errorMessage,
       ...props
     },
     ref
@@ -34,7 +37,10 @@ export const ToggleSwitch = React.forwardRef<
     const context = useFormContext();
     // FormContextが提供されていない場合
     const formData = context?.formData || {};
+    const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     const initialChecked =
       typeof checked !== "undefined"
@@ -78,32 +84,40 @@ export const ToggleSwitch = React.forwardRef<
     );
 
     return (
-      <label
-        htmlFor={id}
-        className={cn(
-          disabled
-            ? "pointer-events-none text-black-20-opacity"
-            : "cursor-pointer",
-          "flex justify-between"
+      <>
+        <label
+          htmlFor={id}
+          className={cn(
+            disabled
+              ? "pointer-events-none text-black-20-opacity"
+              : "cursor-pointer",
+            "flex justify-between"
+          )}
+        >
+          {label && (
+            <span className="m-1 mr-4 text-left text-base leading-[180%]">
+              {label}
+            </span>
+          )}
+          <input
+            id={id}
+            ref={ref}
+            type="checkbox"
+            checked={toggle}
+            onChange={handleToggled}
+            disabled={disabled}
+            className="hidden"
+            {...props}
+          />
+          <div className={switchStyle} />
+        </label>
+        {!isValidStatus && (
+          <ErrorText
+            className="mt-1"
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
         )}
-      >
-        {label && (
-          <span className="m-1 mr-4 text-left text-base leading-[180%]">
-            {label}
-          </span>
-        )}
-        <input
-          id={id}
-          ref={ref}
-          type="checkbox"
-          checked={toggle}
-          onChange={handleToggled}
-          disabled={disabled}
-          className="hidden"
-          {...props}
-        />
-        <div className={switchStyle} />
-      </label>
+      </>
     );
   }
 );

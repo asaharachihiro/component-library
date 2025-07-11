@@ -30,7 +30,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder = "未選択",
   value,
   isRequired = false,
-  isValid = true,
+  isValid,
   size = "m",
   onChange,
   supportMessage,
@@ -107,7 +107,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     }
   }, [isOpen, selectedValue, options]);
 
-  const isValidStatus = isValid ? isValid : errors[id] == null;
+  const isValidStatus =
+    typeof isValid === "boolean" ? isValid : errors[id] == null;
 
   return (
     <BaseSelectBox

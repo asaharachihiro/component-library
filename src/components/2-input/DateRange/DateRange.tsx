@@ -92,9 +92,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   React.useEffect(() => {
     if (
-      context &&
-      (formData[id]?.start !== initialDateStr.start ||
-        formData[id]?.end !== initialDateStr.end)
+      (context && typeof formData[id].start !== "undefined") ||
+      typeof formData[id].end !== "undefined"
     ) {
       const fixed = fixReversedDates({
         start: formData[id].start,
@@ -171,6 +170,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     <div className={className} id={id}>
       <div className={"flex items-end"}>
         <DatePicker
+          className="w-full"
           hasRange={true}
           id={"_dateRange-start"}
           onChange={handleRangeChange}
@@ -181,15 +181,16 @@ export const DateRange: React.FC<DateRangeProps> = ({
           disabled={disabled?.start}
           label={label}
           isJPLocale={isJPLocale}
-          isValidValue={isValidValue}
+          isValidValue={isValidStatus}
           isStartOnMonday={isStartOnMonday}
           getCalendar={getCalendar}
         />
 
-        <span className="mx-2 flex h-10 items-center text-xs text-black-sub">
+        <span className="mx-2 flex h-10 grow-0 items-center text-xs text-black-sub">
           〜
         </span>
         <DatePicker
+          className="w-full"
           hasRange={true}
           id={"_dateRange-end"}
           onChange={handleRangeChange}
@@ -199,7 +200,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
           isRequired={isRequired?.end}
           disabled={disabled?.end}
           isJPLocale={isJPLocale}
-          isValidValue={isValidValue}
+          isValidValue={isValidStatus}
           isStartOnMonday={isStartOnMonday}
           getCalendar={getCalendar}
         />

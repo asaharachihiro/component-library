@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "@components/2-input/Form";
+import { ErrorText } from "@components/0-common";
 
 interface CheckboxProps {
   id: string;
@@ -11,6 +12,7 @@ interface CheckboxProps {
   isValid?: boolean;
   children?: React.ReactNode;
   onChange?: (checked: boolean | "indeterminate") => void;
+  errorMessage?: string;
 }
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
@@ -23,7 +25,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       checked,
       onChange,
       disabled = false,
-      isValid = true,
+      isValid,
+      errorMessage,
       ...props
     },
     ref
@@ -33,7 +36,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
-    const isValidStatus = isValid ? isValid : errors[id] == null;
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     const initialChecked =
       typeof checked !== "undefined"
@@ -77,55 +81,77 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 
     const disabledStyle =
       disabled && "text-black-20-opacity pointer-events-none";
-    const errorStyle = !disabled && isValidStatus && "text-danger";
     const isNormalStyle = !disabled && isValidStatus;
 
     return (
-      <div
-        className={cn(
-          disabledStyle,
-          className,
-          "flex cursor-pointer items-center text-2xl transition-all"
-        )}
-        onClick={handleCheckedChange}
-      >
+      <>
         <div
           className={cn(
-            errorStyle,
-            "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
+            disabledStyle,
+            className,
+            "flex cursor-pointer items-center text-2xl transition-all"
           )}
+          onClick={handleCheckedChange}
         >
-          <span className="material-symbols-rounded">
-            {internalChecked === "indeterminate" ? (
-              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
-                indeterminate_check_box
-              </span>
-            ) : internalChecked ? (
-              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
-                check_box
-              </span>
-            ) : (
-              <span className={cn(isNormalStyle && "text-black-sub")}>
-                check_box_outline_blank
-              </span>
-            )}
-          </span>
+          <div
+            className={
+              "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
+            }
+          >
+            <span className="material-symbols-rounded">
+              {internalChecked === "indeterminate" ? (
+                <span
+                  className={cn(
+                    "icon-fill",
+                    isNormalStyle && "text-main",
+                    !isValidStatus && "text-danger"
+                  )}
+                >
+                  indeterminate_check_box
+                </span>
+              ) : internalChecked ? (
+                <span
+                  className={cn(
+                    "icon-fill",
+                    isNormalStyle && "text-main",
+                    !isValidStatus && "text-danger"
+                  )}
+                >
+                  check_box
+                </span>
+              ) : (
+                <span
+                  className={cn(
+                    isNormalStyle && "text-black-sub",
+                    !isValidStatus && "text-danger"
+                  )}
+                >
+                  check_box_outline_blank
+                </span>
+              )}
+            </span>
+          </div>
+          <input
+            type="checkbox"
+            id={id}
+            className="hidden"
+            checked={
+              internalChecked === "indeterminate" ? false : internalChecked
+            }
+            onChange={handleCheckedChange}
+            {...props}
+            ref={ref}
+            disabled={disabled}
+          />
+          <span className={cn("ml-1 text-base")}>{label}</span>
+          {children}
         </div>
-        <input
-          type="checkbox"
-          id={id}
-          className="hidden"
-          checked={
-            internalChecked === "indeterminate" ? false : internalChecked
-          }
-          onChange={handleCheckedChange}
-          {...props}
-          ref={ref}
-          disabled={disabled}
-        />
-        <span className={cn("ml-1 text-base")}>{label}</span>
-        {children}
-      </div>
+        {!isValidStatus && (
+          <ErrorText
+            text={errors[id] || errorMessage || "入力がエラーになっています。"}
+          />
+        )}
+      </>
     );
   }
 );

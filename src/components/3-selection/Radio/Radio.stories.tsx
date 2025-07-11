@@ -23,7 +23,6 @@ type Story = StoryObj<typeof Radio>;
 const Template: Story = {
   render: (args) => {
     const [value, setValue] = React.useState(args.value);
-    console.log(value);
     React.useEffect(() => {
       setValue(args.value);
     }, [args.value]);
