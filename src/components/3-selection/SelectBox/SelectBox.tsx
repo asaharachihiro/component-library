@@ -132,7 +132,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       {...props}
     >
       <ul
-        className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
+        className="z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
         role="listbox"
       >
         {hasDefaultOption && (

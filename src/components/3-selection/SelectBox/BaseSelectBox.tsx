@@ -1,6 +1,13 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { ErrorText, FormLabel } from "@components/0-common";
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  autoUpdate,
+} from "@floating-ui/react";
 
 interface BaseSelectBoxProps {
   id: string;
@@ -56,6 +63,14 @@ export const BaseSelectBox = React.forwardRef<
         "rounded-lg p-2": size !== "s",
       }
     );
+
+    // メニューのフローティング
+    const { refs, floatingStyles } = useFloating({
+      placement: "bottom-start",
+      middleware: [offset(8), flip(), shift()],
+      whileElementsMounted: autoUpdate,
+    });
+
     return (
       <div ref={ref}>
         {label && (
@@ -75,6 +90,7 @@ export const BaseSelectBox = React.forwardRef<
             aria-errormessage={errorMessage}
             disabled={disabled}
             readOnly
+            ref={refs.setReference}
           />
 
           <div className="absolute flex w-full cursor-pointer select-none items-center justify-between">
@@ -97,7 +113,11 @@ export const BaseSelectBox = React.forwardRef<
             </span>
           </div>
         </div>
-        {isOpen && <>{children}</>}
+        {isOpen && (
+          <div ref={refs.setFloating} style={floatingStyles}>
+            {children}
+          </div>
+        )}
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}

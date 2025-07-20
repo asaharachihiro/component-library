@@ -144,7 +144,7 @@ export const MultiSelectBox: React.FC<MultiSelectBoxProps> = ({
         ) : null
       }
     >
-      <ul className="absolute z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low">
+      <ul className="z-10 mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low">
         {options.map((option, index) => {
           const isSelected = selectedValues.some(
             (item) => item.value === option.value

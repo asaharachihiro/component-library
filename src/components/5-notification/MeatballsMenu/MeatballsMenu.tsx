@@ -2,6 +2,13 @@ import * as React from "react";
 import { IconButton } from "@components/1-action/IconButton";
 import { useClickOutside } from "../../../utils/useClickOutside";
 import { cn } from "../../../utils/cn";
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  autoUpdate,
+} from "@floating-ui/react";
 
 interface MeatballsMenuProps {
   id: string;
@@ -28,6 +35,13 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
     setIsOpen(false)
   );
 
+  // メニューのフローティング
+  const { refs, floatingStyles } = useFloating({
+    placement: "right-start",
+    middleware: [offset(8), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+  });
+
   return (
     <div id={id} className={cn("size-fit", className)} ref={MenuRef}>
       <IconButton
@@ -35,12 +49,15 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
         className="m-2"
         onClick={handleToggle}
         disabled={disabled}
+        ref={refs.setReference}
       />
       {isOpen && (
         <div
           className={cn(
             "flex size-fit overflow-hidden rounded-lg bg-white shadow-low"
           )}
+          style={floatingStyles}
+          ref={refs.setFloating}
         >
           {children}
         </div>

@@ -23,9 +23,7 @@ interface CalendarProps {
   onSelectDate: (id: string, date: string) => void;
   onClosed: (isCanceled: boolean) => void;
   selectedDates?: Date[];
-  // strategy?: "absolute" | "fixed";
-  // x?: number | null;
-  // y?: number | null;
+  style?: React.CSSProperties;
 }
 
 export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
@@ -39,9 +37,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       onClosed,
       isStartOnMonday = false,
       selectedDates,
-      // strategy = "absolute",
-      // x = 0,
-      // y = 0,
+      style,
     },
     ref
   ) => {
@@ -136,16 +132,7 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     };
 
     return (
-      <div
-        className={className}
-        ref={ref}
-        // TODO:useFloatingPosision
-        // style={{
-        //   position: strategy,
-        //   top: y || 0,
-        //   left: x || 0,
-        // }}
-      >
+      <div className={className} ref={ref} style={style}>
         <div className={cn("flex max-w-[320px] flex-col space-y-2 p-4")}>
           <div className="flex items-center justify-between">
             <IconButton

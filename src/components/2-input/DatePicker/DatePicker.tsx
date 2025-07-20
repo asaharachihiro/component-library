@@ -7,6 +7,13 @@ import { useClickOutside } from "../../../utils/useClickOutside";
 import { toDateFormat, toStringFormat } from "./formatDate";
 import { cn } from "../../../utils/cn";
 import { isValid } from "date-fns";
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  autoUpdate,
+} from "@floating-ui/react";
 
 interface DatePickerProps {
   id: string;
@@ -148,12 +155,19 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     );
     const inputRef = React.useRef<HTMLInputElement>(null);
 
+    // カレンダーのフローティング
+    const { refs, floatingStyles } = useFloating({
+      placement: "bottom-start",
+      middleware: [offset(8), flip(), shift()],
+      whileElementsMounted: autoUpdate,
+    });
+
     return (
       <div className={className} ref={InputRef}>
         {label && (
           <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
         )}
-        <div className="relative">
+        <div className="relative" ref={refs.setReference}>
           <InputBox
             id={id}
             value={inputStr}
@@ -196,6 +210,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             onSelectDate={onSelectChange}
             onClosed={setShowCalendar}
             isStartOnMonday={isStartOnMonday}
+            ref={refs.setFloating}
+            style={floatingStyles}
           />
         )}
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
