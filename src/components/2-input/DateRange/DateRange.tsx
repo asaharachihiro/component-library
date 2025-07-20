@@ -92,7 +92,9 @@ export const DateRange: React.FC<DateRangeProps> = ({
 
   React.useEffect(() => {
     if (
-      (context && typeof formData[id].start !== "undefined") ||
+      context &&
+      formData[id] &&
+      typeof formData[id].start !== "undefined" &&
       typeof formData[id].end !== "undefined"
     ) {
       const fixed = fixReversedDates({
