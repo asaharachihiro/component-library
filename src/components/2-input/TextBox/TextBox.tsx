@@ -20,6 +20,7 @@ interface TextBoxProps {
   onFocus?: (id: string, value: string) => void;
   tooltip?: React.ReactNode;
   currency?: "jpy";
+  unit?: string;
 }
 
 export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
@@ -41,18 +42,19 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       disabled = false,
       tooltip,
       currency,
+      unit,
       ...props
     },
     ref
   ) => {
+    // FormContext
     const context = useFormContext();
-    // FormContextが提供されていない場合
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
-
     const isValidStatus = isValid ? isValid : errors[id] == null;
 
+    // 金額のフォーマット関数
     const formatJpy = (val: string) => {
       const raw = val.replace(/[￥,]/g, "");
       if (!isNaN(Number(raw)) && raw !== "") {
@@ -61,6 +63,13 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       return val;
     };
 
+    // 単位のフォーマット
+    const formatWithUnit = (val: string) => {
+      const raw = unit ? val.replace(new RegExp(unit + "$"), "") : val;
+      return raw + (raw ? " " : "") + unit;
+    };
+
+    // 初期値の設定
     const initialValue =
       typeof value !== "undefined"
         ? value
@@ -68,11 +77,12 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
           ? formData[id]
           : "";
 
-    const [inputValue, setInputValue] = React.useState(() => {
-      if (currency === "jpy" && !isNaN(Number(initialValue))) {
-        return formatJpy(initialValue);
-      }
-      return initialValue;
+    const [inputValue, setInputValue] = React.useState(initialValue);
+    const [displayValue, setDisplayValue] = React.useState(() => {
+      let v = initialValue;
+      if (currency === "jpy") v = formatJpy(v);
+      if (unit) v = formatWithUnit(v);
+      return v;
     });
 
     React.useEffect(() => {
@@ -83,6 +93,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
 
     const handleChange = (newValue: string) => {
       setInputValue(newValue);
+      setDisplayValue(newValue);
       if (context) {
         handleInputChange(id, newValue);
       }
@@ -93,19 +104,18 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     };
 
     const handleBlur = (id: string, newValue: string) => {
-      if (currency === "jpy") {
-        const formatted = formatJpy(newValue);
-        if (formatted !== newValue) {
-          setInputValue(formatted);
-          if (context) handleInputChange(id, formatted);
-          if (onBlur) onBlur(id, formatted);
-          return;
-        }
-      }
+      let v = newValue;
+      if (currency === "jpy") v = formatJpy(v.replace(/[￥,]/g, ""));
+      if (unit) v = formatWithUnit(v);
+      setDisplayValue(v);
+      setInputValue(newValue);
+      if (context) handleInputChange(id, inputValue);
+      if (onBlur) onBlur(id, inputValue);
+    };
 
-      if (onBlur) {
-        onBlur(id, newValue);
-      }
+    const handleFocus = (id: string, value: string) => {
+      setDisplayValue(inputValue);
+      if (onFocus) onFocus(id, value);
     };
 
     return (
@@ -119,13 +129,13 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
         )}
         <InputBox
           id={id}
-          value={inputValue}
+          value={displayValue}
           type={type}
           isValid={isValidStatus}
           disabled={disabled}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={handleBlur}
-          onFocus={onFocus}
+          onFocus={handleFocus}
           placeholder={placeholder}
           ref={ref}
           asTextArea={type === "textArea"}
