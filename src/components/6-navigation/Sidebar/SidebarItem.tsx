@@ -40,7 +40,9 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         {icon && (
           <span className="material-symbols-rounded select-none">{icon}</span>
         )}
-        {label && <span className="text-lg font-bold"> {label}</span>}
+        {label && (
+          <span className="text-nowrap text-lg font-bold"> {label}</span>
+        )}
       </a>
     </li>
   );

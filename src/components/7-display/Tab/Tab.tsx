@@ -20,7 +20,7 @@ export const Tab: React.FC<TabProps> = ({
   };
   const indexStyle = (id: string) => {
     return cn(
-      "px-8 py-2 text-base hover:bg-black-5-opacity active:bg-black-10-opacity rounded-t-lg",
+      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg",
       {
         "text-main font-bold border-b-4 border-main": openTab === id,
         "text-black-sub": openTab !== id,

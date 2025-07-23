@@ -69,11 +69,11 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     };
 
     const ButtonStyle = cn(
+      "flex w-[42px] h-[42px] min-w-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-2xl  text-black-sub transition-all",
       isValidStatus ? "border-black-20-opacity" : "border-danger",
       disabled
         ? "text-black-20-opacity bg-black-3-opacity pointer-events-none"
-        : "hover:bg-black-5-opacity active:bg-black-10-opacity",
-      "flex w-[42px] h-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-2xl  text-black-sub transition-all"
+        : "hover:bg-black-5-opacity active:bg-black-10-opacity"
     );
 
     return (

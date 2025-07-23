@@ -23,17 +23,26 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
 }) => {
   return (
     <nav id={id} className={className}>
-      <div className="flex items-center">
+      <div className="flex flex-wrap items-center">
         {items.map((item, index) => (
           <div
             key={index}
-            className="flex items-center space-x-2 text-2xl text-black-sub"
+            className="flex items-center text-2xl text-black-sub"
           >
+            {0 < index && (
+              <div className="m-1 flex select-none text-base text-black-20-opacity">
+                <span className="material-symbols-rounded">
+                  arrow_forward_ios
+                </span>
+              </div>
+            )}
             <div className="flex items-center">
-              <span className="material-symbols-rounded m-1">{item.icon}</span>
+              {item.icon && (
+                <span className="material-symbols-rounded">{item.icon}</span>
+              )}
               <a
                 href={item.href}
-                className={cn("text-base", {
+                className={cn("text-nowrap text-base", {
                   "text-base font-medium text-black": item.selected,
                   "underline underline-offset-4": !item.selected,
                 })}
@@ -41,13 +50,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                 {item.label}
               </a>
             </div>
-            {index < items.length - 1 && (
-              <div className="flex select-none text-base text-black-20-opacity">
-                <span className="material-symbols-rounded">
-                  arrow_forward_ios
-                </span>
-              </div>
-            )}
           </div>
         ))}
       </div>

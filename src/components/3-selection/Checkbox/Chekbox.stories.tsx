@@ -20,22 +20,18 @@ type Story = StoryObj<typeof Checkbox>;
 
 const Template: Story = {
   render: (args) => {
-    const [checked, setChecked] = React.useState(args.defaultChecked);
+    const [checked, setChecked] = React.useState(args.checked);
 
     React.useEffect(() => {
-      setChecked(args.defaultChecked);
-    }, [args.defaultChecked]);
+      setChecked(args.checked);
+    }, [args.checked]);
 
     const handleCheckedChange = (newChecked: boolean | "indeterminate") => {
       setChecked(newChecked);
     };
 
     return (
-      <Checkbox
-        {...args}
-        defaultChecked={checked}
-        onChange={handleCheckedChange}
-      />
+      <Checkbox {...args} checked={checked} onChange={handleCheckedChange} />
     );
   },
 };
@@ -44,13 +40,13 @@ export const Default: Story = {
   ...Template,
   args: {
     id: "1",
-    defaultChecked: false,
-    children: "利用規約に同意します。",
+    checked: false,
     disabled: false,
     isValid: false,
+    label: "利用規約に同意します。",
   },
   argTypes: {
-    defaultChecked: {
+    checked: {
       control: { type: "boolean" },
     },
     isValid: { control: { type: "boolean" } },

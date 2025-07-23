@@ -95,10 +95,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         >
           <div
             className={
-              "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity"
+              "flex h-7 w-7 select-none items-center justify-center rounded-md hover:bg-black-5-opacity active:bg-black-10-opacity"
             }
           >
-            <span className="material-symbols-rounded">
+            <span className="material-symbols-rounded text-2xl">
               {internalChecked === "indeterminate" ? (
                 <span
                   className={cn(

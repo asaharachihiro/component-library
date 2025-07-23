@@ -14,7 +14,7 @@ export const Stepper: React.FC<StepperProps> = ({
 }) => {
   const iconStyle = (status: string) => {
     return cn(
-      "h-[20px] w-[20px] flex items-center justify-center text-xs mr-2",
+      "h-[20px] w-[20px] flex items-center justify-center text-xs mr-2 shrink-0",
       {
         "text-black-sub border border-black-sub rounded-full":
           status === "incomplete",

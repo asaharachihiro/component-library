@@ -19,7 +19,7 @@ export interface ButtonProps
 }
 
 const baseButtonStyle =
-  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group shrink-0";
+  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group shrink-0 text-nowrap";
 const sizeS = "h-7 px-2 text-sm rounded-md min-w-12";
 const sizeM = "h-9 px-6 text-base rounded-lg";
 
