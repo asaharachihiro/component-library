@@ -76,7 +76,10 @@ export const BaseSelectBox = React.forwardRef<
         {label && (
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
-        <div className="group relative flex items-center" onClick={onToggle}>
+        <div
+          className="group relative flex min-w-[40px] items-center truncate"
+          onClick={onToggle}
+        >
           <input
             role="select"
             id={id}
@@ -99,7 +102,7 @@ export const BaseSelectBox = React.forwardRef<
                 {selectedValue}
               </div>
             ) : (
-              <span className="inset-y-0 left-0 select-none pl-2 text-black-20-opacity">
+              <span className="inset-y-0 left-0 select-none truncate text-nowrap pl-2 text-black-20-opacity">
                 {placeholder}
               </span>
             )}
