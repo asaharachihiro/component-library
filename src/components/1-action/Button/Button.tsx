@@ -172,6 +172,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isActive,
       icon,
       children,
+      type = "button", // 追加: type属性をデフォルトで"button"に設定
       ...props
     },
     ref
@@ -190,6 +191,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         isLoading={isLoading}
         icon={icon}
         ref={ref}
+        type={type}
         {...props}
       />
     );

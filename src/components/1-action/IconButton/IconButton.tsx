@@ -23,6 +23,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       className,
       size = "s",
       onClick,
+      type = "button",
       ...props
     },
     ref
@@ -60,6 +61,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           onClick={(e) => handleClick(e)}
           aria-checked={toggleChecked}
           disabled={disabled || isLoading}
+          type={type}
           {...props}
         >
           {isLoading && <Spinner className="absolute flex" />}
