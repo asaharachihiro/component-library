@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { List } from ".";
+import { ListGroup } from ".";
 
-const meta: Meta<typeof List> = {
+const meta: Meta<typeof ListGroup> = {
   title: "Components/List/List",
-  component: List,
+  component: ListGroup,
   tags: ["autodocs"],
   parameters: {
     docs: {
@@ -16,28 +16,16 @@ const meta: Meta<typeof List> = {
 };
 export default meta;
 
-type Story = StoryObj<typeof List>;
-
-const Template: Story = {
-  render: (args) => {
-    return (
-      <ul>
-        <List {...args} />
-        <List id={"2"}>沿革</List>
-        <List id={"3"}>役員・組織</List>
-        <List id={"4"}>採用情報</List>
-        <List id={"5"}>アクセス</List>
-      </ul>
-    );
-  },
-};
+type Story = StoryObj<typeof ListGroup>;
 
 export const Default: Story = {
-  ...Template,
   args: {
-    id: "1",
-    children: <span>会社概要・企業理念</span>,
-    selected: false,
-    disabled: false,
+    id: "list-group",
+    items: [
+      { id: "1", label: "沿革" },
+      { id: "2", label: "役員・組織" },
+      { id: "3", label: "採用情報" },
+      { id: "4", label: "アクセス" },
+    ],
   },
 };
