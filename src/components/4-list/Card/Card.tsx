@@ -42,10 +42,19 @@ export const Card: React.FC<CardProps> = ({
       },
       {} as Record<string, (event: React.SyntheticEvent) => void>
     );
-
-    // 型を明示的に指定
     return React.cloneElement(child as React.ReactElement<any>, enhancedProps);
   };
+
+  const handleOnKeyDown = (
+    e: React.KeyboardEvent<HTMLDivElement>,
+    id: string
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleParentClick();
+    }
+  };
+
   const cardStyle = cn(
     "rounded-lg shadow-low transition-all hover:bg-black-3-opacity p-2",
     {
@@ -56,7 +65,14 @@ export const Card: React.FC<CardProps> = ({
   );
   return (
     <div id={id} className={className} data-selected={selected}>
-      <div className={cardStyle} onClick={handleParentClick}>
+      <div
+        className={cardStyle}
+        onClick={handleParentClick}
+        onKeyDown={(e) => {
+          handleOnKeyDown(e, id);
+        }}
+        tabIndex={0}
+      >
         {React.Children.map(children, enhanceChild)}
       </div>
     </div>

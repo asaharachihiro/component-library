@@ -69,6 +69,33 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       }
     };
 
+    const handleOnKeyDown = (
+      e: React.KeyboardEvent<HTMLButtonElement>,
+      newValue: string,
+      index: number
+    ) => {
+      if (disabled) return;
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleChange(newValue);
+        return;
+      }
+      if (["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp"].includes(e.key)) {
+        e.preventDefault();
+        const dir = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : -1;
+        let nextIdx = index + dir;
+        if (nextIdx < 0) nextIdx = options.length - 1;
+        if (nextIdx >= options.length) nextIdx = 0;
+
+        // フォーカスも移動
+        const btns =
+          e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
+            'button[role="radio"]'
+          );
+        btns?.[nextIdx]?.focus();
+      }
+    };
+
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
@@ -105,10 +132,13 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                   disabled && !isSelected && "text-20-opacity"
                 )}
                 onClick={() => handleChange(option.value)}
+                onKeyDown={(e) => {
+                  handleOnKeyDown(e, option.value, index);
+                }}
               >
                 <div
                   className={cn(
-                    "flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all group-hover:bg-black-5-opacity"
+                    "flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity"
                   )}
                 >
                   <span className="material-symbols-rounded">

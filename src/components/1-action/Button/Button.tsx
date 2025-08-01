@@ -134,7 +134,7 @@ const TextBaseButton = React.forwardRef<
 
     return (
       <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
-        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
+        <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-focus-visible:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
           <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>

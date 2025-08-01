@@ -34,10 +34,14 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       setToggleChecked(checked);
     }, [checked]);
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      setToggleChecked((prev) => !prev);
+    const handleClick = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+      if (disabled || isLoading) return;
+      const newValue = !toggleChecked;
+      setToggleChecked(newValue);
       if (onClick) {
-        onClick(e);
+        if (e.type === "click") {
+          onClick(e as React.MouseEvent<HTMLButtonElement>);
+        }
       }
     };
 
@@ -62,6 +66,14 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
           aria-checked={toggleChecked}
           disabled={disabled || isLoading}
           type={type}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (disabled || isLoading) return;
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleClick(e);
+            }
+          }}
           {...props}
         >
           {isLoading && <Spinner className="absolute flex" />}

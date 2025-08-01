@@ -21,12 +21,39 @@ export const Accordion: React.FC<AccordionProps> = ({
   const toggleAccordion = (Open: boolean) => {
     setIsOpen(Open);
   };
+
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (contentRef.current) {
+      const focusables = contentRef.current.querySelectorAll<HTMLElement>(
+        "a, button, input, textarea, select, [tabindex]"
+      );
+      focusables.forEach((el) => {
+        if (isOpen) {
+          // 元のtabIndexをdata属性で保持しておく
+          if (el.hasAttribute("data-orig-tabindex")) {
+            el.tabIndex = parseInt(el.getAttribute("data-orig-tabindex")!, 10);
+          } else {
+            el.setAttribute("data-orig-tabindex", el.tabIndex.toString());
+            el.tabIndex = el.tabIndex === -1 ? 0 : el.tabIndex;
+          }
+        } else {
+          // 閉じている間はtabIndexを-1に
+          if (!el.hasAttribute("data-orig-tabindex")) {
+            el.setAttribute("data-orig-tabindex", el.tabIndex.toString());
+          }
+          el.tabIndex = -1;
+        }
+      });
+    }
+  }, [isOpen]);
+
   return (
     <li id={id} className={cn(className, "list-none")}>
       <div className="relative flex w-full cursor-pointer flex-col text-base">
         <button
           onClick={() => toggleAccordion(!isOpen)}
-          className="flex h-[40px] w-full items-center justify-between p-2 hover:bg-black-3-opacity"
+          className="flex h-[40px] w-full items-center justify-between p-2 hover:bg-black-5-opacity focus-visible:bg-black-5-opacity active:bg-black-10-opacity"
           aria-expanded={isOpen}
         >
           <span className="truncate font-medium">{label}</span>
@@ -44,6 +71,7 @@ export const Accordion: React.FC<AccordionProps> = ({
             "transition-max-height overflow-hidden transition-all duration-300",
             isOpen ? "max-h-screen" : "max-h-0"
           )}
+          ref={contentRef}
         >
           {children}
         </div>

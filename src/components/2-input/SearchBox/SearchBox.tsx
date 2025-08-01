@@ -13,6 +13,7 @@ interface SearchBoxProps {
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
   onFocus?: (id: string, value: string) => void;
+  onClick?: (id: string, value: string) => void;
   supportMessage?: string;
   errorMessage?: string;
 }
@@ -27,6 +28,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       onChange,
       onBlur,
       onFocus,
+      onClick,
       supportMessage,
       errorMessage,
       disabled = false,
@@ -73,7 +75,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       isValidStatus ? "border-black-20-opacity" : "border-danger",
       disabled
         ? "text-black-20-opacity bg-black-3-opacity pointer-events-none"
-        : "hover:bg-black-5-opacity active:bg-black-10-opacity"
+        : "hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity"
     );
 
     return (
@@ -99,6 +101,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             aria-label="Search Button"
             className={ButtonStyle}
             disabled={disabled}
+            onClick={() => onClick?.(id, inputValue)}
           >
             <span className="material-symbols-rounded">search</span>
           </button>

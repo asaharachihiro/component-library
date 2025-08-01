@@ -26,8 +26,15 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
     setShowPanel(false)
   );
 
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setShowPanel(false);
+    }
+  };
+
   return (
-    <div className={className}>
+    <div className={className} onKeyDown={handleOnKeyDown}>
       <Button
         id={id}
         variant="textPrimary"

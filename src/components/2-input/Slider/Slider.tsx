@@ -104,6 +104,26 @@ export const Slider: React.FC<SliderProps> = ({
     }
   };
 
+  // キーボードの場合は左右上下キーで操作できる
+  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    let newValue = currentValue;
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+      newValue = Math.min(currentValue + 1, max);
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+      newValue = Math.max(currentValue - 1, min);
+    } else if (e.key === "Home") {
+      newValue = min;
+    } else if (e.key === "End") {
+      newValue = max;
+    } else {
+      return;
+    }
+
+    handleChange(newValue);
+    e.preventDefault();
+  };
+
   return (
     <>
       <div id={id} className={className} draggable="false">
@@ -112,6 +132,7 @@ export const Slider: React.FC<SliderProps> = ({
         )}
         <div>
           <div className="relative flex flex-col">
+            {/* 数値の表示 */}
             <div
               className={cn(
                 "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-regular",
@@ -126,6 +147,7 @@ export const Slider: React.FC<SliderProps> = ({
             >
               {currentValue}
             </div>
+            {/* スライダー本体 */}
             <div
               id={id}
               className={cn(
@@ -169,6 +191,8 @@ export const Slider: React.FC<SliderProps> = ({
                 )}
                 style={{ left: `calc(${percentage}% - 1px)` }}
                 onMouseDown={handleMouseDown}
+                tabIndex={0}
+                onKeyDown={handleOnKeyDown}
               >
                 <div className="bg-transparent absolute left-[-11px] top-[-4px] h-6 w-6 cursor-pointer rounded-full" />
               </div>

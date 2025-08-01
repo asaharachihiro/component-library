@@ -93,6 +93,14 @@ export const ToggleSwitch = React.forwardRef<
               : "cursor-pointer",
             "flex justify-between"
           )}
+          tabIndex={disabled ? -1 : 0}
+          onKeyDown={(e) => {
+            if (disabled) return;
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleToggled();
+            }
+          }}
         >
           {label && (
             <span className="m-1 mr-4 text-left text-base leading-[180%]">

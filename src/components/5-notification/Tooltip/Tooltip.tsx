@@ -42,6 +42,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
           aria-hidden="true"
           onMouseEnter={() => setIsVisible(true)}
           ref={refs.setReference}
+          tabIndex={0}
+          onFocus={() => setIsVisible(true)}
+          onBlur={() => setIsVisible(false)}
         >
           info
         </span>
