@@ -41,7 +41,6 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
         role="option"
         aria-selected={selected}
         aria-disabled={disabled}
-        // tabIndex={typeof selected !== "undefined" ? (selected ? 0 : -1) : 0}
       >
         <button
           ref={ref}

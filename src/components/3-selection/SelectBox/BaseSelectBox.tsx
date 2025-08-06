@@ -59,7 +59,7 @@ export const BaseSelectBox = React.forwardRef<
           disabled,
         "border-danger": !disabled && !isValid,
         "border-black-20-opacity": !disabled && isValid,
-        "text-sm p-1 pl-2 rounded-md border-none": size === "s",
+        "text-sm p-1 pl-2 rounded-md border-transparent": size === "s",
         "rounded-lg p-2": size !== "s",
       }
     );

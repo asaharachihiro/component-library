@@ -1,7 +1,8 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-interface NumberButtonProps {
+interface NumberButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   id: string;
   number?: string;
   selected?: boolean;

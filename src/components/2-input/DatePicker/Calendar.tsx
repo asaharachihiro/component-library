@@ -62,6 +62,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     }, [currentDate]);
 
     // 月のSelectBoxリスト
+    const prevMonthBtnRef = React.useRef<HTMLButtonElement>(null);
     const monthsList = Array.from({ length: 12 }, (_, i) => ({
       value: (i + 1).toString().padStart(2, "0"),
       label: (i + 1).toString(),
@@ -140,58 +141,33 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       return false;
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      let newDate = currentDate;
-      const active = document.activeElement;
-      const isDateButton = active?.classList.contains("date-btn"); // クラス名は適宜調整
-      if (isDateButton) {
-        if (
-          ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)
-        ) {
-          // ...日付移動ロジック...
+    const dateButtonRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+    const handleDateKeyDown =
+      (date: Date) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (!isValid(date)) return;
+
+        let newDate = date;
+        if (e.key === "ArrowUp") {
           e.preventDefault();
-          return;
-        }
-        // Tabキーは次の操作要素へ
-        if (e.key === "Tab") {
-          const focusable = calendarRef.current
-            ? Array.from(
-                calendarRef.current.querySelectorAll<HTMLElement>(
-                  'button:not([disabled]), [tabindex="0"]:not([disabled])'
-                )
-              )
-            : [];
-          if (focusable.length === 0) return;
-          const idx = focusable.indexOf(active as HTMLElement);
-          let nextIdx = e.shiftKey ? idx - 1 : idx + 1;
-          if (nextIdx < 0) nextIdx = focusable.length - 1;
-          if (nextIdx >= focusable.length) nextIdx = 0;
-          focusable[nextIdx].focus();
+          newDate = setDate(date, date.getDate() - 7);
+          setCurrentDate(newDate);
+        } else if (e.key === "ArrowDown") {
           e.preventDefault();
-          return;
+          newDate = setDate(date, date.getDate() + 7);
+          setCurrentDate(newDate);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          newDate = setDate(date, date.getDate() - 1);
+          setCurrentDate(newDate);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          newDate = setDate(date, date.getDate() + 1);
+          setCurrentDate(newDate);
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          prevMonthBtnRef.current?.focus();
         }
-      } else if (e.key === "Tab") {
-        const focusable = calendarRef.current
-          ? Array.from(
-              calendarRef.current.querySelectorAll<HTMLElement>(
-                'button:not([disabled]), [tabindex="0"]:not([disabled])'
-              )
-            )
-          : [];
-        if (focusable.length === 0) return;
-        const idx = focusable.indexOf(active as HTMLElement);
-        let nextIdx = e.shiftKey ? idx - 1 : idx + 1;
-        if (nextIdx < 0) nextIdx = focusable.length - 1;
-        if (nextIdx >= focusable.length) nextIdx = 0;
-        focusable[nextIdx].focus();
-        e.preventDefault();
-        return;
-      }
-      if (e.key === "Escape") {
-        onClosed(false);
-        e.preventDefault();
-      }
-    };
+      };
 
     return (
       <div
@@ -203,7 +179,6 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             (ref as React.RefObject<HTMLDivElement | null>).current = node;
         }}
         style={style}
-        onKeyDown={handleKeyDown}
       >
         <div className={cn("flex max-w-[320px] flex-col space-y-2 p-4")}>
           <div className="flex items-center justify-between">
@@ -211,6 +186,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               icon="chevron_left"
               onClick={() => moveMonth("prev")}
               type="button"
+              ref={prevMonthBtnRef}
+              onKeyDown={(e) => {
+                if (e.key === "Tab" && e.shiftKey) {
+                  e.preventDefault();
+                  const btns = dateButtonRefs.current;
+                  btns[btns.length - 1]?.focus();
+                }
+              }}
             />
             <div className="mx-6 flex">
               <SelectBox
@@ -273,7 +256,8 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                   isToday={isToday(date)}
                   disabled={disabled}
                   isFocused={isFocused}
-                  tabIndex={isFocused ? 0 : -1}
+                  tabIndex={0}
+                  onKeyDown={handleDateKeyDown(date)}
                 />
               );
             })}
