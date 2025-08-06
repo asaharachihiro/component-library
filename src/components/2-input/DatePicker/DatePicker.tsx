@@ -85,6 +85,9 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const [inputDate, setInputDate] = React.useState(
       initialValue ? toDateFormat(initialValue) : undefined
     );
+    const [currentDate, setCurrentDate] = React.useState<Date>(
+      inputDate && isValid(inputDate) ? inputDate : new Date()
+    );
 
     // 初期値を親・formContextに同期
     React.useEffect(() => {
@@ -167,7 +170,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {label && (
           <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
         )}
-        <div className="relative" ref={refs.setReference}>
+        <div className="relative rounded-lg" ref={refs.setReference}>
           <InputBox
             id={id}
             value={inputStr}
@@ -212,6 +215,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             isStartOnMonday={isStartOnMonday}
             ref={refs.setFloating}
             style={floatingStyles}
+            currentDate={currentDate}
+            setCurrentDate={setCurrentDate}
           />
         )}
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>

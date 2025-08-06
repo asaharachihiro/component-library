@@ -68,6 +68,7 @@ export const InputBox = React.forwardRef<
         aria-invalid={!isValid}
         {...(asTextArea ? { rows: 4 } : {})}
         {...props}
+        autoFocus={true}
       />
     );
   }

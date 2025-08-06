@@ -15,6 +15,7 @@ interface TableRowProps<TData> {
   isHovered?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onClick?: (id: string) => void;
 }
 
 export const TableRow = <TData,>({
@@ -27,6 +28,7 @@ export const TableRow = <TData,>({
   isHovered = false,
   onMouseEnter = () => {},
   onMouseLeave = () => {},
+  onClick = () => {},
 }: TableRowProps<TData>) => {
   const pinnedColumns = React.useMemo(
     () =>
@@ -57,6 +59,12 @@ export const TableRow = <TData,>({
         className={cn(isHovered && "bg-black-5-opacity")}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        tabIndex={0}
+        onClick={() => {
+          if (onClick) {
+            onClick(row.id);
+          }
+        }}
       >
         {virtualPaddingLeft > 0 && <td style={{ width: virtualPaddingLeft }} />}
 

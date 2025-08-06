@@ -3,23 +3,24 @@ import { cn } from "../../../utils/cn";
 
 export interface ListProps {
   id: string;
-  label: string;
   disabled?: boolean;
   selected?: boolean;
   className?: string;
   onClick?: () => void;
   onKeyDown?: React.KeyboardEventHandler<HTMLButtonElement>;
+  children: React.ReactNode;
 }
 export const List = React.forwardRef<HTMLButtonElement, ListProps>(
   (
     {
       id,
-      label,
       disabled = false,
       className = "",
       selected = false,
       onClick,
       onKeyDown,
+      children,
+      ...props
     },
     ref
   ) => {
@@ -40,7 +41,7 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
         role="option"
         aria-selected={selected}
         aria-disabled={disabled}
-        tabIndex={typeof selected !== "undefined" ? (selected ? 0 : -1) : 0}
+        // tabIndex={typeof selected !== "undefined" ? (selected ? 0 : -1) : 0}
       >
         <button
           ref={ref}
@@ -49,6 +50,7 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
           aria-selected={selected}
           onClick={onClick}
           type="button"
+          tabIndex={0}
           onKeyDown={(e) => {
             if (onKeyDown) {
               onKeyDown(e);
@@ -57,8 +59,9 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
               onClick();
             }
           }}
+          {...props}
         >
-          {label}
+          {children}
         </button>
       </li>
     );

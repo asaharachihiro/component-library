@@ -22,10 +22,10 @@ export const Default: Story = {
   args: {
     id: "list-group",
     items: [
-      { id: "1", label: "沿革" },
-      { id: "2", label: "役員・組織" },
-      { id: "3", label: "採用情報" },
-      { id: "4", label: "アクセス" },
+      { id: "1", children: "沿革" },
+      { id: "2", children: "役員・組織" },
+      { id: "3", children: "採用情報" },
+      { id: "4", children: "アクセス" },
     ],
   },
 };

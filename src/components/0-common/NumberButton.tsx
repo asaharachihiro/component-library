@@ -7,7 +7,9 @@ interface NumberButtonProps {
   selected?: boolean;
   isToday?: boolean;
   disabled?: boolean;
+  isFocused?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  tabIndex?: number;
 }
 
 export const NumberButton = React.forwardRef<
@@ -21,7 +23,10 @@ export const NumberButton = React.forwardRef<
       selected = false,
       isToday = false,
       disabled = false,
+      isFocused = false,
       onClick,
+      tabIndex = 0,
+      ...props
     },
     ref
   ) => {
@@ -46,9 +51,16 @@ export const NumberButton = React.forwardRef<
         aria-pressed={selected}
         disabled={disabled}
         type="button"
+        tabIndex={tabIndex}
+        {...props}
       >
         {displayNum}
-        <div className="absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
+        <div
+          className={cn(
+            "absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10",
+            isFocused && "bg-black opacity-5"
+          )}
+        />
       </button>
     );
   }

@@ -18,38 +18,15 @@ export default meta;
 
 type Story = StoryObj<typeof Checkbox>;
 
-const Template: Story = {
-  render: (args) => {
-    const [checked, setChecked] = React.useState(args.checked);
-
-    React.useEffect(() => {
-      setChecked(args.checked);
-    }, [args.checked]);
-
-    const handleCheckedChange = (newChecked: boolean | "indeterminate") => {
-      setChecked(newChecked);
-    };
-
-    return (
-      <Checkbox {...args} checked={checked} onChange={handleCheckedChange} />
-    );
-  },
-};
-
 export const Default: Story = {
-  ...Template,
   args: {
-    id: "1",
-    checked: false,
-    disabled: false,
-    isValid: false,
-    label: "利用規約に同意します。",
-  },
-  argTypes: {
-    checked: {
-      control: { type: "boolean" },
-    },
-    isValid: { control: { type: "boolean" } },
-    disabled: { control: { type: "boolean" } },
+    id: "price-range",
+    options: [
+      { id: "1", label: " 1,000 ~  3,000" },
+      { id: "2", label: " 3,000 ~  5,000" },
+      { id: "3", label: " 5,000 ~ 10,000" },
+      { id: "4", label: "10,000 ~" },
+    ],
+    label: "価格帯",
   },
 };

@@ -24,9 +24,11 @@ interface CalendarProps {
   onClosed: (isCanceled: boolean) => void;
   selectedDates?: Date[];
   style?: React.CSSProperties;
+  currentDate: Date;
+  setCurrentDate: (date: Date) => void;
 }
 
-export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
+export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
   (
     {
       id,
@@ -38,20 +40,26 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       isStartOnMonday = false,
       selectedDates,
       style,
+      currentDate,
+      setCurrentDate,
     },
     ref
   ) => {
-    const initialDate = inputDate
-      ? setDate(inputDate, 1)
-      : setDate(new Date(), 1);
-    const [currentDate, setCurrentDate] = React.useState(initialDate);
-
     // 年のSelectBoxリスト
     const currentYear = parseInt(format(currentDate, "yyyy"));
     const yearsList = Array.from({ length: 201 }, (_, i) => ({
       value: (currentYear - 100 + i).toString(),
       label: (currentYear - 100 + i).toString(),
     }));
+
+    // フォーカス対象のボタンを保持
+    const calendarRef = React.useRef<HTMLDivElement>(null);
+    const focusedDateRef = React.useRef<HTMLButtonElement>(null);
+    React.useEffect(() => {
+      if (focusedDateRef.current) {
+        focusedDateRef.current.focus();
+      }
+    }, [currentDate]);
 
     // 月のSelectBoxリスト
     const monthsList = Array.from({ length: 12 }, (_, i) => ({
@@ -109,7 +117,8 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
     const moveMonth = (direction: "prev" | "next") => {
       const newDate = direction === "prev" ? -1 : 1;
       const nextMonth = setMonth(currentDate, currentDate.getMonth() + newDate);
-      setCurrentDate(nextMonth);
+      const firstDayOfMonth = setDate(nextMonth, 1);
+      setCurrentDate(firstDayOfMonth);
     };
 
     const handleDateClick = (id: string, date: Date) => {
@@ -131,8 +140,71 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
       return false;
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      let newDate = currentDate;
+      const active = document.activeElement;
+      const isDateButton = active?.classList.contains("date-btn"); // クラス名は適宜調整
+      if (isDateButton) {
+        if (
+          ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)
+        ) {
+          // ...日付移動ロジック...
+          e.preventDefault();
+          return;
+        }
+        // Tabキーは次の操作要素へ
+        if (e.key === "Tab") {
+          const focusable = calendarRef.current
+            ? Array.from(
+                calendarRef.current.querySelectorAll<HTMLElement>(
+                  'button:not([disabled]), [tabindex="0"]:not([disabled])'
+                )
+              )
+            : [];
+          if (focusable.length === 0) return;
+          const idx = focusable.indexOf(active as HTMLElement);
+          let nextIdx = e.shiftKey ? idx - 1 : idx + 1;
+          if (nextIdx < 0) nextIdx = focusable.length - 1;
+          if (nextIdx >= focusable.length) nextIdx = 0;
+          focusable[nextIdx].focus();
+          e.preventDefault();
+          return;
+        }
+      } else if (e.key === "Tab") {
+        const focusable = calendarRef.current
+          ? Array.from(
+              calendarRef.current.querySelectorAll<HTMLElement>(
+                'button:not([disabled]), [tabindex="0"]:not([disabled])'
+              )
+            )
+          : [];
+        if (focusable.length === 0) return;
+        const idx = focusable.indexOf(active as HTMLElement);
+        let nextIdx = e.shiftKey ? idx - 1 : idx + 1;
+        if (nextIdx < 0) nextIdx = focusable.length - 1;
+        if (nextIdx >= focusable.length) nextIdx = 0;
+        focusable[nextIdx].focus();
+        e.preventDefault();
+        return;
+      }
+      if (e.key === "Escape") {
+        onClosed(false);
+        e.preventDefault();
+      }
+    };
+
     return (
-      <div className={className} ref={ref} style={style}>
+      <div
+        className={className}
+        ref={(node) => {
+          calendarRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref)
+            (ref as React.RefObject<HTMLDivElement | null>).current = node;
+        }}
+        style={style}
+        onKeyDown={handleKeyDown}
+      >
         <div className={cn("flex max-w-[320px] flex-col space-y-2 p-4")}>
           <div className="flex items-center justify-between">
             <IconButton
@@ -141,24 +213,22 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               type="button"
             />
             <div className="mx-6 flex">
-              <div className="w-[80px]">
-                <SelectBox
-                  id={"_year-select"}
-                  options={yearsList}
-                  value={format(currentDate, "yyyy")}
-                  onChange={(value) => handleYearChange(value)}
-                  size="s"
-                />
-              </div>
-              <div className="w-[60px]">
-                <SelectBox
-                  id={"_month-select"}
-                  options={monthsList}
-                  value={format(currentDate, "MM")}
-                  onChange={(value) => handleMonthChange(value)}
-                  size="s"
-                />
-              </div>
+              <SelectBox
+                id={"_year-select"}
+                className="w-[80px]"
+                options={yearsList}
+                value={format(currentDate, "yyyy")}
+                onChange={(value) => handleYearChange(value)}
+                size="s"
+              />
+              <SelectBox
+                id={"_month-select"}
+                className="w-[60px]"
+                options={monthsList}
+                value={format(currentDate, "MM")}
+                onChange={(value) => handleMonthChange(value)}
+                size="s"
+              />
             </div>
             <IconButton
               icon="chevron_right"
@@ -188,8 +258,13 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
               } catch {
                 return null;
               }
+              const isFocused =
+                format(date, "yyyy-MM-dd") ===
+                format(currentDate, "yyyy-MM-dd");
+              console.log("isFocused", isFocused, date, currentDate);
               return (
                 <NumberButton
+                  ref={isFocused ? focusedDateRef : undefined}
                   onClick={() => handleDateClick(id, date)}
                   number={number}
                   key={format(date, "yyyy-MM-dd")}
@@ -197,6 +272,8 @@ export const Calendar = React.forwardRef<HTMLInputElement, CalendarProps>(
                   selected={isSelected(date)}
                   isToday={isToday(date)}
                   disabled={disabled}
+                  isFocused={isFocused}
+                  tabIndex={isFocused ? 0 : -1}
                 />
               );
             })}

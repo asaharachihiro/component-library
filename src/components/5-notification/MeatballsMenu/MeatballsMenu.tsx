@@ -50,6 +50,12 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
         onClick={handleToggle}
         disabled={disabled}
         ref={refs.setReference}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            e.preventDefault();
+            setIsOpen(false);
+          }
+        }}
       />
       {isOpen && (
         <div
@@ -57,7 +63,16 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
             "flex size-fit overflow-hidden rounded-lg bg-white shadow-low"
           )}
           style={floatingStyles}
-          ref={refs.setFloating}
+          ref={(el) => {
+            refs.setFloating(el);
+            if (el) el.focus();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              e.preventDefault();
+              setIsOpen(false);
+            }
+          }}
         >
           {children}
         </div>

@@ -1,158 +1,140 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { useFormContext } from "@components/2-input/Form";
-import { ErrorText } from "@components/0-common";
+import { CheckIcon, ErrorText, FormLabel } from "@components/0-common";
+interface CheckboxOption {
+  id: string;
+  label: string;
+  checked?: boolean | "indeterminate";
+  disabled?: boolean;
+  children?: React.ReactNode;
+}
 
 interface CheckboxProps {
   id: string;
-  className?: string;
   label?: string;
-  checked?: boolean | "indeterminate";
-  disabled?: boolean;
-  isValid?: boolean;
-  children?: React.ReactNode;
-  onChange?: (checked: boolean | "indeterminate") => void;
+  className?: string;
+  options: CheckboxOption[];
+  onChange?: (checkedIds: string[]) => void;
   errorMessage?: string;
+  isValid?: boolean;
+  tooltip?: React.ReactNode;
+  isRequired?: boolean;
 }
 
-export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  (
-    {
-      id,
-      className,
-      label = "",
-      children,
-      checked,
-      onChange,
-      disabled = false,
-      isValid,
-      errorMessage,
-      ...props
-    },
-    ref
+export const Checkbox: React.FC<CheckboxProps> = ({
+  id,
+  className,
+  label,
+  isValid,
+  options = [],
+  onChange,
+  errorMessage,
+  isRequired = false,
+  tooltip,
+
+  ...props
+}) => {
+  const context = useFormContext();
+  // FormContextが提供されていない場合
+  const formData = context?.formData || {};
+  const errors = context?.errors || {};
+  const handleInputChange = context?.handleInputChange || (() => {});
+  const isValidStatus =
+    typeof isValid === "boolean" ? isValid : errors[id] == null;
+
+  const initialChecked: string[] = options
+    .filter((opt) => opt.checked)
+    .map((opt) => opt.id);
+
+  const initialCheckedIds: string[] = Array.isArray(initialChecked)
+    ? initialChecked
+    : Array.isArray(formData[id])
+      ? formData[id]
+      : [];
+
+  const [checkedIds, setCheckedIds] =
+    React.useState<string[]>(initialCheckedIds);
+
+  React.useEffect(() => {
+    if (Array.isArray(initialChecked) && Array.isArray(formData[id])) {
+      handleInputChange(id, initialChecked);
+    }
+  }, []);
+
+  const handleChange = (
+    optionId: string,
+    checked: boolean | "indeterminate"
   ) => {
-    const context = useFormContext();
-    // FormContextが提供されていない場合
-    const formData = context?.formData || {};
-    const errors = context?.errors || {};
-    const handleInputChange = context?.handleInputChange || (() => {});
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    let newCheckedIds: string[];
+    if (checked) {
+      newCheckedIds = [...checkedIds, optionId];
+    } else {
+      newCheckedIds = checkedIds.filter((id) => id !== optionId);
+    }
+    setCheckedIds(newCheckedIds);
+    if (onChange) onChange(newCheckedIds);
+    if (context) {
+      handleInputChange(id, newCheckedIds);
+    }
+  };
 
-    const initialChecked =
-      typeof checked !== "undefined"
-        ? checked
-        : typeof formData[id] !== "undefined"
-          ? formData[id]
-          : false;
-
-    const [internalChecked, setInternalChecked] = React.useState<
-      boolean | "indeterminate"
-    >(initialChecked);
-
-    React.useEffect(() => {
-      if (typeof checked !== "undefined" && checked !== formData[id]) {
-        handleInputChange(id, checked);
+  const checkboxRefs = React.useRef<(HTMLLabelElement | null)[]>([]);
+  const handleKeyDown =
+    (idx: number) => (e: React.KeyboardEvent<HTMLLabelElement>) => {
+      if (["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(e.key)) {
+        e.preventDefault();
+        const dir = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : -1;
+        let nextIdx = idx + dir;
+        if (nextIdx < 0) nextIdx = options.length - 1;
+        if (nextIdx >= options.length) nextIdx = 0;
+        checkboxRefs.current[nextIdx]?.focus();
       }
-    }, []);
-
-    React.useEffect(() => {
-      if (typeof checked !== "undefined") {
-        setInternalChecked(checked);
-      }
-    }, [checked]);
-
-    const handleCheckedChange = () => {
-      let newChecked: boolean | "indeterminate";
-      if (internalChecked === "indeterminate" || !internalChecked) {
-        newChecked = true;
-      } else {
-        newChecked = false;
-      }
-      setInternalChecked(newChecked);
-
-      if (onChange) {
-        onChange(newChecked);
-      }
-      if (context) {
-        handleInputChange(id, newChecked);
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const option = options[idx];
+        const isChecked = checkedIds.includes(option.id);
+        handleChange(option.id, !isChecked);
       }
     };
 
-    const disabledStyle =
-      disabled && "text-black-20-opacity pointer-events-none";
-    const isNormalStyle = !disabled && isValidStatus;
-
-    return (
-      <>
-        <div
+  return (
+    <div
+      id={id}
+      className={cn("space-y-1", className)}
+      role="group"
+      aria-labelledby={id}
+    >
+      {label && (
+        <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
+      )}
+      {options.map((option, idx) => (
+        <label
+          key={option.id}
           className={cn(
-            disabledStyle,
-            className,
-            "flex cursor-pointer items-center text-2xl transition-all"
+            "flex cursor-pointer items-center p-1",
+            option.disabled && "pointer-events-none text-black-20-opacity"
           )}
-          onClick={handleCheckedChange}
+          onKeyDown={handleKeyDown(idx)}
+          tabIndex={option.disabled ? -1 : 0}
+          ref={(el) => {
+            checkboxRefs.current[idx] = el;
+          }}
         >
-          <div
-            className={
-              "flex h-7 w-7 select-none items-center justify-center rounded-md hover:bg-black-5-opacity active:bg-black-10-opacity"
-            }
-          >
-            <span className="material-symbols-rounded text-2xl">
-              {internalChecked === "indeterminate" ? (
-                <span
-                  className={cn(
-                    "icon-fill",
-                    isNormalStyle && "text-main",
-                    !isValidStatus && "text-danger"
-                  )}
-                >
-                  indeterminate_check_box
-                </span>
-              ) : internalChecked ? (
-                <span
-                  className={cn(
-                    "icon-fill",
-                    isNormalStyle && "text-main",
-                    !isValidStatus && "text-danger"
-                  )}
-                >
-                  check_box
-                </span>
-              ) : (
-                <span
-                  className={cn(
-                    isNormalStyle && "text-black-sub",
-                    !isValidStatus && "text-danger"
-                  )}
-                >
-                  check_box_outline_blank
-                </span>
-              )}
-            </span>
-          </div>
-          <input
-            type="checkbox"
-            id={id}
-            className="hidden"
-            checked={
-              internalChecked === "indeterminate" ? false : internalChecked
-            }
-            onChange={handleCheckedChange}
-            {...props}
-            ref={ref}
-            disabled={disabled}
+          <CheckIcon
+            id={option.id}
+            checked={checkedIds.includes(option.id)}
+            disabled={option.disabled}
+            isValid={isValidStatus && !option.disabled}
+            onChange={(checked) => handleChange(option.id, checked)}
           />
-          <span className={cn("ml-1 text-base")}>{label}</span>
-          {children}
-        </div>
-        {!isValidStatus && (
-          <ErrorText
-            text={errors[id] || errorMessage || "入力がエラーになっています。"}
-          />
-        )}
-      </>
-    );
-  }
-);
+          <span className="ml-2">{option.label}</span>
+          {option.children}
+        </label>
+      ))}
+      {errorMessage && <ErrorText text={errorMessage} />}
+    </div>
+  );
+};
+
 Checkbox.displayName = "Checkbox";

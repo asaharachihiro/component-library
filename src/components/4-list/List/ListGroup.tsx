@@ -1,15 +1,9 @@
 import * as React from "react";
-import { List } from "./List";
+import { List, ListProps } from "./List";
 
 interface ListGroupProps {
   id: string;
-  items: {
-    id: string;
-    label: string;
-    disabled?: boolean;
-    selected?: boolean;
-    onClick?: () => void;
-  }[];
+  items: ListProps[];
   className?: string;
 }
 
@@ -19,6 +13,7 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   items = [],
 }) => {
   const listRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  listRefs.current.length = items.length;
 
   const handleListKeyDown =
     (idx: number) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -31,20 +26,20 @@ export const ListGroup: React.FC<ListGroupProps> = ({
         listRefs.current[nextIdx]?.focus();
       }
     };
+
   return (
     <ul id={id} role="listbox" className={className}>
       {items.map((item, idx) => (
         <List
           key={item.id}
-          label={item.label}
-          id={item.id}
-          selected={item.selected}
-          disabled={item.disabled}
-          onClick={item.onClick}
           ref={(el) => {
             listRefs.current[idx] = el;
           }}
-          onKeyDown={handleListKeyDown(idx)}
+          onKeyDown={(e) => {
+            handleListKeyDown(idx)(e);
+            item.onKeyDown?.(e);
+          }}
+          {...item}
         />
       ))}
     </ul>

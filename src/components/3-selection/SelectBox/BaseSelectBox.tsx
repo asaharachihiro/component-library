@@ -28,13 +28,14 @@ interface BaseSelectBoxProps {
 }
 
 export const BaseSelectBox = React.forwardRef<
-  HTMLInputElement,
+  HTMLDivElement,
   BaseSelectBoxProps
 >(
   (
     {
       id,
       label,
+      className = "",
       isRequired = false,
       isValid,
       placeholder = "未選択",
@@ -53,8 +54,7 @@ export const BaseSelectBox = React.forwardRef<
     const boxStyle = cn(
       "w-full cursor-pointer border bg-white flex items-center justify-between",
       {
-        "group-hover:bg-black-5-opacity cursor-pointer group focus:border-black-sub":
-          !disabled,
+        "group-hover:bg-black-5-opacity cursor-pointer group": !disabled,
         "text-black-sub pointer-events-none bg-black-3-opacity border-black-20-opacity":
           disabled,
         "border-danger": !disabled && !isValid,
@@ -72,19 +72,28 @@ export const BaseSelectBox = React.forwardRef<
     });
 
     return (
-      <div ref={ref}>
+      <div ref={ref} className={className}>
         {label && (
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
         <div
-          className="group relative flex min-w-[40px] items-center truncate"
+          className="focus-visible:bordr-main group relative flex min-w-[40px] items-center truncate"
           onClick={onToggle}
+          onKeyDown={(e) => {
+            if (!isOpen && ["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+              e.preventDefault();
+              onToggle && onToggle();
+            }
+            if (isOpen && e.key === "Escape") {
+              e.preventDefault();
+              onToggle && onToggle();
+            }
+          }}
         >
           <input
             role="select"
             id={id}
             className={boxStyle}
-            tabIndex={0}
             aria-labelledby={label}
             aria-haspopup="listbox"
             aria-disabled={disabled}
@@ -117,7 +126,11 @@ export const BaseSelectBox = React.forwardRef<
           </div>
         </div>
         {isOpen && (
-          <div ref={refs.setFloating} style={floatingStyles}>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className="absolute z-10"
+          >
             {children}
           </div>
         )}

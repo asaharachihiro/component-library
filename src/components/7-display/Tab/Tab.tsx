@@ -15,22 +15,47 @@ export const Tab: React.FC<TabProps> = ({
   tabs = [],
 }) => {
   const [openTab, setOpenTab] = React.useState(selected || tabs[0]?.id);
+  const [focusedTab, setFocusedTab] = React.useState(selected || tabs[0]?.id);
+
   const handleTabClick = (tabId: string) => {
     setOpenTab(tabId);
   };
+
   const indexStyle = (id: string) => {
     return cn(
-      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg",
+      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
       {
         "text-main font-bold border-b-4 border-main": openTab === id,
         "text-black-sub": openTab !== id,
       }
     );
   };
+
+  // キーボード操作の制御
+  const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+  const handleOnKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    idx: number
+  ) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      const dir = e.key === "ArrowRight" ? 1 : -1;
+      let nextIdx = idx + dir;
+      if (nextIdx < 0) nextIdx = tabs.length - 1;
+      if (nextIdx >= tabs.length) nextIdx = 0;
+      setFocusedTab(tabs[nextIdx].id);
+      tabRefs.current[nextIdx]?.focus();
+    }
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setOpenTab(tabs[idx].id);
+    }
+  };
+
   return (
     <div id={id} className={cn(className)}>
       <div role="tablist" className="flex-nowrap">
-        {tabs.map((tab) => (
+        {tabs.map((tab, idx) => (
           <button
             key={tab.id}
             id={tab.id}
@@ -39,6 +64,13 @@ export const Tab: React.FC<TabProps> = ({
             aria-controls={`tabpanel-${tab.id}`}
             onClick={() => handleTabClick(tab.id)}
             className={indexStyle(tab.id)}
+            tabIndex={focusedTab === tab.id ? 0 : -1}
+            ref={(el) => {
+              tabRefs.current[idx] = el;
+            }}
+            onKeyDown={(e) => {
+              handleOnKeyDown(e, idx);
+            }}
           >
             {tab.label}
           </button>

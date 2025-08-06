@@ -39,9 +39,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       const newValue = !toggleChecked;
       setToggleChecked(newValue);
       if (onClick) {
-        if (e.type === "click") {
-          onClick(e as React.MouseEvent<HTMLButtonElement>);
-        }
+        onClick(e as React.MouseEvent<HTMLButtonElement>);
       }
     };
 
