@@ -66,9 +66,9 @@ export const InputBox = React.forwardRef<
         autoComplete={autoComplete}
         aria-disabled={disabled}
         aria-invalid={!isValid}
+        tabIndex={0}
         {...(asTextArea ? { rows: 4 } : {})}
         {...props}
-        autoFocus={true}
       />
     );
   }

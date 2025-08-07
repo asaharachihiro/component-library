@@ -55,8 +55,16 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     // フォーカス対象のボタンを保持
     const calendarRef = React.useRef<HTMLDivElement>(null);
     const focusedDateRef = React.useRef<HTMLButtonElement>(null);
+    const isFirstRender = React.useRef(true);
     React.useEffect(() => {
-      if (focusedDateRef.current) {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+        return;
+      }
+      if (
+        focusedDateRef.current &&
+        document.activeElement === focusedDateRef.current
+      ) {
         focusedDateRef.current.focus();
       }
     }, [currentDate]);

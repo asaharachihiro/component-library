@@ -152,8 +152,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     };
 
     // コンポーネント外をクリックした時に閉じる
-    const InputRef = React.useRef<HTMLDivElement>(null);
-    useClickOutside(InputRef as React.RefObject<HTMLElement>, () =>
+    const pickerRef = React.useRef<HTMLDivElement>(null);
+    useClickOutside(pickerRef as React.RefObject<HTMLElement>, () =>
       setShowCalendar(false)
     );
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -165,8 +165,19 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       whileElementsMounted: autoUpdate,
     });
 
+    React.useEffect(() => {
+      if (!showCalendar) return;
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setShowCalendar(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [showCalendar]);
+
     return (
-      <div className={className} ref={InputRef}>
+      <div className={className} ref={pickerRef}>
         {label && (
           <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
         )}
@@ -176,7 +187,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             value={inputStr}
             isValid={isValidStatus}
             disabled={disabled}
-            type="tel"
+            type="text"
             aria-haspopup="dialog"
             aria-expanded={showCalendar}
             onChange={(e) => {

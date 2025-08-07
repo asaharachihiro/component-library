@@ -136,7 +136,15 @@ const App: React.FC = () => {
           ]}
           isRequired={true}
         />
-        <Checkbox id={"checkbox"} label={"規約に同意します。"} />
+        <Checkbox
+          id={"checkbox"}
+          options={[
+            {
+              label: "規約に同意します。",
+              id: "agree",
+            },
+          ]}
+        />
         <ToggleSwitch id={"toggle"} label="メール通知を受け取る" />
         <Radio
           id={"radio"}
