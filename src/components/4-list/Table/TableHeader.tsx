@@ -24,6 +24,7 @@ interface TableHeaderProps<TData> {
   setSorting?: OnChangeFn<SortingState>;
   columnSizing?: ColumnSizingState;
   setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
+  handleColumnDrop: (id: string) => void;
 }
 
 export const TableHeader = <TData,>({
@@ -40,6 +41,7 @@ export const TableHeader = <TData,>({
   setSorting,
   columnSizing,
   setColumnSizing,
+  handleColumnDrop,
 }: TableHeaderProps<TData>) => {
   const [panelPosition, setPanelPosition] = React.useState({ top: 0, left: 0 });
   const [resizing, setResizing] = React.useState({
@@ -129,6 +131,7 @@ export const TableHeader = <TData,>({
                 setColumnPinning={setColumnPinning}
                 setSorting={setSorting || (() => {})}
                 handleMouseDown={(e) => handleMouseDown(e, header)}
+                handleColumnDrop={handleColumnDrop}
               />
             );
           })}

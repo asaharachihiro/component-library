@@ -18,6 +18,7 @@ import useTableSize from "../../../utils/useTableSize";
 export interface FixedTableProps<TData> {
   data: TData[];
   columns: ColumnDef<TData>[];
+  columnOrder: string[];
   rowHeight?: number;
   columnWidth?: number;
   showPanel?: string | null;
@@ -32,6 +33,7 @@ export interface FixedTableProps<TData> {
   setSorting?: OnChangeFn<SortingState>;
   columnSizing?: ColumnSizingState;
   setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
+  handleColumnDrop: (id: string) => void;
 }
 
 export const FixedTable = React.forwardRef<
@@ -54,6 +56,8 @@ export const FixedTable = React.forwardRef<
       onMouseLeave = () => {},
       sorting,
       setSorting,
+      handleColumnDrop,
+      columnOrder,
     }: FixedTableProps<TData>,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -72,6 +76,10 @@ export const FixedTable = React.forwardRef<
       getSortedRowModel: getSortedRowModel(),
     });
 
+    const pinnedColumnIds = columnOrder.filter((id) =>
+      (columnPinning.left ?? []).includes(id)
+    );
+
     const {
       rowVirtualizer: fixedRowVirtualizer,
       virtualRows: fixedVirtualRows,
@@ -83,10 +91,8 @@ export const FixedTable = React.forwardRef<
     } = useTableVirtualizer<TData>({
       table,
       rowCount: data.length,
-      columnCount: columns.length,
-      columnIds: columns
-        .map((col) => col.id)
-        .filter((id): id is string => id !== undefined),
+      columnCount: pinnedColumnIds.length,
+      columnIds: pinnedColumnIds,
       containerRef: resolvedRef as React.RefObject<HTMLDivElement>,
       rowHeight,
       columnWidth,
@@ -178,6 +184,7 @@ export const FixedTable = React.forwardRef<
               setColumnPinning={setColumnPinning}
               sorting={sorting}
               setSorting={setSorting}
+              handleColumnDrop={handleColumnDrop}
             />
 
             <tbody>
