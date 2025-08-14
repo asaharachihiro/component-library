@@ -147,13 +147,17 @@ export const Table = <TData,>({
   const hasFixedColumn = (columnPinningState.left ?? []).length > 0;
 
   // カラムの並び替え
-  const handleColumnDrop = (draggedId: string) => {
-    const idx = columnOrder.indexOf(draggedId);
-    if (idx > 0) {
-      const newOrder = [...columnOrder];
-      [newOrder[idx - 1], newOrder[idx]] = [newOrder[idx], newOrder[idx - 1]];
-      setColumnOrder(newOrder);
-    }
+  const handleColumnDrop = (draggedId: string, targetId: string) => {
+    if (draggedId === targetId) return;
+    const oldIndex = columnOrder.indexOf(draggedId);
+    let newIndex = columnOrder.indexOf(targetId);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const newOrder = [...columnOrder];
+    newOrder.splice(oldIndex, 1);
+    if (oldIndex < newIndex) newIndex--;
+    newOrder.splice(newIndex, 0, draggedId);
+    setColumnOrder(newOrder);
   };
 
   return (

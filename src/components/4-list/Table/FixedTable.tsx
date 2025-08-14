@@ -33,7 +33,7 @@ export interface FixedTableProps<TData> {
   setSorting?: OnChangeFn<SortingState>;
   columnSizing?: ColumnSizingState;
   setColumnSizing?: React.Dispatch<React.SetStateAction<ColumnSizingState>>;
-  handleColumnDrop: (id: string) => void;
+  handleColumnDrop: (id: string, targetId: string) => void;
 }
 
 export const FixedTable = React.forwardRef<

@@ -34,7 +34,7 @@ interface HeaderCellProps<TData> {
     e: React.MouseEvent | React.TouchEvent,
     header: Header<TData, any>
   ) => void;
-  handleColumnDrop: (id: string) => void;
+  handleColumnDrop: (id: string, targetId: string) => void;
 }
 
 export const HeaderCell = <TData,>({
@@ -108,7 +108,7 @@ export const HeaderCell = <TData,>({
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         const draggedId = e.dataTransfer.getData("text/plain");
-        handleColumnDrop(draggedId);
+        handleColumnDrop(draggedId, header.id);
       }}
     >
       <div
