@@ -39,6 +39,9 @@ export const Table = <TData,>({
   const [hoveredRowIndex, setHoveredRowIndex] = React.useState<number | null>(
     null
   );
+  const [columnOrder, setColumnOrder] = React.useState<string[]>(
+    columns.map((col) => col.id!).filter(Boolean)
+  );
   const [columnSizingState, setColumnSizingState] = React.useState({});
   const [columnSizingInfoState, setColumnSizingInfoState] =
     React.useState<ColumnSizingInfoState>({
@@ -55,6 +58,7 @@ export const Table = <TData,>({
     columns,
     state: {
       sorting,
+      columnOrder,
       columnPinning: columnPinningState,
       columnSizing: columnSizingState,
       columnSizingInfo: columnSizingInfoState,
@@ -67,6 +71,7 @@ export const Table = <TData,>({
     onColumnSizingInfoChange: setColumnSizingInfoState,
     columnResizeDirection: "ltr",
     columnResizeMode: "onChange",
+    onColumnOrderChange: setColumnOrder,
   });
 
   const fixedTableRef = React.useRef<HTMLDivElement>(null);
@@ -85,9 +90,7 @@ export const Table = <TData,>({
     table,
     rowCount: data.length,
     columnCount: columns.length,
-    columnIds: columns
-      .map((col) => col.id)
-      .filter((id): id is string => id !== undefined),
+    columnIds: columnOrder,
     containerRef: scrollableTableRef as React.RefObject<HTMLDivElement>,
     rowHeight,
     columnWidth,
@@ -143,6 +146,20 @@ export const Table = <TData,>({
 
   const hasFixedColumn = (columnPinningState.left ?? []).length > 0;
 
+  // カラムの並び替え
+  const handleColumnDrop = (draggedId: string, targetId: string) => {
+    if (draggedId === targetId) return;
+    const oldIndex = columnOrder.indexOf(draggedId);
+    let newIndex = columnOrder.indexOf(targetId);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const newOrder = [...columnOrder];
+    newOrder.splice(oldIndex, 1);
+    if (oldIndex < newIndex) newIndex--;
+    newOrder.splice(newIndex, 0, draggedId);
+    setColumnOrder(newOrder);
+  };
+
   return (
     <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
       {hasFixedColumn && (
@@ -150,6 +167,7 @@ export const Table = <TData,>({
           ref={fixedTableRef}
           data={data}
           columns={columns as ColumnDef<unknown>[]}
+          columnOrder={columnOrder}
           columnWidth={columnWidth}
           showPanel={showPanel}
           setShowPanel={setShowPanel}
@@ -163,6 +181,7 @@ export const Table = <TData,>({
           setSorting={setSorting}
           columnSizing={columnSizingState}
           setColumnSizing={setColumnSizingState}
+          handleColumnDrop={handleColumnDrop}
         />
       )}
 
@@ -195,6 +214,7 @@ export const Table = <TData,>({
               setSorting={setSorting}
               columnSizing={columnSizingState}
               setColumnSizing={setColumnSizingState}
+              handleColumnDrop={handleColumnDrop}
             />
             <tbody>
               {virtualPaddingTop > 0 && (

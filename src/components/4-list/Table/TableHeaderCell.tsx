@@ -34,6 +34,7 @@ interface HeaderCellProps<TData> {
     e: React.MouseEvent | React.TouchEvent,
     header: Header<TData, any>
   ) => void;
+  handleColumnDrop: (id: string, targetId: string) => void;
 }
 
 export const HeaderCell = <TData,>({
@@ -49,6 +50,7 @@ export const HeaderCell = <TData,>({
   setColumnPinning,
   setSorting,
   handleMouseDown,
+  handleColumnDrop,
 }: HeaderCellProps<TData>) => {
   //ColumsPanelの表示
   const togglePanel = (id: string, e: React.MouseEvent) => {
@@ -92,12 +94,21 @@ export const HeaderCell = <TData,>({
   return (
     <th
       key={header.id}
+      draggable="true"
       className={cn(
         sorting?.some((sort) => sort.id === header.id) && "font-bold text-main",
         "relative w-full overflow-visible border-b border-black-20-opacity bg-black-3-opacity"
       )}
       style={{
         width: columnSizing?.[header.id] || header.getSize(),
+      }}
+      onDragStart={(e) => {
+        e.dataTransfer.setData("text/plain", header.id);
+      }}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        const draggedId = e.dataTransfer.getData("text/plain");
+        handleColumnDrop(draggedId, header.id);
       }}
     >
       <div
