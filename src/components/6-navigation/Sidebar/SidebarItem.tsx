@@ -32,7 +32,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         role="menuitem"
         aria-selected={selected}
         className={cn(
-          "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-2xl transition-all focus-visible:-outline-offset-1",
+          "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-xl transition-all focus-visible:-outline-offset-1",
           itemStyle
         )}
         onClick={onClick}
@@ -41,7 +41,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
           <span className="material-symbols-rounded select-none">{icon}</span>
         )}
         {label && (
-          <span className="text-nowrap text-lg font-bold"> {label}</span>
+          <span className="text-nowrap text-lg font-medium"> {label}</span>
         )}
       </a>
     </li>

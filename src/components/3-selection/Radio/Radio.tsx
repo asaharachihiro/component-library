@@ -126,7 +126,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                 aria-label={option.label}
                 key={index}
                 className={cn(
-                  "group flex items-center rounded-lg p-2 text-black-sub",
+                  "group flex items-center rounded-lg p-1 text-black-sub",
                   isSelected && "text-black",
                   disabled && isSelected && "text-black-sub",
                   disabled && !isSelected && "text-20-opacity"
@@ -138,7 +138,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
               >
                 <div
                   className={cn(
-                    "flex w-7 select-none items-center justify-center rounded-full text-2xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity"
+                    "flex shrink-0 select-none items-center justify-center rounded-full text-xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity"
                   )}
                 >
                   <span className="material-symbols-rounded">

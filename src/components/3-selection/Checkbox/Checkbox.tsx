@@ -99,12 +99,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     };
 
   return (
-    <div
-      id={id}
-      className={cn("space-y-1", className)}
-      role="group"
-      aria-labelledby={id}
-    >
+    <div id={id} className={className} role="group" aria-labelledby={id}>
       {label && (
         <FormLabel label={label} tooltip={tooltip} isRequired={isRequired} />
       )}

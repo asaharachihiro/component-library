@@ -27,7 +27,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
   ) => {
     const isNormalStyle = !disabled && isValid;
     const checkBoxtyle = cn(
-      "flex h-7 w-7 select-none items-center justify-center rounded-md text-2xl hover:bg-black-5-opacity active:bg-black-10-opacity",
+      "flex h-7 w-7 select-none items-center justify-center rounded-md text-xl hover:bg-black-5-opacity active:bg-black-10-opacity",
       {
         "text-black-20-opacity pointer-events-none": disabled,
         "text-danger": !disabled && !isValid,

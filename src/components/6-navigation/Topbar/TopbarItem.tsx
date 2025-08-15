@@ -21,7 +21,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
   href,
 }) => {
   const itemStyle = cn(
-    "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 text-2xl transition-all focus-visible:-outline-offset-1",
+    "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 text-xl transition-all focus-visible:-outline-offset-1",
     selected
       ? "bg-main-bg hover:bg-main-bg text-main border-main border-b-4 pt-4 pb-3"
       : "hover:bg-black-3-opacity text-black-sub focus-visible:bg-black-3-opacity py-4"
@@ -41,7 +41,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
           <span className="material-symbols-rounded select-none">{icon}</span>
         )}
         {label && (
-          <span className="text-nowrap text-lg font-bold"> {label}</span>
+          <span className="text-nowrap text-lg font-medium"> {label}</span>
         )}
       </a>
     </li>

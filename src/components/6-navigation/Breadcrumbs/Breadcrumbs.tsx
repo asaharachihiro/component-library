@@ -43,7 +43,8 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
               <a
                 href={item.href}
                 className={cn("text-nowrap text-base", {
-                  "text-base font-medium text-black": item.selected,
+                  "pointer-events-none text-base font-medium text-black":
+                    item.selected,
                   "underline underline-offset-4": !item.selected,
                 })}
                 tabIndex={item.selected ? -1 : 0}
