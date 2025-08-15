@@ -41,11 +41,9 @@ const ContainedBaseButton = React.forwardRef<
     },
     ref
   ) => {
-    const ButtonStyle = cn(baseButtonStyle, {
+    const ButtonStyle = cn(baseButtonStyle, size === "s" ? sizeS : sizeM, {
       "bg-main text-white": !disabled && !isLoading && variant === "primary",
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
-      [sizeM]: variant == "danger" || size !== "s",
-      [sizeS]: size === "s" && variant !== "danger",
       "bg-black-5-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
         disabled || isLoading,
     });
