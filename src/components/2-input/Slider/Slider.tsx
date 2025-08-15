@@ -30,7 +30,7 @@ export const Slider: React.FC<SliderProps> = ({
   placeholder,
   supportMessage,
   errorMessage,
-  value = 0, //TODO:formcontextから取得するようにする
+  value,
   min = 0,
   max = 100,
   onChange,
@@ -194,7 +194,7 @@ export const Slider: React.FC<SliderProps> = ({
                 tabIndex={0}
                 onKeyDown={handleOnKeyDown}
               >
-                <div className="bg-transparent absolute left-[-11px] top-[-4px] h-6 w-6 cursor-pointer rounded-full" />
+                <div className="absolute left-[-11px] top-[-4px] h-6 w-6 cursor-pointer rounded-full bg-transparent" />
               </div>
             </div>
           </div>

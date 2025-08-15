@@ -174,7 +174,6 @@ export const MultiSelectBox = React.forwardRef<
           selectedValues.length > 0 ? (
             <div className="flex space-x-2">
               {selectedValues.map((option) => (
-                // TODO: Tipに変更する
                 <div
                   key={option.value}
                   className="flex items-center text-nowrap rounded-md bg-main-bg pl-2 text-xs"
