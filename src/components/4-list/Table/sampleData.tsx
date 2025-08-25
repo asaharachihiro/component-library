@@ -16,6 +16,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("id", {
     id: "id",
     header: "ID",
+    size: 80,
     cell: (cell) => (
       <span className="text-sm text-black-sub">{cell.getValue()}</span>
     ),
@@ -23,6 +24,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("name", {
     id: "name",
     header: "名前",
+    size: 200,
   }),
   columnHelper.accessor("species", {
     id: "species",
@@ -31,6 +33,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("length", {
     id: "length",
     header: "体長",
+    size: 80,
     cell: (cell) => (
       <span className="block text-right text-sm text-black-sub">
         {cell.getValue()}
@@ -44,10 +47,12 @@ export const columns: ColumnDef<SampleData, any>[] = [
   columnHelper.accessor("rarity", {
     id: "rarity",
     header: "希少性",
+    size: 200,
   }),
   columnHelper.accessor("summary", {
     id: "summary",
     header: "概要",
+    size: 800,
     cell: (cell) => <span className="font-regular">{cell.getValue()}</span>,
     enableSorting: false,
   }),
