@@ -72,6 +72,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
             )}
           </span>
         </div>
+        {children && children}
       </div>
     );
   }
