@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Button } from "../../src/components/_01-action/Button/Button";
+import { Button } from "../../../src/components/_01-action/Button/Button";
 import { it, expect } from "vitest";
 
 it("label が表示される", () => {
