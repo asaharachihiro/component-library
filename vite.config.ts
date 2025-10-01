@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
 import path from "path";
 
@@ -10,6 +10,11 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@components": path.resolve(__dirname, "src/components"),
       },
+    },
+    test: {
+      globals: true,
+      environment: "jsdom",
+      setupFiles: "./tests/setupTests.ts",
     },
   };
 
