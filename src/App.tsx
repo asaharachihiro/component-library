@@ -21,7 +21,7 @@ import {
 import {
   sampleAnimalsData,
   columns,
-} from "./components/4-list/Table/sampleData";
+} from "./components/_04-list/Table/sampleData";
 import { ColumnDef } from "node_modules/@tanstack/table-core/build/lib/types";
 
 // type SampleData = {
