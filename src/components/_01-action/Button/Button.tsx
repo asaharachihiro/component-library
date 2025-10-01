@@ -49,7 +49,12 @@ const ContainedBaseButton = React.forwardRef<
     });
 
     return (
-      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button
+        ref={ref}
+        className={cn(ButtonStyle, className)}
+        disabled={disabled || isLoading}
+        {...props}
+      >
         <div className="absolute bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -88,7 +93,12 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     });
 
     return (
-      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button
+        ref={ref}
+        className={cn(ButtonStyle, className)}
+        disabled={disabled || isLoading}
+        {...props}
+      >
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -131,7 +141,12 @@ const TextBaseButton = React.forwardRef<
     });
 
     return (
-      <button ref={ref} className={cn(ButtonStyle, className)} {...props}>
+      <button
+        ref={ref}
+        className={cn(ButtonStyle, className)}
+        disabled={disabled || isLoading}
+        {...props}
+      >
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-focus-visible:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
@@ -169,7 +184,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       isActive,
       icon,
-      children,
       type = "button", // 追加: type属性をデフォルトで"button"に設定
       ...props
     },
@@ -183,7 +197,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={className}
         variant={variant}
         size={size}
-        children={children}
         disabled={disabled}
         isActive={isActive}
         isLoading={isLoading}
