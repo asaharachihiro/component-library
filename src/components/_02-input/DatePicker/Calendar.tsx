@@ -227,7 +227,10 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               type="button"
             />
           </div>
-          <div className="grid grid-cols-7 gap-1 border-b border-black-20-opacity">
+          <div
+            data-testid="weekday-row"
+            className="grid grid-cols-7 gap-1 border-b border-black-20-opacity"
+          >
             {weekdays.map((weekday) => (
               <span
                 key={weekday}
