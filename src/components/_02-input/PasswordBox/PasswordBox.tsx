@@ -49,7 +49,8 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
-    const isValidStatus = isValid ? isValid : errors[id] == null;
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     const initialValue =
       typeof value !== "undefined"
@@ -101,6 +102,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
             onBlur={onBlur}
             onFocus={onFocus}
             placeholder={placeholder}
+            data-testid="password-input"
             ref={ref}
             {...props}
           />
