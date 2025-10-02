@@ -88,7 +88,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const [dateRange, setDateRange] =
     React.useState<DateRangeValue>(initialDateStr);
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
-  const isValidStatus = isValidValue ? isValidValue : errors[id] == null;
+  const isValidStatus =
+    typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
 
   React.useEffect(() => {
     if (
