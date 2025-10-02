@@ -27,19 +27,22 @@ export const toStringFormat = (value: string, isJPLocale?: boolean): string => {
   );
 
   // 数字以外をトリム
-  const dateObj = parseISO(convertedValue);
-  if (!isValid(dateObj)) {
-    const trimmedValue = convertedValue.replaceAll(/[^0-9]/g, "");
-    if (trimmedValue.length !== 8) return "";
-    const createISODate = `${trimmedValue.slice(0, 4)}-${trimmedValue.slice(4, 6)}-${trimmedValue.slice(6, 8)}`;
+  const trimmedValue = convertedValue.replaceAll(/[^0-9]/g, "");
 
-    // ISO形式に変換して日付を確認
+  // 8桁以外は空文字を返す
+  if (trimmedValue && trimmedValue.length !== 8) return "";
+
+  // 8桁の場合はISO形式に変換してパース
+  if (trimmedValue.length === 8) {
+    const createISODate = `${trimmedValue.slice(0, 4)}-${trimmedValue.slice(4, 6)}-${trimmedValue.slice(6, 8)}`;
     const createdDateObj = parseISO(createISODate);
     if (!isValid(createdDateObj)) return "";
-
-    //stringに戻す
     return toDisplayFormat(createdDateObj, isJPLocale || false);
   }
+
+  // それ以外は通常のparseISO
+  const dateObj = parseISO(convertedValue);
+  if (!isValid(dateObj)) return "";
 
   return toDisplayFormat(dateObj, isJPLocale || false);
 };
