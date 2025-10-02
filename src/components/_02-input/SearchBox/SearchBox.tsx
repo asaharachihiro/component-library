@@ -93,6 +93,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             onFocus={onFocus}
             className="rounded-r-none"
             aria-label="Search Input"
+            data-testid="search-input"
             type={"text"}
             ref={ref}
             {...props}
