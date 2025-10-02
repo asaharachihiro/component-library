@@ -29,3 +29,6 @@ storybook-static/
 project.json
 .npmrc
 dist/
+
+# Vitest coverage
+coverage/

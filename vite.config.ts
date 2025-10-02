@@ -7,14 +7,12 @@ export default defineConfig(({ mode }) => {
   const commonConfig = {
     plugins: [react()],
     resolve: {
-      alias: {
-        "@components": path.resolve(__dirname, "src/components"),
-      },
-    },
-    test: {
-      globals: true,
-      environment: "jsdom",
-      setupFiles: "./tests/setupTests.ts",
+      alias: [
+        {
+          find: /^@components\/(.*)$/,
+          replacement: path.resolve(__dirname, "src/components/$1"),
+        },
+      ],
     },
   };
 
