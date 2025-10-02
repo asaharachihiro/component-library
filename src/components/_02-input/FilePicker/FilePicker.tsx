@@ -79,6 +79,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
           ref={inputRef}
           type="file"
           className="hidden"
+          data-testid="file-input"
           multiple={isMultiple}
           accept={fileFormats.join(",")}
           disabled={disabled}
@@ -109,6 +110,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
           className="flex"
           onClick={handleOpenFolder}
           label="ファイルを選択"
+          disabled={disabled}
         />
       </div>
       {files &&
