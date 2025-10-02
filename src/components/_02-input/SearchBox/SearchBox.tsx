@@ -42,7 +42,8 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
-    const isValidStatus = isValid ? isValid : errors[id] == null;
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     const initialValue =
       typeof value !== "undefined"

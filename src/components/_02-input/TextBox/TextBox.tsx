@@ -52,7 +52,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
-    const isValidStatus = isValid ? isValid : errors[id] == null;
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
 
     // 金額のフォーマット関数
     const formatJpy = (val: string) => {
