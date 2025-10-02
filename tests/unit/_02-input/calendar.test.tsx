@@ -68,20 +68,10 @@ describe("Calendar", () => {
       />
     );
     expect(screen.getByText("1")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument();
-  });
-
-  it.skip("currentDateが反映される", () => {
-    render(
-      <Calendar
-        id="cal8"
-        currentDate={baseDate}
-        setCurrentDate={() => {}}
-        onSelectDate={() => {}}
-        onClosed={() => {}}
-      />
-    );
-    expect(screen.getByText("2025/10/01")).toBeInTheDocument();
+    const input1 = screen.getByText("1");
+    expect(input1.className).toContain("bg-main");
+    const input2 = screen.getByText("2");
+    expect(input2.className).toContain("bg-main");
   });
 
   it("setCurrentDateで月変更ができる", () => {
