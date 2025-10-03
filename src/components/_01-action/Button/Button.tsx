@@ -203,6 +203,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         icon={icon}
         ref={ref}
         type={type}
+        data-is-active={isActive}
         {...props}
       />
     );

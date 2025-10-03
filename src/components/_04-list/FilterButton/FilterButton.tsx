@@ -45,7 +45,11 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
         label="フィルター"
       />
       {showPanel && (
-        <div className="rounded-lg bg-white shadow-low" ref={panelRef}>
+        <div
+          className="rounded-lg bg-white shadow-low"
+          ref={panelRef}
+          data-testid="filter-panel"
+        >
           <div className="flex-col space-y-4 p-6">{children}</div>
           {fotterElements && (
             <div className="sticky flex justify-between border-t border-black-20-opacity p-6">
