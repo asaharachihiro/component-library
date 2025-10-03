@@ -89,6 +89,7 @@ export const BaseSelectBox = React.forwardRef<
               onToggle && onToggle();
             }
           }}
+          data-testid={"selectbox" + id}
         >
           <input
             role="select"
