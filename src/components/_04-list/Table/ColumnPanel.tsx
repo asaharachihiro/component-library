@@ -19,6 +19,7 @@ export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
           id={id}
           className="absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low"
           onClick={() => onClick(id)}
+          role="dialog"
           style={{
             top: panelPosition.top,
             left: panelPosition.left,
