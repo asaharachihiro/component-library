@@ -10,7 +10,6 @@ interface ToggleSwitchProps {
   checked?: boolean;
   disabled?: boolean;
   isValid?: boolean;
-  children?: React.ReactNode;
   onChange?: (checked: boolean) => void;
   errorMessage?: string;
 }
@@ -24,7 +23,6 @@ export const ToggleSwitch = React.forwardRef<
       id,
       className,
       label,
-      children,
       checked,
       onChange,
       disabled = false,
@@ -87,6 +85,7 @@ export const ToggleSwitch = React.forwardRef<
       <>
         <label
           htmlFor={id}
+          data-testid={`toggle-${id}`}
           className={cn(
             disabled
               ? "pointer-events-none text-black-20-opacity"
