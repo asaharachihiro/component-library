@@ -7,7 +7,6 @@ interface RadioProps {
   id: string;
   className?: string;
   value?: string;
-  children?: React.ReactNode;
   isValid?: boolean;
   disabled?: boolean;
   options: { label: string; value: string; children?: React.ReactNode }[];
@@ -21,7 +20,6 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       id,
       className = "",
       value,
-      children,
       isValid,
       disabled = false,
       onChange,
@@ -124,6 +122,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                 role="radio"
                 aria-selected={isSelected}
                 aria-label={option.label}
+                aria-disabled={disabled}
+                disabled={disabled}
                 key={index}
                 className={cn(
                   "group flex items-center rounded-lg p-1 text-black-sub",
