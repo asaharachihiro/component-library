@@ -64,14 +64,17 @@ export const Card: React.FC<CardProps> = ({
     }
   );
   return (
-    <div id={id} className={className} data-selected={selected}>
+    <div className={className}>
       <div
+        id={id}
+        data-testid={`card-${id}`}
         className={cardStyle}
         onClick={handleParentClick}
         onKeyDown={(e) => {
           handleOnKeyDown(e, id);
         }}
         tabIndex={0}
+        data-selected={selected}
       >
         {React.Children.map(children, enhanceChild)}
       </div>
