@@ -43,6 +43,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
             checked={checked === "indeterminate" ? false : !!checked}
             aria-checked={checked === "indeterminate" ? "mixed" : !!checked}
             aria-disabled={disabled}
+            data-checked={checked ? "true" : "false"}
             aria-invalid={!isValid}
             onChange={
               disabled

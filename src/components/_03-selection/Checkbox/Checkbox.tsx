@@ -118,6 +118,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         >
           <CheckIcon
             id={option.id}
+            data-testid="check-icon"
             checked={checkedIds.includes(option.id)}
             disabled={option.disabled}
             isValid={isValidStatus && !option.disabled}
