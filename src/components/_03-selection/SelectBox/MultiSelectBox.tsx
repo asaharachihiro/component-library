@@ -175,6 +175,7 @@ export const MultiSelectBox = React.forwardRef<
             <div className="flex space-x-2">
               {selectedValues.map((option) => (
                 <div
+                  data-testid={`selected-item-${option.value}`}
                   key={option.value}
                   className="flex items-center text-nowrap rounded-md bg-main-bg pl-2 text-xs"
                 >
@@ -220,7 +221,9 @@ export const MultiSelectBox = React.forwardRef<
                     checked={isSelected}
                     className="mr-1"
                   />
-                  <span>{option.label}</span>
+                  <span data-testid={`option-label-${option.value}`}>
+                    {option.label}
+                  </span>
                 </>
               ),
             };
