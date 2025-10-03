@@ -194,6 +194,8 @@ export const Slider: React.FC<SliderProps> = ({
                 onMouseDown={handleMouseDown}
                 tabIndex={0}
                 onKeyDown={handleOnKeyDown}
+                data-testid={"slider-handle"}
+                aria-disabled={disabled}
               >
                 <div className="absolute left-[-11px] top-[-4px] h-6 w-6 cursor-pointer rounded-full bg-transparent" />
               </div>
@@ -201,6 +203,9 @@ export const Slider: React.FC<SliderProps> = ({
           </div>
         </div>
       </div>
+      {supportMessage && (
+        <span className="text-xs text-black-sub">{supportMessage}</span>
+      )}
       {!isValidStatus && (
         <ErrorText
           text={errors[id] || errorMessage || "入力がエラーになっています。"}
