@@ -50,13 +50,13 @@ export const TableHeader = <TData,>({
   });
 
   // isFixedで表示を切り替える
-  const displayColumns = React.useMemo(() => {
-    return virtualColumns.filter((virtualColumn) =>
-      isFixed
-        ? columnPinning.left?.includes(virtualColumn.id)
-        : !columnPinning.left?.includes(virtualColumn.id)
-    );
-  }, [virtualColumns, columnPinning.left, isFixed]);
+  const displayColumns = isFixed
+    ? virtualColumns.filter((col) => columnPinning.left?.includes(col.id))
+    : virtualColumns.filter(
+        (col) =>
+          !columnPinning.left?.includes(col.id) &&
+          !columnPinning.right?.includes(col.id)
+      );
 
   // カラム幅を手動変更するハンドラー
   const handleMouseDown = (
@@ -106,7 +106,10 @@ export const TableHeader = <TData,>({
       {headerGroups.map((headerGroup) => (
         <tr key={headerGroup.id} className="z-5 sticky top-0 bg-white">
           {virtualPaddingLeft > 0 && (
-            <th style={{ width: virtualPaddingLeft }} />
+            <th
+              style={{ width: virtualPaddingLeft }}
+              data-testid="padding-th"
+            />
           )}
 
           {displayColumns.map((virtualColumn) => {
@@ -136,7 +139,10 @@ export const TableHeader = <TData,>({
             );
           })}
           {virtualPaddingRight > 0 && (
-            <th style={{ width: virtualPaddingRight }} />
+            <th
+              style={{ width: virtualPaddingRight }}
+              data-testid="padding-th"
+            />
           )}
         </tr>
       ))}
