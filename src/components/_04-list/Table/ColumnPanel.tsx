@@ -17,6 +17,7 @@ export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
       <Portal>
         <div
           id={id}
+          data-testid={`column-${id}-panel`}
           className="absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low"
           onClick={() => onClick(id)}
           role="dialog"

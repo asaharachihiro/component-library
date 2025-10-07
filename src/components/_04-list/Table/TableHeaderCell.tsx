@@ -112,6 +112,7 @@ export const HeaderCell = <TData,>({
       }}
     >
       <div
+        data-testid={`column-${header.id}-button`}
         className="inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
         onClick={(e) => togglePanel(header.id, e)}
       >
