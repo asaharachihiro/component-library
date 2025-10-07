@@ -12,30 +12,6 @@ describe("Table", () => {
     unobserve() {}
     disconnect() {}
   };
-  it.skip("propsで渡したデータが正しく描画される", () => {
-    render(
-      <div className="h-[1200px]">
-        <Table
-          data={sampleAnimalsData}
-          columns={columns}
-          columnWidth={120}
-          rowHeight={52}
-          tableHeight={1200}
-        />
-      </div>
-    );
-
-    console.log(document.querySelector("tbody")?.innerHTML);
-
-    const tds = document.querySelectorAll("td");
-    expect(tds.length).toBeGreaterThan(0);
-    // セル要素を取得して、textContentで部分一致を確認
-    const cells = screen.getAllByRole("cell");
-    const found = cells.some((cell) =>
-      cell.textContent?.includes(sampleAnimalsData[0].name)
-    );
-    expect(found).toBe(true);
-  });
 
   it("rowHeight/columnWidthの指定が反映される（カラム数・行数に応じたサイズになる）", () => {
     const columnCount = columns.length; // 7

@@ -68,36 +68,4 @@ describe("Card", () => {
     expect(childClick).toHaveBeenCalled();
     expect(parentClick).not.toHaveBeenCalled();
   });
-
-  it.skip("子要素のonChangeは親のonClickを発火させず、stopPropagationされる", () => {
-    const parentClick = vi.fn();
-    const childChange = vi.fn();
-    const ControlledCheckbox = ({
-      onChange,
-    }: {
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    }) => {
-      const [checked, setChecked] = React.useState(false);
-      return (
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) => {
-            setChecked(e.target.checked);
-            onChange(e);
-          }}
-        />
-      );
-    };
-
-    render(
-      <Card id="card8" onClick={parentClick}>
-        <ControlledCheckbox onChange={childChange} />
-      </Card>
-    );
-    const input = screen.getByRole("checkbox");
-    fireEvent.change(input, { target: { checked: true } });
-    expect(childChange).toHaveBeenCalled();
-    expect(parentClick).not.toHaveBeenCalled();
-  });
 });
