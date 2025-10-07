@@ -127,4 +127,19 @@ describe("TableHeader", () => {
     th.dispatchEvent(event);
     expect(dropSpy).toHaveBeenCalled();
   });
+
+  it("HeaderCellがheader=nullの場合は描画されない", () => {
+    // virtualColumnsに存在しないidを渡す
+    const brokenVirtualColumns = [{ ...virtualColumns[0], id: "not-exist" }];
+    render(<TableHeaderWrapper virtualColumns={brokenVirtualColumns} />);
+    // columnheaderが描画されない
+    expect(screen.queryByRole("columnheader")).toBeNull();
+  });
+
+  it("virtualPaddingLeft/Rightが0の場合はpadding-thが描画されない", () => {
+    render(
+      <TableHeaderWrapper virtualPaddingLeft={0} virtualPaddingRight={0} />
+    );
+    expect(screen.queryByTestId("padding-th")).toBeNull();
+  });
 });
