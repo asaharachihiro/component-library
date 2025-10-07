@@ -48,6 +48,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                   "underline underline-offset-4": !item.selected,
                 })}
                 tabIndex={item.selected ? -1 : 0}
+                onClick={onClick}
               >
                 {item.label}
               </a>
