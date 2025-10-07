@@ -20,6 +20,7 @@ export const Badge: React.FC<BadgeProps> = ({
       {count > 0 && (
         <div
           id={id}
+          role="presentation"
           className={cn(
             className,
             "pointer-events-none absolute z-10 flex shrink-0 select-none rounded-full bg-danger",
