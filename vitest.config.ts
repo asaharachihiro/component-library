@@ -23,6 +23,8 @@ export default defineConfig({
         "**/*.stories.ts",
         "**/index.ts",
         "**/index.tsx",
+        "**/sampleData.tsx",
+        "**/sampleColumnsData.tsx",
       ],
     },
   },
