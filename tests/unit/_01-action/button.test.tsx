@@ -22,16 +22,36 @@ it("disabled のときボタンが無効化される", () => {
   expect(screen.getByRole("button")).toBeDisabled();
 });
 
-it("variant='danger' で danger スタイルが適用される", () => {
-  render(<Button label="Danger" variant="danger" />);
+it("variant='primary' で primary スタイルが適用される", () => {
+  render(<Button label="primary" variant="primary" />);
   const btn = screen.getByRole("button");
-  expect(btn.className).toContain("bg-danger");
+  expect(btn.className).toContain("bg-main");
 });
 
 it("variant='secondary' で secondary スタイルが適用される", () => {
   render(<Button label="Secondary" variant="secondary" />);
   const btn = screen.getByRole("button");
   expect(btn.className).toContain("border-main");
+});
+it("variant='textPrimary' で textPrimary スタイルが適用される", () => {
+  render(<Button label="textPrimary" variant="textPrimary" />);
+  const btn = screen.getByRole("button");
+  expect(btn.className).toContain("text-main");
+});
+it("variant='textSecondary' で textSecondary スタイルが適用される", () => {
+  render(<Button label="textSecondary" variant="textSecondary" />);
+  const btn = screen.getByRole("button");
+  expect(btn.className).toContain("text-black-sub");
+});
+it("variant='danger' で danger スタイルが適用される", () => {
+  render(<Button label="Danger" variant="danger" />);
+  const btn = screen.getByRole("button");
+  expect(btn.className).toContain("bg-danger");
+});
+it("variant='textDanger' で textDanger スタイルが適用される", () => {
+  render(<Button label="textDanger" variant="textDanger" />);
+  const btn = screen.getByRole("button");
+  expect(btn.className).toContain("text-danger");
 });
 
 it("size='s' で小さいサイズが適用される", () => {
