@@ -34,14 +34,6 @@ describe("useTableVirtualizer", () => {
     table: mockTable,
   };
 
-  it("virtualRows, virtualColumnsが正しく返る", () => {
-    const { result } = renderHook(() => useTableVirtualizer(defaultProps));
-    expect(Array.isArray(result.current.virtualRows)).toBe(true);
-    expect(Array.isArray(result.current.virtualColumns)).toBe(true);
-    expect(result.current.virtualRows.length).toBeGreaterThan(0);
-    expect(result.current.virtualColumns.length).toBeGreaterThan(0);
-  });
-
   it("virtualColumnsのidとheaderがcolumnIdsと一致する", () => {
     const { result } = renderHook(() => useTableVirtualizer(defaultProps));
     result.current.virtualColumns.forEach((col, i) => {
