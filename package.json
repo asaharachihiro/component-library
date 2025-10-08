@@ -37,7 +37,7 @@
     "build": "tsc -b && vite build --mode package",
     "build-sb": "vite build --mode storybook",
     "test": "vitest",
-    "test:ci": "vitest run --coverage",
+    "test:ci": "vitest run --environment jsdom",
     "lint": "eslint .",
     "preview": "vite preview",
     "publish": "npm publish --registry=https://npm.pkg.github.com",
