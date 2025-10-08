@@ -37,6 +37,7 @@
     "build": "tsc -b && vite build --mode package",
     "build-sb": "vite build --mode storybook",
     "test": "vitest",
+    "test:ci": "vitest run --coverage",
     "lint": "eslint .",
     "preview": "vite preview",
     "publish": "npm publish --registry=https://npm.pkg.github.com",
