@@ -14,13 +14,16 @@ export const Tab: React.FC<TabProps> = ({
   selected = "",
   tabs = [],
 }) => {
+  // 内部state
   const [openTab, setOpenTab] = React.useState(selected || tabs[0]?.id);
   const [focusedTab, setFocusedTab] = React.useState(selected || tabs[0]?.id);
 
+  // タブを表示
   const handleTabClick = (tabId: string) => {
     setOpenTab(tabId);
   };
 
+  // スタイルの設定
   const indexStyle = (id: string) => {
     return cn(
       "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
@@ -31,7 +34,7 @@ export const Tab: React.FC<TabProps> = ({
     );
   };
 
-  // キーボード操作の制御
+  // キーボードの操作
   const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const handleOnKeyDown = (
     e: React.KeyboardEvent<HTMLButtonElement>,

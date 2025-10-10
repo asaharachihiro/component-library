@@ -18,6 +18,7 @@ export const Pagenation: React.FC<PagenationProps> = ({
   total,
   maxLength = 7,
 }) => {
+  // 内部state(現在のページ)
   const [currentPage, setCurrentPage] = React.useState(value);
 
   const handleChange = (page: number) => {

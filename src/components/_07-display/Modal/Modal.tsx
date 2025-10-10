@@ -26,8 +26,10 @@ export const Modal: React.FC<ModalProps> = ({
   isDeletable = true,
   confirmButton,
 }) => {
+  // refの設定
   const modalRef = React.useRef<HTMLDivElement>(null);
 
+  // 外側クリック時で閉じる
   const handleOutsideClick = async () => {
     if (onBeforeClose) {
       const shouldClose = await onBeforeClose();
