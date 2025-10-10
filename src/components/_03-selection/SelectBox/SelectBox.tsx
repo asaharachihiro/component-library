@@ -52,15 +52,22 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    // バリデーションの判定
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
+
+    // 初期値の設定
     const initialValue =
       typeof value !== "undefined"
         ? value
         : typeof formData[id] !== "undefined"
           ? formData[id]
           : "none";
+    // 内部state
     const [selectedValue, setSelectedValue] = React.useState(initialValue);
     const [isOpen, setIsOpen] = React.useState(false);
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof value !== "undefined" && value !== formData[id]) {
         handleInputChange(id, value);
@@ -78,6 +85,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       return selectedOption ? selectedOption.label : null;
     }, [selectedValue, options]);
 
+    // 選択肢の開閉
     const handleToggle = () => {
       if (disabled) return;
       setIsOpen(!isOpen);
@@ -88,6 +96,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       setIsOpen(false);
     });
 
+    // onChangeハンドラー
     const handleChange = (newValue: string) => {
       setIsOpen(false);
       setSelectedValue(newValue);
@@ -106,6 +115,8 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
         [key: string]: HTMLButtonElement | null;
       }
     );
+
+    // 選択された項目までスクロール
     React.useEffect(() => {
       if (isOpen && selectedValue) {
         const selectedIndex = options.findIndex(
@@ -119,6 +130,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       }
     }, [isOpen, selectedValue, options]);
 
+    // ドロップダウンオープン時に最初の項目にフォーカス
     React.useEffect(() => {
       if (isOpen) {
         setTimeout(() => {
@@ -131,9 +143,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       }
     }, [isOpen]);
 
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
-
+    // キーボード操作
     const handleOnKeyDown =
       (idx: number) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
         // 上下キーでフォーカス移動

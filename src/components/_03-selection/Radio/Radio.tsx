@@ -35,6 +35,11 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    // バリデーションの判定
+    const isValidStatus =
+      typeof isValid === "boolean" ? isValid : errors[id] == null;
+
+    //　初期値の決定
     const initialValue =
       typeof value !== "undefined"
         ? value
@@ -42,8 +47,10 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           ? formData[id]
           : "";
 
+    // 内部state
     const [selected, setSelected] = React.useState(initialValue);
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof value !== "undefined" && value !== formData[id]) {
         handleInputChange(id, value);
@@ -56,6 +63,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       }
     }, [value]);
 
+    // onChangeハンドラー
     const handleChange = (newValue: string) => {
       if (onChange) {
         onChange(newValue);
@@ -67,6 +75,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       }
     };
 
+    // キーボードの操作
     const handleOnKeyDown = (
       e: React.KeyboardEvent<HTMLButtonElement>,
       newValue: string,
@@ -94,9 +103,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       }
     };
 
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
-
+    // スタイルの設定
     const radioStyle = cn(
       "flex flex-col text-black-sub",
       disabled ? "text-black-20-opacity pointer-events-none" : "cursor-pointer"

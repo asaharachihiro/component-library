@@ -46,9 +46,12 @@ export const Slider: React.FC<SliderProps> = ({
   const formData = (context?.formData as Record<string, unknown>) || {};
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
+
+  // バリデーション判定
   const isValidStatus =
     typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+  // 初期値の設定
   const initialValue =
     typeof value !== "undefined"
       ? value
@@ -56,6 +59,7 @@ export const Slider: React.FC<SliderProps> = ({
         ? Number(formData[id])
         : 0;
 
+  // 内部state
   const [currentValue, setCurrentValue] = React.useState(initialValue);
   const percentage = ((currentValue - min) / (max - min)) * 100;
 
@@ -71,6 +75,7 @@ export const Slider: React.FC<SliderProps> = ({
     handleChange(newValue);
   };
 
+  // ドラッグ＆ドロップの操作
   const handleMouseDown = () => {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
@@ -81,7 +86,7 @@ export const Slider: React.FC<SliderProps> = ({
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
-  // クリック位置から値を更新する関数
+  // クリック位置で値を更新
   const updateValueFromPosition = (clientX: number) => {
     if (disabled) return;
     const slider = document.getElementById(id);
@@ -93,6 +98,7 @@ export const Slider: React.FC<SliderProps> = ({
     handleChange(newValue);
   };
 
+  // onChangeのハンドラー
   const handleChange = (newValue: number) => {
     const clampedValue = Math.min(Math.max(newValue, min), max);
     setCurrentValue(clampedValue);
@@ -105,7 +111,7 @@ export const Slider: React.FC<SliderProps> = ({
     }
   };
 
-  // キーボードの場合は左右上下キーで操作できる
+  // キーボードの操作
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (disabled) return;
     let newValue = currentValue;

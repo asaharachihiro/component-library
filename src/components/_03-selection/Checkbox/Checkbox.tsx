@@ -40,9 +40,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const formData = context?.formData || {};
   const errors = context?.errors || {};
   const handleInputChange = context?.handleInputChange || (() => {});
+
+  // バリデーションの判定
   const isValidStatus =
     typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+  // 初期値の設定
   const initialChecked: string[] = options
     .filter((opt) => opt.checked)
     .map((opt) => opt.id);
@@ -53,15 +56,18 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       ? formData[id]
       : [];
 
+  // 内部state
   const [checkedIds, setCheckedIds] =
     React.useState<string[]>(initialCheckedIds);
 
+  // 初期値の更新
   React.useEffect(() => {
     if (Array.isArray(initialChecked) && Array.isArray(formData[id])) {
       handleInputChange(id, initialChecked);
     }
   }, []);
 
+  // onChangeハンドラー
   const handleChange = (
     optionId: string,
     checked: boolean | "indeterminate"
@@ -80,6 +86,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   };
 
   const checkboxRefs = React.useRef<(HTMLLabelElement | null)[]>([]);
+
+  // キーボードの操作
   const handleKeyDown =
     (idx: number) => (e: React.KeyboardEvent<HTMLLabelElement>) => {
       if (["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(e.key)) {

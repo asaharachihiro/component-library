@@ -52,6 +52,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+
+    // バリデーションの判定
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
@@ -78,6 +80,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
           ? formData[id]
           : "";
 
+    // 内部state
     const [inputValue, setInputValue] = React.useState(initialValue);
     const [displayValue, setDisplayValue] = React.useState(() => {
       let v = initialValue;
@@ -86,12 +89,14 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       return v;
     });
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof value !== "undefined" && value !== formData[id]) {
         handleInputChange(id, value);
       }
     }, []);
 
+    // onChangeハンドラー
     const handleChange = (newValue: string) => {
       setInputValue(newValue);
       setDisplayValue(newValue);
@@ -104,6 +109,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       }
     };
 
+    // onBlurハンドラー
     const handleBlur = (id: string, newValue: string) => {
       let v = newValue;
       if (currency === "jpy") v = formatJpy(v.replace(/[￥,]/g, ""));
@@ -114,6 +120,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       if (onBlur) onBlur(id, inputValue);
     };
 
+    // onFocusハンドラー
     const handleFocus = (id: string, value: string) => {
       setDisplayValue(inputValue);
       if (onFocus) onFocus(id, value);

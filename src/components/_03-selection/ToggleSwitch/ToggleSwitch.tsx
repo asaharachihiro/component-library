@@ -37,9 +37,12 @@ export const ToggleSwitch = React.forwardRef<
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+
+    // バリデーションの判定
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+    // 初期値の設定
     const initialChecked =
       typeof checked !== "undefined"
         ? checked
@@ -47,8 +50,10 @@ export const ToggleSwitch = React.forwardRef<
           ? formData[id]
           : false;
 
+    // 内部state
     const [toggle, setToggle] = React.useState<boolean>(initialChecked);
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof checked !== "undefined" && checked !== formData[id]) {
         handleInputChange(id, checked);
@@ -60,6 +65,8 @@ export const ToggleSwitch = React.forwardRef<
         setToggle(checked);
       }
     }, [checked]);
+
+    // onChangeハンドラー
     const handleToggled = () => {
       let newChecked = !toggle;
       setToggle(newChecked);
@@ -69,6 +76,7 @@ export const ToggleSwitch = React.forwardRef<
       handleInputChange(id, newChecked.toString());
     };
 
+    // スタイルの設定
     const switchStyle = cn(
       "flex shrink-0 items-center mt-1 h-7 w-[52px] rounded-full border-2 relative after:absolute after:content-[''] after:w-[16px] after:h-[16px] after:rounded-full  after:transition-transform after:duration-300",
       {

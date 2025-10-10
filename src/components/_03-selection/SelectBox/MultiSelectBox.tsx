@@ -54,9 +54,12 @@ export const MultiSelectBox = React.forwardRef<
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+
+    // バリデーションの判定
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+    //　初期値の設定
     const initialSelected =
       typeof values !== "undefined"
         ? values
@@ -64,6 +67,7 @@ export const MultiSelectBox = React.forwardRef<
           ? formData[id]
           : [];
 
+    // 内部state
     const [isOpen, setIsOpen] = React.useState(false);
     const [selectedValues, setSelectedValues] =
       React.useState<{ value: string; label: string }[]>(initialSelected);
@@ -75,6 +79,7 @@ export const MultiSelectBox = React.forwardRef<
         [key: string]: HTMLButtonElement | null;
       }
     );
+
     React.useEffect(() => {
       if (typeof values !== "undefined") {
         setSelectedValues(values);
@@ -89,6 +94,7 @@ export const MultiSelectBox = React.forwardRef<
       }
     }, [isOpen]);
 
+    // 選択肢の開閉
     const handleToggle = () => {
       if (disabled) return;
       setIsOpen(!isOpen);
@@ -99,6 +105,7 @@ export const MultiSelectBox = React.forwardRef<
       setIsOpen(false);
     });
 
+    // onChangeハンドラー
     const handleChange = (value: string) => {
       const isSelected = selectedValues.some((item) => item.value === value);
 
@@ -124,6 +131,7 @@ export const MultiSelectBox = React.forwardRef<
       }
     };
 
+    // キーボード操作
     const handleOnKeyDown =
       (idx: number, value: string) =>
       (e: React.KeyboardEvent<HTMLButtonElement>) => {

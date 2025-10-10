@@ -51,6 +51,7 @@ export const BaseSelectBox = React.forwardRef<
     },
     ref
   ) => {
+    //スタイルの設定
     const boxStyle = cn(
       "w-full cursor-pointer border bg-white flex items-center justify-between",
       {
