@@ -45,6 +45,7 @@ export const Card: React.FC<CardProps> = ({
     return React.cloneElement(child as React.ReactElement<any>, enhancedProps);
   };
 
+  // キーボード⌨️の操作
   const handleOnKeyDown = (
     e: React.KeyboardEvent<HTMLDivElement>,
     id: string
@@ -55,6 +56,7 @@ export const Card: React.FC<CardProps> = ({
     }
   };
 
+  // スタイルの設定
   const cardStyle = cn(
     "rounded-lg shadow-low transition-all hover:bg-black-3-opacity p-2",
     {
@@ -63,6 +65,7 @@ export const Card: React.FC<CardProps> = ({
       "cursor-pointer": onClick,
     }
   );
+
   return (
     <div className={className}>
       <div

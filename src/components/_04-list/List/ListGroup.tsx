@@ -15,6 +15,7 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   const listRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   listRefs.current.length = items.length;
 
+  // キーボードの操作
   const handleListKeyDown =
     (idx: number) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
       if (e.key === "ArrowDown" || e.key === "ArrowUp") {

@@ -16,6 +16,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   children,
   defalutOpen = false,
 }) => {
+  // 内部state
   const [isOpen, setIsOpen] = React.useState(defalutOpen);
 
   const toggleAccordion = (Open: boolean) => {
@@ -23,6 +24,8 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   const contentRef = React.useRef<HTMLDivElement>(null);
+
+  // 閉じている要素のフォーカスを無効化
   React.useEffect(() => {
     if (contentRef.current) {
       const focusables = contentRef.current.querySelectorAll<HTMLElement>(

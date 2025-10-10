@@ -61,11 +61,15 @@ export const FixedTable = React.forwardRef<
     }: FixedTableProps<TData>,
     ref: React.Ref<HTMLDivElement>
   ) => {
+    // テーブルのサイズ取得
     const { containerRef, tableWidth, tableHeight } = useTableSize();
+
+    // refの設定
     const fixedTableRef = ref as React.RefObject<HTMLDivElement | null>;
     const internalRef = React.useRef<HTMLDivElement>(null);
     const resolvedRef = fixedTableRef || internalRef;
 
+    // テーブルの初期化
     const table = useReactTable({
       data,
       columns,
@@ -76,10 +80,12 @@ export const FixedTable = React.forwardRef<
       getSortedRowModel: getSortedRowModel(),
     });
 
+    // 固定列の取得
     const pinnedColumnIds = columnOrder.filter((id) =>
       (columnPinning.left ?? []).includes(id)
     );
 
+    // 仮想化の設定
     const {
       rowVirtualizer: fixedRowVirtualizer,
       virtualRows: fixedVirtualRows,
@@ -100,8 +106,10 @@ export const FixedTable = React.forwardRef<
       tableHeight,
     });
 
+    // 内部state
     const [totalWidth, setTotalWidth] = React.useState<number>(0);
 
+    // 固定列の幅を計算
     const getTextWidth = (text: string, font = "16px Noto Sans JP"): number => {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
@@ -147,6 +155,7 @@ export const FixedTable = React.forwardRef<
       return columnWidths.reduce((total, width) => total + width, 0);
     };
 
+    // 固定列の幅を更新
     React.useEffect(() => {
       const visibleRows = fixedVirtualRows.map((virtualRow) => {
         return table.getRowModel().rows[virtualRow.index];

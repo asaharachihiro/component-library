@@ -65,12 +65,16 @@ export const HeaderCell = <TData,>({
     setShowPanel && setShowPanel(id);
   };
 
+  // refの設定
   const panelRef = React.useRef<HTMLDivElement>(null);
+
+  // パネル外クリックで閉じる
   useClickOutside(
     panelRef as React.RefObject<HTMLElement>,
     () => setShowPanel && setShowPanel(null)
   );
 
+  // カラムの固定・解除
   const togglePinColumn = (id: string, isPinned: boolean) => {
     setColumnPinning((prev) => ({
       ...prev,
@@ -81,6 +85,7 @@ export const HeaderCell = <TData,>({
     setShowPanel?.(null);
   };
 
+  // ソートの切り替え
   const toggleSort = (header: Header<TData, any>) => {
     if (!setSorting) return;
     const nextSortOrder = header.column.getNextSortingOrder();
@@ -91,6 +96,7 @@ export const HeaderCell = <TData,>({
       return [{ id: header.id, desc: nextSortOrder === "desc" }];
     });
   };
+
   return (
     <th
       key={header.id}

@@ -43,6 +43,7 @@ export const TableHeader = <TData,>({
   setColumnSizing,
   handleColumnDrop,
 }: TableHeaderProps<TData>) => {
+  // 内部state
   const [panelPosition, setPanelPosition] = React.useState({ top: 0, left: 0 });
   const [resizing, setResizing] = React.useState({
     isResizing: false,

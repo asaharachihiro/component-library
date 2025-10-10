@@ -24,6 +24,7 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
     },
     ref
   ) => {
+    // スタイルの設定
     const buttonStyle = cn(
       "flex w-full items-center justify-start p-2 px-4 text-base truncate transition-all",
       {

@@ -30,6 +30,7 @@ export const TableRow = <TData,>({
   onMouseLeave = () => {},
   onClick = () => {},
 }: TableRowProps<TData>) => {
+  // 固定列の取得
   const pinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter((virtualColumn) =>
@@ -38,6 +39,7 @@ export const TableRow = <TData,>({
     [virtualColumns, columnPinning]
   );
 
+  // 通常列の取得
   const unpinnedColumns = React.useMemo(
     () =>
       virtualColumns.filter(
@@ -48,6 +50,7 @@ export const TableRow = <TData,>({
     [virtualColumns, columnPinning]
   );
 
+  // 表示する列
   const displayColumns: VirtualColumn<TData>[] = isPinned
     ? pinnedColumns
     : unpinnedColumns;

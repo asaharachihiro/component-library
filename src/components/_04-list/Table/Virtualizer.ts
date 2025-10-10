@@ -30,6 +30,7 @@ export const useTableVirtualizer = <TData>({
   tableHeight,
   table,
 }: VirtualizerProps & { table: any }) => {
+  // 行の仮想化
   const rowVirtualizer = useVirtualizer({
     count: rowCount,
     getScrollElement: () => containerRef.current,
@@ -38,6 +39,7 @@ export const useTableVirtualizer = <TData>({
     initialRect: { width: tableWidth, height: tableHeight },
   });
 
+  // 列の仮想化
   const columnVirtualizer = useVirtualizer({
     count: columnCount,
     getScrollElement: () => containerRef.current,
@@ -68,6 +70,7 @@ export const useTableVirtualizer = <TData>({
       };
     });
 
+  // パディングの計算
   const virtualPaddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
   const virtualPaddingBottom =
     virtualRows.length > 0

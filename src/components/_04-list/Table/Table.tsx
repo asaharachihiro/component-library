@@ -31,7 +31,10 @@ export const Table = <TData,>({
   columnWidth = 120,
   columnPinning = {},
 }: TableProps<TData>) => {
+  // テーブルのサイズ取得
   const { containerRef, tableWidth, tableHeight } = useTableSize();
+
+  // 内部state
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnPinningState, setColumnPinningState] =
     React.useState<ColumnPinningState>(columnPinning);
@@ -53,6 +56,7 @@ export const Table = <TData,>({
       startSize: 0,
     });
 
+  // テーブルの設定
   const table = useReactTable<TData>({
     data,
     columns,
@@ -74,9 +78,11 @@ export const Table = <TData,>({
     onColumnOrderChange: setColumnOrder,
   });
 
+  // refの設定
   const fixedTableRef = React.useRef<HTMLDivElement>(null);
   const scrollableTableRef = React.useRef<HTMLDivElement>(null);
 
+  // 仮想化の設定
   const {
     rowVirtualizer: normalRowVirtualizer,
     columnVirtualizer,
@@ -98,6 +104,7 @@ export const Table = <TData,>({
     tableHeight,
   });
 
+  // スクロールの同期
   React.useEffect(() => {
     const scrollableTable = scrollableTableRef.current;
     const fixedTable = fixedTableRef.current;
@@ -136,6 +143,7 @@ export const Table = <TData,>({
     };
   }, []);
 
+  // 行のホバー
   const handleMouseEnter = (index: number) => {
     setHoveredRowIndex(index);
   };
@@ -144,6 +152,7 @@ export const Table = <TData,>({
     setHoveredRowIndex(null);
   };
 
+  // 固定列の有無
   const hasFixedColumn = (columnPinningState.left ?? []).length > 0;
 
   // カラムの並び替え

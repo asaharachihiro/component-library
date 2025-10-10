@@ -10,7 +10,7 @@ export interface SortButtonProps
 
 export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
   ({ nextSortOrder = "none", sorting, className, ...props }, ref) => {
-    const defaultIconStyle = !sorting && "text-black-20-opacity";
+    // ソートアイコンの取得
     const getIcon = (sort: string) => {
       if (sort === "asc") {
         return "arrow_upward";
@@ -20,6 +20,9 @@ export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
       }
       return null;
     };
+
+    // スタイルの設定
+    const defaultIconStyle = !sorting && "text-black-20-opacity";
 
     return (
       <button

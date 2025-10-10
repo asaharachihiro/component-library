@@ -19,13 +19,17 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
   isOpen = false,
   fotterElements,
 }) => {
+  // 内部state
   const [showPanel, setShowPanel] = React.useState(isOpen);
 
   const panelRef = React.useRef<HTMLDivElement>(null);
+
+  // パネル外クリックで閉じる
   useClickOutside(panelRef as React.RefObject<HTMLElement>, () =>
     setShowPanel(false)
   );
 
+  // キーボードの操作
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       e.preventDefault();
