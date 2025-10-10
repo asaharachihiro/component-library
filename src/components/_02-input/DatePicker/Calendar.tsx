@@ -130,12 +130,14 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       setCurrentDate(firstDayOfMonth);
     };
 
+    // 日付クリック時のハンドラー
     const handleDateClick = (id: string, date: Date) => {
       const dateStr = format(date, "yyyy-MM-dd");
       onSelectDate(id, dateStr);
       onClosed(false);
     };
 
+    // 日付が選択されているかどうかを判定
     const isSelected = (date: Date): boolean => {
       const dateStr = format(date, "yyyy-MM-dd");
       if (selectedDates && selectedDates.length > 0) {
@@ -150,6 +152,8 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     };
 
     const dateButtonRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
+
+    // キーボード操作
     const handleDateKeyDown =
       (date: Date) => (e: React.KeyboardEvent<HTMLButtonElement>) => {
         if (!isValid(date)) return;

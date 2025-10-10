@@ -49,9 +49,11 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    // バリデーション判定
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+    // 初期値の設定
     const initialValue =
       typeof value !== "undefined"
         ? value
@@ -61,16 +63,19 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
 
     const [inputValue, setInputValue] = React.useState(initialValue);
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof value !== "undefined" && value !== formData[id]) {
         handleInputChange(id, value);
       }
     }, []);
 
+    // パスワード表示トグル
     const toggleShowPassword = () => {
       setShowPassword(!showPassword);
     };
 
+    // onChangeのハンドラー
     const handleChange = (newValue: string) => {
       setInputValue(newValue);
       if (context) {

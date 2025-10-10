@@ -30,6 +30,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
     },
     ref
   ) => {
+    // 内部state
     const [formData, setFormData] = React.useState<Record<string, any>>(values);
     const [errors, setErrors] = React.useState<Record<string, string | null>>(
       {}
@@ -37,6 +38,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
 
     const formInnerRef = React.useRef<HTMLFormElement>(null);
 
+    // onChangeハンドラー
     const handleInputChange = (id: string, value: string) => {
       setFormData((prevData) => ({
         ...prevData,
@@ -44,6 +46,7 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       }));
     };
 
+    // フォーム送信時の処理
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       // フォーカス中の要素をblurさせる

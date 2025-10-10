@@ -23,6 +23,7 @@ const baseButtonStyle =
 const sizeS = "h-7 px-2 text-sm rounded-md min-w-12";
 const sizeM = "h-9 px-6 text-base rounded-lg";
 
+// primary, danger
 const ContainedBaseButton = React.forwardRef<
   HTMLButtonElement,
   ButtonProps & { variant: "primary" | "danger" }
@@ -68,6 +69,7 @@ const ContainedBaseButton = React.forwardRef<
   }
 );
 
+// secondary
 const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -112,6 +114,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
+// textPrimary, textSecondary, textDanger
 const TextBaseButton = React.forwardRef<
   HTMLButtonElement,
   ButtonProps & { variant: "textPrimary" | "textSecondary" | "textDanger" }
@@ -164,6 +167,7 @@ const TextBaseButton = React.forwardRef<
   }
 );
 
+// variantでコンポーネントをマッピング
 const ButtonComponentMap: Record<ButtonProps["variant"], React.ElementType> = {
   primary: ContainedBaseButton,
   secondary: OutlinedBaseButton,
@@ -184,7 +188,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       isActive,
       icon,
-      type = "button", // 追加: type属性をデフォルトで"button"に設定
+      type = "button",
       ...props
     },
     ref

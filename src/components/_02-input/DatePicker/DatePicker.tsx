@@ -56,7 +56,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       onBlur,
       onFocus,
       tooltip,
-      hasRange = false, // DateRange内で使用するためのフラグ
+      hasRange = false,
       ...props
     },
     ref
@@ -68,10 +68,12 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
 
+    // バリデーション判定
     const isValidStatus =
       typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
     const [showCalendar, setShowCalendar] = React.useState(false);
 
+    // 初期値の設定
     const initialValue =
       typeof value !== "undefined"
         ? value
@@ -79,12 +81,15 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           ? formData[id]
           : "";
 
+    // 表示用のstate
     const [inputStr, setInputStr] = React.useState(() =>
       toStringFormat(initialValue, isJPLocale)
     );
+    // Date型のstate
     const [inputDate, setInputDate] = React.useState(
       initialValue ? toDateFormat(initialValue) : undefined
     );
+    // 表示するカレンダーの基準日
     const [currentDate, setCurrentDate] = React.useState<Date>(
       inputDate && isValid(inputDate) ? inputDate : new Date()
     );
@@ -105,6 +110,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       }
     }, [value]);
 
+    // アイコンでカレンダーを開閉
     const handleIconClick = () => {
       setShowCalendar(!showCalendar);
     };
@@ -144,6 +150,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       }
     };
 
+    // Focus時にカレンダーを表示
     const handleOnFocus = (id: string, value: string) => {
       setShowCalendar(true);
       if (onFocus) {
@@ -165,6 +172,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       whileElementsMounted: autoUpdate,
     });
 
+    // ESCキーで閉じる
     React.useEffect(() => {
       if (!showCalendar) return;
       const handleKeyDown = (e: KeyboardEvent) => {

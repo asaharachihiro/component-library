@@ -42,9 +42,12 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     const formData = context?.formData || {};
     const errors = context?.errors || {};
     const handleInputChange = context?.handleInputChange || (() => {});
+
+    // バリデーション判定
     const isValidStatus =
       typeof isValid === "boolean" ? isValid : errors[id] == null;
 
+    // 初期値の設定
     const initialValue =
       typeof value !== "undefined"
         ? value
@@ -54,13 +57,15 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
 
     const [inputValue, setInputValue] = React.useState(initialValue);
 
+    // 初期値の更新
     React.useEffect(() => {
       if (typeof value !== "undefined" && value !== formData[id]) {
         handleInputChange(id, value);
       }
     }, []);
 
-    const handleChenge = (newValue: string) => {
+    // onChangeのハンドラー
+    const handleChange = (newValue: string) => {
       setInputValue(newValue);
       if (context) {
         handleInputChange(id, newValue);
@@ -86,7 +91,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             id={id}
             placeholder={placeholder}
             value={inputValue}
-            onChange={(e) => handleChenge(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             onBlur={onBlur}
             isValid={isValidStatus}
             disabled={disabled}

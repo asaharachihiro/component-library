@@ -30,6 +30,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   ) => {
     const [toggleChecked, setToggleChecked] = React.useState(checked || false);
 
+    // toggle使用時のstate
     React.useEffect(() => {
       setToggleChecked(checked);
     }, [checked]);

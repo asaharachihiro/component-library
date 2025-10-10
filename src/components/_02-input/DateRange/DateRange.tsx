@@ -50,7 +50,6 @@ export const DateRange: React.FC<DateRangeProps> = ({
   getCalendar,
   onChange,
   onBlur,
-  onFocus,
   tooltip,
 }) => {
   const context = useFormContext();
@@ -72,6 +71,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     return range;
   };
 
+  // 初期値の設定
   const initialDateStr =
     typeof value !== "undefined"
       ? fixReversedDates({
@@ -85,12 +85,16 @@ export const DateRange: React.FC<DateRangeProps> = ({
           })
         : { start: "", end: "" };
 
+  // DateRangeのstate
   const [dateRange, setDateRange] =
     React.useState<DateRangeValue>(initialDateStr);
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
+
+  // バリデーション判定
   const isValidStatus =
     typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
 
+  // 初期値の逆転を修正
   React.useEffect(() => {
     if (
       context &&
@@ -108,6 +112,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     }
   }, []);
 
+  // onChangeのハンドラー
   const handleRangeChange = (pickerId: string, value: string) => {
     const isStart = pickerId.includes("start");
     const next: DateRangeValue = {
@@ -120,6 +125,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     if (onChange) onChange(fixed);
   };
 
+  // onBlurのハンドラー
   const handleInputBlur = (pickerId: string, value: string) => {
     const isStart = pickerId.includes("start");
     const next: DateRangeValue = {
@@ -133,6 +139,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     if (onBlur) onBlur(fixed);
   };
 
+  // 選択日の配列を生成
   const getSelectedDate = React.useCallback((): Date[] => {
     if (!dateRange.start && !dateRange.end) return [];
 
@@ -165,6 +172,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
     return [];
   }, [dateRange.start, dateRange.end]);
 
+  // 選択日の更新
   React.useEffect(() => {
     setSelectedDates(getSelectedDate());
   }, [dateRange.start, dateRange.end]);
@@ -187,6 +195,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
           isValidValue={isValidStatus}
           isStartOnMonday={isStartOnMonday}
           getCalendar={getCalendar}
+          tooltip={tooltip}
         />
 
         <span className="mx-2 flex h-10 grow-0 items-center text-xs text-black-sub">
