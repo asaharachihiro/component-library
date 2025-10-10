@@ -39,8 +39,8 @@ export const InputBox = React.forwardRef<
     },
     ref
   ) => {
+    // スタイル設定
     const InputComponent = asTextArea ? "textarea" : "input";
-
     const inputStyle = cn("w-full min-w-[40px] rounded-lg border p-2", {
       "border-black-20-opacity text-black-sub pointer-events-none bg-black-3-opacity":
         disabled,

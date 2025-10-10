@@ -25,6 +25,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
     },
     ref
   ) => {
+    // スタイル設定
     const isNormalStyle = !disabled && isValid;
     const checkBoxtyle = cn(
       "flex h-7 w-7 select-none items-center justify-center rounded-md text-xl hover:bg-black-5-opacity active:bg-black-10-opacity",

@@ -31,7 +31,8 @@ export const NumberButton = React.forwardRef<
     },
     ref
   ) => {
-    const className = cn(
+    // スタイル設定
+    const buttonStyle = cn(
       "w-7 h-7 select-none rounded-full text-xs relative group",
       {
         "text-black-20-opacity pointer-events-none": disabled,
@@ -40,13 +41,17 @@ export const NumberButton = React.forwardRef<
         "text-black": !disabled && !isToday && !selected,
       }
     );
+    const bgStyle = cn(
+      "absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10",
+      isFocused && "bg-black opacity-5"
+    );
 
     const displayNum = Number(number).toString();
     return (
       <button
         onClick={disabled ? undefined : onClick}
         id={id}
-        className={className}
+        className={buttonStyle}
         ref={ref}
         aria-label={`${number}`}
         aria-pressed={selected}
@@ -56,12 +61,7 @@ export const NumberButton = React.forwardRef<
         {...props}
       >
         {displayNum}
-        <div
-          className={cn(
-            "absolute inset-0 rounded-full bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10",
-            isFocused && "bg-black opacity-5"
-          )}
-        />
+        <div className={bgStyle} />
       </button>
     );
   }
