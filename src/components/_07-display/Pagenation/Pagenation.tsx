@@ -18,9 +18,10 @@ export const Pagenation: React.FC<PagenationProps> = ({
   total,
   maxLength = 7,
 }) => {
-  // 内部state(現在のページ)
+  // 内部state(現在の表示ページ)
   const [currentPage, setCurrentPage] = React.useState(value);
 
+  // 表示ページの変更
   const handleChange = (page: number) => {
     setCurrentPage(page);
   };
