@@ -21,8 +21,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   headerItem,
   onShowChange,
 }) => {
+  // 内部state(表示状態)
   const [show, setShow] = React.useState(defaultShow);
 
+  // 開閉の切り替え
   const handleShowChange = (show: boolean) => {
     setShow(show);
     if (onShowChange) {

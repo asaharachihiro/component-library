@@ -20,6 +20,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   onClick,
   href,
 }) => {
+  // スタイルの設定
   const itemStyle = selected
     ? "bg-main-bg hover:bg-main-bg text-main border-main border-l-4 pl-3 pr-4"
     : "hover:bg-black-3-opacity text-black-sub focus-visible:bg-black-3-opacity px-4";

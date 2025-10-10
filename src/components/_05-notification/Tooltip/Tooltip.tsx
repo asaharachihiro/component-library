@@ -19,6 +19,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   className = "",
   children,
 }) => {
+  // 内部state(表示状態)
   const [isVisible, setIsVisible] = React.useState(false);
 
   // 表示用のフローティング

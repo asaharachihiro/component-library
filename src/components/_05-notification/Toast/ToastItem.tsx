@@ -16,9 +16,11 @@ export const ToastItem: React.FC<ToastItemProps> = ({
   children,
   autoDelete = false,
 }) => {
+  // 内部state
   const [isVisible, setIsVisible] = React.useState(true);
   const [isRender, setIsRender] = React.useState(true);
 
+  // スタイルの設定
   const toastStyle = cn(
     "m-2 flex w-[500px] items-center justify-between space-x-2 rounded-lg bg-white p-4 text-2xl shadow-high transition-all duration-300",
     {
@@ -29,6 +31,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
     }
   );
 
+  // 5秒経ったら消える
   React.useEffect(() => {
     if (autoDelete) {
       const timer = setTimeout(() => {

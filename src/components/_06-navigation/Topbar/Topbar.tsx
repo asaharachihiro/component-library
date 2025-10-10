@@ -16,16 +16,17 @@ export const Topbar: React.FC<TopbarProps> = ({
   children,
   align = "right",
 }) => {
+  // スタイルの設定
+  const navStyle = cn(
+    "fixed left-0 top-0 z-50 flex h-[48px] w-full items-center overflow-y-scroll bg-white px-4 shadow-low transition-all duration-300",
+    align === "left" && "justify-start",
+    align === "center" && "justify-center",
+    align === "right" && "justify-end"
+  );
+
   return (
     <nav id={id} className={cn(className, "h-[48px] w-full")}>
-      <div
-        className={cn(
-          "fixed left-0 top-0 z-50 flex h-[48px] w-full items-center overflow-y-scroll bg-white px-4 shadow-low transition-all duration-300",
-          align === "left" && "justify-start",
-          align === "center" && "justify-center",
-          align === "right" && "justify-end"
-        )}
-      >
+      <div className={navStyle}>
         <ul className="flex items-center">{children}</ul>
       </div>
     </nav>

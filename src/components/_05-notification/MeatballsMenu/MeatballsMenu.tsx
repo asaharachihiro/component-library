@@ -23,13 +23,16 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
   children,
   disabled,
 }) => {
+  // 内部state(開閉状態)
   const [isOpen, setIsOpen] = React.useState(false);
 
+  // メニュー開閉
   const handleToggle = () => {
     if (disabled) return;
     setIsOpen(!isOpen);
   };
 
+  // 外側クリックで閉じる
   const MenuRef = React.useRef<HTMLDivElement>(null);
   useClickOutside(MenuRef as React.RefObject<HTMLElement>, () =>
     setIsOpen(false)

@@ -20,6 +20,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
   onClick,
   href,
 }) => {
+  // スタイルの設定
   const itemStyle = cn(
     "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 text-xl transition-all focus-visible:-outline-offset-1",
     selected
