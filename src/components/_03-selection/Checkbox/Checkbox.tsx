@@ -106,6 +106,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }
     };
 
+  //スタイルの設定
+  const labelStyle = (isDisabled: boolean | undefined) => {
+    return cn(
+      "flex cursor-pointer items-center p-1",
+      isDisabled && "pointer-events-none text-black-20-opacity"
+    );
+  };
+
   return (
     <div id={id} className={className} role="group" aria-labelledby={id}>
       {label && (
@@ -114,10 +122,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {options.map((option, idx) => (
         <label
           key={option.id}
-          className={cn(
-            "flex cursor-pointer items-center p-1",
-            option.disabled && "pointer-events-none text-black-20-opacity"
-          )}
+          className={labelStyle(option.disabled)}
           onKeyDown={handleKeyDown(idx)}
           tabIndex={option.disabled ? -1 : 0}
           ref={(el) => {

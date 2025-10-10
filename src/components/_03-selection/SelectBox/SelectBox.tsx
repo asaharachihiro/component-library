@@ -179,6 +179,11 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
         }
       };
 
+    //スタイルの設定
+    const listContainerStyle =
+      "mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low";
+    const checkIconStyle = "mr-1 flex items-center text-lg text-main";
+
     return (
       <BaseSelectBox
         ref={SelectRef}
@@ -203,7 +208,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       >
         <ListGroup
           id={`${id}-list`}
-          className="mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
+          className={listContainerStyle}
           items={[
             ...(hasDefaultOption
               ? [
@@ -235,7 +240,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
               children: (
                 <>
                   {selectedValue === option.value && (
-                    <span className="mr-1 flex items-center text-lg text-main">
+                    <span className={checkIconStyle}>
                       <span className="material-symbols-rounded">check</span>
                     </span>
                   )}

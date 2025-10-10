@@ -108,6 +108,16 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       "flex flex-col text-black-sub",
       disabled ? "text-black-20-opacity pointer-events-none" : "cursor-pointer"
     );
+    const labelStyle = (isSelected: boolean, disabled: boolean) => {
+      return cn(
+        "group flex items-center rounded-lg p-1 text-black-sub",
+        isSelected && "text-black",
+        disabled && isSelected && "text-black-sub",
+        disabled && !isSelected && "text-20-opacity"
+      );
+    };
+    const iconStyle =
+      "flex shrink-0 select-none items-center justify-center rounded-full text-xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity";
 
     return (
       <div
@@ -132,22 +142,13 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                 aria-disabled={disabled}
                 disabled={disabled}
                 key={index}
-                className={cn(
-                  "group flex items-center rounded-lg p-1 text-black-sub",
-                  isSelected && "text-black",
-                  disabled && isSelected && "text-black-sub",
-                  disabled && !isSelected && "text-20-opacity"
-                )}
+                className={labelStyle(isSelected, disabled)}
                 onClick={() => handleChange(option.value)}
                 onKeyDown={(e) => {
                   handleOnKeyDown(e, option.value, index);
                 }}
               >
-                <div
-                  className={cn(
-                    "flex shrink-0 select-none items-center justify-center rounded-full text-xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity"
-                  )}
-                >
+                <div className={iconStyle}>
                   <span className="material-symbols-rounded">
                     <span className={cn(isSelected && "text-main")}>
                       {isSelected

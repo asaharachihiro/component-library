@@ -160,6 +160,12 @@ export const MultiSelectBox = React.forwardRef<
         }
       };
 
+    //スタイルの設定
+    const selectedItemsStyle =
+      "flex items-center text-nowrap rounded-md bg-main-bg pl-2 text-xs";
+    const listContainerStyle =
+      "mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low";
+
     return (
       <BaseSelectBox
         ref={SelectRef}
@@ -185,7 +191,7 @@ export const MultiSelectBox = React.forwardRef<
                 <div
                   data-testid={`selected-item-${option.value}`}
                   key={option.value}
-                  className="flex items-center text-nowrap rounded-md bg-main-bg pl-2 text-xs"
+                  className={selectedItemsStyle}
                 >
                   {option.label}
                   <IconButton
@@ -208,7 +214,7 @@ export const MultiSelectBox = React.forwardRef<
       >
         <ListGroup
           id={`${id}-list`}
-          className="mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low"
+          className={listContainerStyle}
           items={options.map((option, index) => {
             const isSelected = selectedValues.some(
               (item) => item.value === option.value

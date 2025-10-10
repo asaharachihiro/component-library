@@ -51,7 +51,16 @@ export const BaseSelectBox = React.forwardRef<
     },
     ref
   ) => {
+    // メニューのフローティング
+    const { refs, floatingStyles } = useFloating({
+      placement: "bottom-start",
+      middleware: [offset(8), flip(), shift()],
+      whileElementsMounted: autoUpdate,
+    });
+
     //スタイルの設定
+    const containerStyle =
+      "focus-visible:bordr-main group relative flex min-w-[40px] items-center truncate";
     const boxStyle = cn(
       "w-full cursor-pointer border bg-white flex items-center justify-between",
       {
@@ -64,13 +73,12 @@ export const BaseSelectBox = React.forwardRef<
         "rounded-lg p-2": size !== "s",
       }
     );
-
-    // メニューのフローティング
-    const { refs, floatingStyles } = useFloating({
-      placement: "bottom-start",
-      middleware: [offset(8), flip(), shift()],
-      whileElementsMounted: autoUpdate,
-    });
+    const textStyle =
+      "inset-y-0 left-0 select-none overflow-hidden overflow-x-auto pl-2 truncate text-nowrap";
+    const iconStyle = cn(
+      "material-symbols-rounded right-0 mr-2 text-black-sub transition-all duration-300",
+      isOpen ? "-rotate-180" : "rotate-0"
+    );
 
     return (
       <div ref={ref} className={className}>
@@ -78,7 +86,7 @@ export const BaseSelectBox = React.forwardRef<
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
         <div
-          className="focus-visible:bordr-main group relative flex min-w-[40px] items-center truncate"
+          className={containerStyle}
           onClick={onToggle}
           onKeyDown={(e) => {
             if (!isOpen && ["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
@@ -109,22 +117,13 @@ export const BaseSelectBox = React.forwardRef<
 
           <div className="absolute flex w-full cursor-pointer select-none items-center justify-between">
             {selectedValue ? (
-              <div className="inset-y-0 left-0 select-none overflow-hidden overflow-x-auto pl-2">
-                {selectedValue}
-              </div>
+              <div className={cn(textStyle)}>{selectedValue}</div>
             ) : (
-              <span className="inset-y-0 left-0 select-none truncate text-nowrap pl-2 text-black-20-opacity">
+              <span className={cn(textStyle, "text-black-20-opacity")}>
                 {placeholder}
               </span>
             )}
-            <span
-              className={cn(
-                "material-symbols-rounded right-0 mr-2 text-black-sub transition-all duration-300",
-                isOpen ? "-rotate-180" : "rotate-0"
-              )}
-            >
-              expand_more
-            </span>
+            <span className={iconStyle}>expand_more</span>
           </div>
         </div>
         {isOpen && (
