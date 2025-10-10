@@ -11,6 +11,15 @@ export const Progressbar: React.FC<ProgressbarProps> = ({
   className = "",
   percentage,
 }) => {
+  // 値の更新
+  React.useEffect(() => {
+    if (percentage !== undefined) {
+      if (percentage < 0 || percentage > 100) {
+        console.warn("Progressbar: 'percentage' should be between 0 and 100.");
+      }
+    }
+  }, [percentage]);
+
   return (
     <div id={id} className={className}>
       <div className="flex h-1 w-full overflow-hidden rounded-full bg-main-bg">

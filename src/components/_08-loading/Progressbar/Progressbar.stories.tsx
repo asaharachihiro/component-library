@@ -24,8 +24,24 @@ const meta: Meta<typeof Progressbar> = {
 export default meta;
 
 type Story = StoryObj<typeof Progressbar>;
+export const Default: Story = {
+  args: {
+    className: "h-6 w-[500px]",
+  },
+};
 
-export const Primary: Story = {
+// 追加: インタラクティブな進捗バー
+export const Animated: Story = {
+  render: (args) => {
+    const [percentage, setPercentage] = React.useState(0);
+    React.useEffect(() => {
+      const timer = setInterval(() => {
+        setPercentage((prev) => (prev < 100 ? prev + 1 : 0));
+      }, 250);
+      return () => clearInterval(timer);
+    }, []);
+    return <Progressbar {...args} percentage={percentage} />;
+  },
   args: {
     className: "h-6 w-[500px]",
   },
