@@ -87,6 +87,10 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
       }
     };
 
+    // スタイルの設定
+    const iconStyle =
+      "absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2";
+
     return (
       <div className={className}>
         {label && (
@@ -111,7 +115,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
             ref={ref}
             {...props}
           />
-          <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2">
+          <div className={iconStyle}>
             <IconButton
               disabled={disabled}
               icon={showPassword ? "visibility" : "visibility_off"}

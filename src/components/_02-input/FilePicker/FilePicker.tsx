@@ -63,13 +63,18 @@ export const FilePicker: React.FC<FilePickerProps> = ({
     onSelectFiles(droppedFiles);
   };
 
+  // スタイルの設定
+  const containerStyle = cn(
+    "flex flex-wrap justify-center gap-6 rounded-lg border border-black-20-opacity p-4",
+    isDragging && "bg-black-5-opacity"
+  );
+  const iconStyle = "material-symbols-rounded mr-2 select-none text-black-sub";
+  const fileItemsStyle =
+    "mt-2 flex items-center rounded-lg text-2xl transition-all";
   return (
     <div>
       <div
-        className={cn(
-          "flex flex-wrap justify-center gap-6 rounded-lg border border-black-20-opacity p-4",
-          isDragging && "bg-black-5-opacity"
-        )}
+        className={containerStyle}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -91,9 +96,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
           {...props}
         />
         <div className="flex items-center text-2xl">
-          <span className="material-symbols-rounded mr-2 select-none text-black-sub">
-            upload
-          </span>
+          <span className={iconStyle}>upload</span>
           <div className="flex flex-col">
             <span className="mb-2 text-xs">ファイルをドラッグ＆ドロップ</span>
             <span className="text-xs text-black-sub">
@@ -115,14 +118,9 @@ export const FilePicker: React.FC<FilePickerProps> = ({
       </div>
       {files &&
         files.map((file, index) => (
-          <div
-            key={index}
-            className="mt-2 flex items-center rounded-lg transition-all"
-          >
-            <span className="material-symbols-rounded m-1 select-none text-black-sub">
-              upload_file
-            </span>
-            <span className="mx-2">{file.name}</span>
+          <div key={index} className={fileItemsStyle}>
+            <span className={iconStyle}>upload_file</span>
+            <span className="mx-2 text-base">{file.name}</span>
             <IconButton
               icon="close"
               className="m-1"

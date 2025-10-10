@@ -184,6 +184,12 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       return () => window.removeEventListener("keydown", handleKeyDown);
     }, [showCalendar]);
 
+    // スタイルの設定
+    const placeholderStyle =
+      "pointer-events-none absolute inset-y-0 left-0 flex select-none items-center pl-2 text-black-20-opacity";
+    const calendarIconStyle =
+      "absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2";
+
     return (
       <div className={className} ref={pickerRef}>
         {label && (
@@ -208,11 +214,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
             {...props}
           />
           {!inputStr && (
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex select-none items-center pl-2 text-black-20-opacity">
+            <div className={placeholderStyle}>
               <span>年 / 月 / 日</span>
             </div>
           )}
-          <div className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2">
+          <div className={calendarIconStyle}>
             <IconButton
               disabled={disabled}
               icon="calendar_month"

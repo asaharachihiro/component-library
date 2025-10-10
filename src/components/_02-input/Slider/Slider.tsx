@@ -131,6 +131,27 @@ export const Slider: React.FC<SliderProps> = ({
     e.preventDefault();
   };
 
+  // スタイルの設定
+  const InputNumStyle = cn(
+    "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-regular",
+    disabled
+      ? "bg-black-3-opacity text-black-sub"
+      : "bg-black-10-opacity text-black"
+  );
+  const sliderStyle = cn(
+    "relative flex h-2 w-full cursor-pointer",
+    disabled && "pointer-events-none"
+  );
+
+  const inputBarStyle = cn(
+    "h-full w-full rounded-l-md rounded-r-sm",
+    disabled ? "bg-black-20-opacity" : "bg-main"
+  );
+  const handleStyle = cn(
+    "absolute top-1/2 h-4 w-[2px] -translate-y-1/2 cursor-pointer rounded-full",
+    disabled ? "pointer-events-none bg-black-sub" : "bg-main active:h-5"
+  );
+
   return (
     <>
       <div id={id} className={className} draggable="false">
@@ -141,12 +162,7 @@ export const Slider: React.FC<SliderProps> = ({
           <div className="relative flex flex-col">
             {/* 数値の表示 */}
             <div
-              className={cn(
-                "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-regular",
-                disabled
-                  ? "bg-black-3-opacity text-black-sub"
-                  : "bg-black-10-opacity text-black"
-              )}
+              className={InputNumStyle}
               style={{
                 marginLeft: `${percentage}%`,
                 transform: "translateX(-50%)",
@@ -157,10 +173,7 @@ export const Slider: React.FC<SliderProps> = ({
             {/* スライダー本体 */}
             <div
               id={id}
-              className={cn(
-                "relative flex h-2 w-full cursor-pointer",
-                disabled && "pointer-events-none"
-              )}
+              className={sliderStyle}
               onClick={(e) => updateValueFromPosition(e.clientX)}
             >
               <div
@@ -169,12 +182,8 @@ export const Slider: React.FC<SliderProps> = ({
                   width: `calc(${percentage}%)`,
                 }}
               >
-                <div
-                  className={cn(
-                    "h-full w-full rounded-l-md rounded-r-sm",
-                    disabled ? "bg-black-20-opacity" : "bg-main"
-                  )}
-                />
+                {/* 入力バー */}
+                <div className={inputBarStyle} />
               </div>
               <div
                 className="h-2 pl-[3px]"
@@ -189,13 +198,9 @@ export const Slider: React.FC<SliderProps> = ({
                   )}
                 />
               </div>
+              {/* ハンドル */}
               <div
-                className={cn(
-                  "absolute top-1/2 h-4 w-[2px] -translate-y-1/2 cursor-pointer rounded-full",
-                  disabled
-                    ? "pointer-events-none bg-black-sub"
-                    : "bg-main active:h-5"
-                )}
+                className={handleStyle}
                 style={{ left: `calc(${percentage}% - 1px)` }}
                 onMouseDown={handleMouseDown}
                 tabIndex={0}

@@ -76,6 +76,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       }
     };
 
+    // スタイルの設定
     const ButtonStyle = cn(
       "flex w-[42px] h-[42px] min-w-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-xl  text-black-sub transition-all",
       isValidStatus ? "border-black-20-opacity" : "border-danger",
