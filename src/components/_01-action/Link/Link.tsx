@@ -15,7 +15,6 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     // スタイルの設定
     const linkStyle = cn(
       "m-1 inline-flex items-center text-base font-bold",
-
       className,
       {
         "cursor-pointer  text-link visited:text-link-visited": !disabled,
