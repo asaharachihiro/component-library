@@ -13,12 +13,20 @@ interface ColumnPanelProps {
 
 export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
   ({ id, panelPosition, onClick, isFixed = false }, ref) => {
+    // スタイルの設定
+    const panelStyle =
+      "absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low";
+    const containerStyle =
+      "flex items-center rounded-lg p-4 hover:bg-black-5-opacity active:bg-black-10-opacity";
+    const iconStyle = "material-symbols-rounded mr-2 select-none";
+    const labelStyle = "text-base font-regular";
+
     return (
       <Portal>
         <div
           id={id}
           data-testid={`column-${id}-panel`}
-          className="absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low"
+          className={panelStyle}
           onClick={() => onClick(id)}
           role="dialog"
           style={{
@@ -27,20 +35,16 @@ export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
             zIndex: 1000,
           }}
         >
-          <div className="flex items-center rounded-lg p-4 hover:bg-black-5-opacity active:bg-black-10-opacity">
+          <div className={containerStyle}>
             {isFixed ? (
               <>
-                <span className="material-symbols-rounded mr-2 select-none">
-                  keep_off
-                </span>
-                <span className="text-base font-regular">固定を解除</span>
+                <span className={iconStyle}>keep_off</span>
+                <span className={labelStyle}>固定を解除</span>
               </>
             ) : (
               <>
-                <span className="material-symbols-rounded mr-2 select-none">
-                  keep
-                </span>
-                <span className="text-base font-regular">列を固定</span>
+                <span className={iconStyle}>keep</span>
+                <span className={labelStyle}>列を固定</span>
               </>
             )}
           </div>

@@ -37,6 +37,11 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
     }
   };
 
+  // スタイルの設定
+  const panelStyle = "rounded-lg bg-white shadow-low";
+  const footerStyle =
+    "sticky flex justify-between border-t border-black-20-opacity p-6";
+
   return (
     <div className={className} onKeyDown={handleOnKeyDown}>
       <Button
@@ -49,16 +54,10 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
         label="フィルター"
       />
       {showPanel && (
-        <div
-          className="rounded-lg bg-white shadow-low"
-          ref={panelRef}
-          data-testid="filter-panel"
-        >
+        <div className={panelStyle} ref={panelRef} data-testid="filter-panel">
           <div className="flex-col space-y-4 p-6">{children}</div>
           {fotterElements && (
-            <div className="sticky flex justify-between border-t border-black-20-opacity p-6">
-              {fotterElements}
-            </div>
+            <div className={footerStyle}>{fotterElements}</div>
           )}
         </div>
       )}

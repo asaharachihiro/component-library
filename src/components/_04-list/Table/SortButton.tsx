@@ -22,18 +22,14 @@ export const SortButton = React.forwardRef<HTMLButtonElement, SortButtonProps>(
     };
 
     // スタイルの設定
-    const defaultIconStyle = !sorting && "text-black-20-opacity";
+    const iconStyle = cn(
+      className,
+      !sorting && "text-black-20-opacity",
+      "flex h-7 w-7 items-center justify-center rounded-md text-lg transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
+    );
 
     return (
-      <button
-        ref={ref}
-        {...props}
-        className={cn(
-          className,
-          defaultIconStyle,
-          "flex h-7 w-7 items-center justify-center rounded-md text-lg transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
-        )}
-      >
+      <button ref={ref} {...props} className={iconStyle}>
         <span className="material-symbols-rounded">
           {sorting
             ? getIcon(sorting)

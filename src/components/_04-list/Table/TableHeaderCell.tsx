@@ -97,14 +97,27 @@ export const HeaderCell = <TData,>({
     });
   };
 
+  // スタイルの設定
+  const containerStyle = (isSorting: boolean) => {
+    return cn(
+      isSorting && "font-bold text-main",
+      "relative w-full overflow-visible border-b border-black-20-opacity bg-black-3-opacity"
+    );
+  };
+  const overlayStyle =
+    "inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity";
+  const handleStyle = (isResizing: boolean) => {
+    return cn(
+      "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-main-bg",
+      isResizing && "bg-main-bg"
+    );
+  };
+
   return (
     <th
       key={header.id}
       draggable="true"
-      className={cn(
-        sorting?.some((sort) => sort.id === header.id) && "font-bold text-main",
-        "relative w-full overflow-visible border-b border-black-20-opacity bg-black-3-opacity"
-      )}
+      className={containerStyle(sorting?.some((sort) => sort.id === header.id))}
       style={{
         width: columnSizing?.[header.id] || header.getSize(),
       }}
@@ -119,7 +132,7 @@ export const HeaderCell = <TData,>({
     >
       <div
         data-testid={`column-${header.id}-button`}
-        className="inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity"
+        className={overlayStyle}
         onClick={(e) => togglePanel(header.id, e)}
       >
         {flexRender(header.column.columnDef.header, header.getContext())}
@@ -142,10 +155,7 @@ export const HeaderCell = <TData,>({
           onMouseDown={(e) => handleMouseDown(e, header)}
           onTouchStart={(e) => handleMouseDown(e, header)}
           onDragStart={(e) => e.preventDefault()}
-          className={cn(
-            "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-main-bg",
-            header.column.getIsResizing() && "bg-main-bg"
-          )}
+          className={handleStyle(resizing.isResizing)}
           style={{
             transform: header.column.getIsResizing()
               ? `translateX(${resizing.offset}px)`

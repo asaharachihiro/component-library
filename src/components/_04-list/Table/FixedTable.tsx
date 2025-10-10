@@ -166,9 +166,15 @@ export const FixedTable = React.forwardRef<
       setTotalWidth(newTotalWidth);
     }, [fixedVirtualRows, columnPinning, columns]);
 
+    // スタイルの設定
+    const containerStyle =
+      "z-10 flex h-full w-full overflow-hidden overflow-x-auto overflow-y-auto border-r border-black-20-opacity bg-white text-left shadow-high";
+    const tableStyle =
+      "h-full w-full table-auto border-separate border-spacing-0";
+
     return (
       <div
-        className="z-10 flex h-full w-full overflow-hidden overflow-x-auto overflow-y-auto border-r border-black-20-opacity bg-white text-left shadow-high"
+        className={containerStyle}
         ref={fixedTableRef}
         style={{
           width: totalWidth,
@@ -176,7 +182,7 @@ export const FixedTable = React.forwardRef<
       >
         <div ref={containerRef} className="h-full w-full">
           <table
-            className="h-full w-full table-auto border-separate border-spacing-0"
+            className={tableStyle}
             style={{
               height: fixedRowVirtualizer.getTotalSize(),
             }}

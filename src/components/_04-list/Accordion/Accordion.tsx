@@ -51,31 +51,30 @@ export const Accordion: React.FC<AccordionProps> = ({
     }
   }, [isOpen]);
 
+  // スタイルの設定
+  const labelStyle =
+    "flex h-[40px] w-full items-center justify-between p-2 hover:bg-black-5-opacity focus-visible:bg-black-5-opacity active:bg-black-10-opacity";
+  const iconStyle = cn(
+    "material-symbols-rounded ml-1 flex select-none text-black-sub transition-all duration-300",
+    isOpen ? "-rotate-180" : "rotate-0"
+  );
+  const containerStyle = cn(
+    "transition-max-height overflow-hidden transition-all duration-300",
+    isOpen ? "max-h-screen" : "max-h-0"
+  );
+
   return (
     <li id={id} className={cn(className, "list-none")}>
       <div className="relative flex w-full cursor-pointer flex-col text-base">
         <button
           onClick={() => toggleAccordion(!isOpen)}
-          className="flex h-[40px] w-full items-center justify-between p-2 hover:bg-black-5-opacity focus-visible:bg-black-5-opacity active:bg-black-10-opacity"
+          className={labelStyle}
           aria-expanded={isOpen}
         >
           <span className="truncate font-medium">{label}</span>
-          <span
-            className={cn(
-              "material-symbols-rounded ml-1 flex select-none text-black-sub transition-all duration-300",
-              isOpen ? "-rotate-180" : "rotate-0"
-            )}
-          >
-            expand_more
-          </span>
+          <span className={iconStyle}>expand_more</span>
         </button>
-        <div
-          className={cn(
-            "transition-max-height overflow-hidden transition-all duration-300",
-            isOpen ? "max-h-screen" : "max-h-0"
-          )}
-          ref={contentRef}
-        >
+        <div className={containerStyle} ref={contentRef}>
           {children}
         </div>
       </div>

@@ -102,8 +102,12 @@ export const TableHeader = <TData,>({
     header.getResizeHandler()(e);
   };
 
+  // スタイルの設定
+  const containerStyle =
+    "w-full text-sm font-medium text-black-sub transition-all";
+
   return (
-    <thead className="w-full text-sm font-medium text-black-sub transition-all">
+    <thead className={containerStyle}>
       {headerGroups.map((headerGroup) => (
         <tr key={headerGroup.id} className="z-5 sticky top-0 bg-white">
           {virtualPaddingLeft > 0 && (

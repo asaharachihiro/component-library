@@ -169,8 +169,16 @@ export const Table = <TData,>({
     setColumnOrder(newOrder);
   };
 
+  // スタイルの設定
+  const containerStyle =
+    "flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity";
+  const normalTableStyle = cn(
+    "flex h-full w-full overflow-hidden text-nowrap text-left",
+    !showPanel && "overflow-x-auto overflow-y-auto"
+  );
+
   return (
-    <div className="flex h-full w-full grow-0 overflow-hidden text-nowrap rounded-lg border border-black-20-opacity">
+    <div className={containerStyle}>
       {hasFixedColumn && (
         <FixedTable
           ref={fixedTableRef}
@@ -194,13 +202,7 @@ export const Table = <TData,>({
         />
       )}
 
-      <div
-        ref={scrollableTableRef}
-        className={cn(
-          "flex h-full w-full overflow-hidden text-nowrap text-left",
-          !showPanel && "overflow-x-auto overflow-y-auto"
-        )}
-      >
+      <div ref={scrollableTableRef} className={normalTableStyle}>
         <div ref={containerRef}>
           <table
             className="table-fixed border-separate border-spacing-0"
