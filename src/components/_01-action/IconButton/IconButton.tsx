@@ -44,6 +44,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
       }
     };
 
+    // スタイルの設定
     const IconButtonStyle = cn(
       "flex relative justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all focus-visible:bg-black-5-opacity",
       size === "m"

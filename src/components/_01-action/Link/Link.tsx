@@ -5,11 +5,23 @@ interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
   className?: string;
   label: string;
+  disabled?: boolean;
 }
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, className, label, target, ...props }, ref) => {
+  ({ href, className, label, target, disabled, ...props }, ref) => {
     const isBlank = target === "_blank";
+
+    // スタイルの設定
+    const linkStyle = cn(
+      "m-1 inline-flex items-center text-base font-bold",
+
+      className,
+      {
+        "cursor-pointer  text-link visited:text-link-visited": !disabled,
+        "pointer-events-none text-black-20-opacity select-none": disabled,
+      }
+    );
 
     return (
       <a
@@ -17,10 +29,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         href={href}
         target={target}
         rel={isBlank ? "noopener noreferrer" : props.rel}
-        className={cn(
-          "m-1 inline-flex cursor-pointer items-center text-base font-bold text-link visited:text-link-visited",
-          className
-        )}
+        className={linkStyle}
+        aria-disabled={disabled}
         {...props}
       >
         <span className="mx-1 underline underline-offset-4">{label}</span>
