@@ -23,17 +23,6 @@ export const Tab: React.FC<TabProps> = ({
     setOpenTab(tabId);
   };
 
-  // スタイルの設定
-  const indexStyle = (id: string) => {
-    return cn(
-      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
-      {
-        "text-main font-bold border-b-4 border-main": openTab === id,
-        "text-black-sub": openTab !== id,
-      }
-    );
-  };
-
   // キーボードの操作
   const tabRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const handleOnKeyDown = (
@@ -53,6 +42,17 @@ export const Tab: React.FC<TabProps> = ({
       e.preventDefault();
       setOpenTab(tabs[idx].id);
     }
+  };
+
+  // スタイルの設定
+  const indexStyle = (id: string) => {
+    return cn(
+      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
+      {
+        "text-main font-bold border-b-4 border-main": openTab === id,
+        "text-black-sub": openTab !== id,
+      }
+    );
   };
 
   return (
