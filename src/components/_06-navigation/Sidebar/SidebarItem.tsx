@@ -21,9 +21,12 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   href,
 }) => {
   // スタイルの設定
-  const itemStyle = selected
-    ? "bg-main-bg hover:bg-main-bg text-main border-main border-l-4 pl-3 pr-4"
-    : "hover:bg-black-3-opacity text-black-sub focus-visible:bg-black-3-opacity px-4";
+  const itemStyle = cn(
+    "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-xl transition-all focus-visible:-outline-offset-1",
+    selected
+      ? "border-l-4 border-main bg-main-bg pl-3 pr-4 text-main hover:bg-main-bg"
+      : "px-4 text-black-sub hover:bg-black-3-opacity focus-visible:bg-black-3-opacity"
+  );
 
   return (
     <li className={cn(className, "list-none")}>
@@ -32,10 +35,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         href={href}
         role="menuitem"
         aria-selected={selected}
-        className={cn(
-          "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-xl transition-all focus-visible:-outline-offset-1",
-          itemStyle
-        )}
+        className={itemStyle}
         onClick={onClick}
       >
         {icon && (

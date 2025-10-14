@@ -21,6 +21,15 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   items = [],
   onClick = () => {},
 }) => {
+  // スタイルの設定
+  const arrowStyle = cn("m-1 flex select-none text-base text-black-20-opacity");
+  const labelStyle = (selected: boolean | undefined) => {
+    return cn("text-nowrap text-base", {
+      "pointer-events-none text-base font-medium text-black": selected,
+      "underline underline-offset-4": !selected,
+    });
+  };
+
   return (
     <nav id={id} className={className}>
       <div className="flex flex-wrap items-center">
@@ -30,7 +39,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
             className="flex items-center text-2xl text-black-sub"
           >
             {0 < index && (
-              <div className="m-1 flex select-none text-base text-black-20-opacity">
+              <div className={arrowStyle}>
                 <span className="material-symbols-rounded">
                   arrow_forward_ios
                 </span>
@@ -42,11 +51,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
               )}
               <a
                 href={item.href}
-                className={cn("text-nowrap text-base", {
-                  "pointer-events-none text-base font-medium text-black":
-                    item.selected,
-                  "underline underline-offset-4": !item.selected,
-                })}
+                className={labelStyle(item.selected)}
                 tabIndex={item.selected ? -1 : 0}
                 onClick={onClick}
               >

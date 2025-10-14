@@ -12,6 +12,7 @@ export const Stepper: React.FC<StepperProps> = ({
   className = "",
   steps,
 }) => {
+  // スタイルの設定
   const iconStyle = (status: string) => {
     return cn(
       "h-[20px] w-[20px] flex items-center justify-center text-xs mr-2 shrink-0",
@@ -30,7 +31,6 @@ export const Stepper: React.FC<StepperProps> = ({
       "text-black-sub font-regular": status === "completed",
     });
   };
-
   const separatorStyle = "h-[2px] flex-grow rounded-full bg-black-20-opacity";
 
   return (

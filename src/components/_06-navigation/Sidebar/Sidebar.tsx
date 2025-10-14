@@ -32,6 +32,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
+  // スタイルの設定
+  const containerStyle = cn(
+    "fixed left-0 top-0 z-50 block h-screen w-[240px] overflow-y-scroll bg-white shadow-high transition-all duration-300",
+    show ? "translate-x-0" : "-translate-x-full shadow-none"
+  );
+
   return (
     <>
       {type === "drawer" && (
@@ -43,12 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
       <nav id={id} className={className}>
-        <div
-          className={cn(
-            "fixed left-0 top-0 z-50 block h-screen w-[240px] overflow-y-scroll bg-white shadow-high transition-all duration-300",
-            show ? "translate-x-0" : "-translate-x-full shadow-none"
-          )}
-        >
+        <div className={containerStyle}>
           <div className="flex items-center">
             {headerItem && (
               <div className="m-4 w-full overflow-hidden">{headerItem}</div>
