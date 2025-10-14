@@ -1,15 +1,14 @@
 import * as React from "react";
+import { cn } from "../../../utils/cn";
 
 export const Spinner: React.FC<{ className?: string }> = ({ className }) => {
   // スタイルの設定
   const iconStyle =
-    "flex animate-spin items-center justify-center text-xl text-black-20-opacity";
+    "h-4 w-4 animate-spin rounded-full border-2 border-black-20-opacity border-r-transparent shrink-0";
 
   return (
-    <div className={className}>
-      <span className={iconStyle}>
-        <span className="material-symbols-rounded">progress_activity</span>
-      </span>
+    <div className={cn(className, "flex items-center justify-center")}>
+      <span className={iconStyle} aria-label="loading" />
     </div>
   );
 };
