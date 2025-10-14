@@ -42,22 +42,25 @@ export const Modal: React.FC<ModalProps> = ({
 
   if (!isOpen) return null;
 
+  // スタイルの設定
+  const confirmButtonStyle =
+    "sticky bottom-0 flex w-full justify-end space-x-4 rounded-b-lg border-t border-black-20-opacity bg-white p-4";
+  const panelStyle = cn(
+    "shadow-lg relative z-50 overflow-auto rounded-lg bg-white shadow-high",
+    isOpen ? "animate-fadeIn" : "animate-fadeOut",
+    className
+  );
+  const overlayStyle = cn(
+    "fixed inset-0 z-50 flex items-center justify-center bg-black-overlay transition-all duration-300",
+    isOpen ? "animate-fadeIn" : "animate-fadeOut"
+  );
+
   return (
-    <div
-      className={cn(
-        "fixed inset-0 z-50 flex items-center justify-center bg-black-overlay transition-all duration-300",
-        isOpen ? "animate-fadeIn" : "animate-fadeOut"
-      )}
-      onClick={handleOutsideClick}
-    >
+    <div className={overlayStyle} onClick={handleOutsideClick}>
       <div
         id={id}
         ref={modalRef}
-        className={cn(
-          "shadow-lg relative z-50 overflow-auto rounded-lg bg-white shadow-high",
-          isOpen ? "animate-fadeIn" : "animate-fadeOut",
-          className
-        )}
+        className={panelStyle}
         onClick={(e) => e.stopPropagation()}
       >
         <div>
@@ -76,9 +79,7 @@ export const Modal: React.FC<ModalProps> = ({
           <div id={id} className={className}></div>
         </div>
         {confirmButton && (
-          <div className="sticky bottom-0 flex w-full justify-end space-x-4 rounded-b-lg border-t border-black-20-opacity bg-white p-4">
-            {confirmButton}
-          </div>
+          <div className={confirmButtonStyle}>{confirmButton}</div>
         )}
       </div>
     </div>
