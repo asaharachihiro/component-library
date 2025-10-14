@@ -29,6 +29,17 @@ export const Tooltip: React.FC<TooltipProps> = ({
     whileElementsMounted: autoUpdate,
   });
 
+  // スタイルの設定
+  const baseStyle =
+    "group flex select-none items-center text-2xl text-black-sub";
+  const iconStyle = cn("material-symbols-rounded", "peer -ml-2");
+  const panelStyle = cn(
+    "z-100 text-nowrap rounded-md bg-white p-4 text-sm shadow-low peer-hover:animate-fadeIn",
+    isVisible
+      ? "pointer-events-auto opacity-100"
+      : "pointer-events-none animate-fadeOut opacity-0"
+  );
+
   return (
     <div
       id={id}
@@ -37,9 +48,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
       aria-describedby={`${id}-tooltip`}
       onMouseLeave={() => setIsVisible(false)}
     >
-      <div className="group flex select-none items-center text-2xl text-black-sub">
+      <div className={baseStyle}>
         <span
-          className={cn("material-symbols-rounded", "peer -ml-2")}
+          className={iconStyle}
           aria-hidden="true"
           onMouseEnter={() => setIsVisible(true)}
           ref={refs.setReference}
@@ -50,12 +61,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           info
         </span>
         <div
-          className={cn(
-            "z-100 text-nowrap rounded-md bg-white p-4 text-sm shadow-low peer-hover:animate-fadeIn",
-            isVisible
-              ? "pointer-events-auto opacity-100"
-              : "pointer-events-none animate-fadeOut opacity-0"
-          )}
+          className={panelStyle}
           style={floatingStyles}
           ref={refs.setFloating}
         >

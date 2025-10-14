@@ -45,6 +45,10 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
     whileElementsMounted: autoUpdate,
   });
 
+  //　スタイルの設定
+  const panelStyle =
+    "flex size-fit overflow-hidden rounded-lg bg-white shadow-low";
+
   return (
     <div id={id} className={cn("size-fit", className)} ref={MenuRef}>
       <IconButton
@@ -62,9 +66,7 @@ export const MeatballsMenu: React.FC<MeatballsMenuProps> = ({
       />
       {isOpen && (
         <div
-          className={cn(
-            "flex size-fit overflow-hidden rounded-lg bg-white shadow-low"
-          )}
+          className={panelStyle}
           style={floatingStyles}
           ref={(el) => {
             refs.setFloating(el);
