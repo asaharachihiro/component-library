@@ -20,16 +20,23 @@ export const Progressbar: React.FC<ProgressbarProps> = ({
     }
   }, [percentage]);
 
+  // スタイルの設定
+  const basebarStyle =
+    "flex h-1 w-full overflow-hidden rounded-full bg-main-bg";
+  const progressbarStyle =
+    "h-1 rounded-full bg-main transition-all duration-200";
+  const infiniteStyle = "h-1 w-[100%] animate-progress rounded-full bg-main";
+
   return (
     <div id={id} className={className}>
-      <div className="flex h-1 w-full overflow-hidden rounded-full bg-main-bg">
+      <div className={basebarStyle}>
         {typeof percentage === "number" ? (
           <div
-            className="h-1 rounded-full bg-main transition-all duration-200"
+            className={progressbarStyle}
             style={{ width: `${Math.max(0, Math.min(percentage, 100))}%` }}
           />
         ) : (
-          <div className="h-1 w-[100%] animate-progress rounded-full bg-main" />
+          <div className={infiniteStyle} />
         )}
       </div>
     </div>

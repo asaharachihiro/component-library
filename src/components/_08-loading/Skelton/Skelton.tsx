@@ -10,17 +10,21 @@ export const Skelton: React.FC<SkeltonProps> = ({
   className = "",
   rounded = "md",
 }) => {
+  // スタイルの設定
+  const skeltonStyle = cn("animate-shimmer h-full w-full bg-black-10-opacity", {
+    "rounded-md": rounded === "md" || !rounded,
+    "rounded-lg": rounded === "lg",
+    "rounded-full": rounded === "full",
+  });
+  const linearStyle =
+    "linear-gradient(90deg, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 75%)";
+
   return (
     <div className={cn(className, "overflow-hidden")}>
       <div
-        className={cn("animate-shimmer h-full w-full bg-black-10-opacity", {
-          "rounded-md": rounded === "md" || !rounded,
-          "rounded-lg": rounded === "lg",
-          "rounded-full": rounded === "full",
-        })}
+        className={skeltonStyle}
         style={{
-          backgroundImage:
-            "linear-gradient(90deg, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 75%)",
+          backgroundImage: linearStyle,
           backgroundSize: "200% 100%",
         }}
       />
