@@ -24,7 +24,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
   const itemStyle = cn(
     "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-xl transition-all focus-visible:-outline-offset-1",
     selected
-      ? "border-l-4 border-main bg-main-bg pl-3 pr-4 text-main hover:bg-main-bg"
+      ? "border-l-4 border-primary bg-primary-sub pl-3 pr-4 text-primary hover:bg-primary-sub"
       : "px-4 text-black-sub hover:bg-black-3-opacity focus-visible:bg-black-3-opacity"
   );
 

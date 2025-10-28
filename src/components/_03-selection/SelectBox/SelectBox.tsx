@@ -182,7 +182,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
     //スタイルの設定
     const listContainerStyle =
       "mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low";
-    const checkIconStyle = "mr-1 flex items-center text-lg text-main";
+    const checkIconStyle = "mr-1 flex items-center text-lg text-primary";
 
     return (
       <BaseSelectBox

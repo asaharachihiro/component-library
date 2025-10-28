@@ -81,7 +81,7 @@ export const ToggleSwitch = React.forwardRef<
       "flex shrink-0 items-center mt-1 h-7 w-[52px] rounded-full border-2 relative after:absolute after:content-[''] after:w-[16px] after:h-[16px] after:rounded-full  after:transition-transform after:duration-300",
       {
         "border-none after:bg-white after:translate-x-[28px]": toggle,
-        "bg-main": toggle && !disabled,
+        "bg-primary": toggle && !disabled,
         "bg-black": toggle && disabled,
         "after:translate-x-[4px] border-black after:bg-black": !toggle,
         "opacity-50": !toggle && !disabled,

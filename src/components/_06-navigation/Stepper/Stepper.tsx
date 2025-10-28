@@ -19,7 +19,7 @@ export const Stepper: React.FC<StepperProps> = ({
       {
         "text-black-sub border border-black-sub rounded-full":
           status === "incomplete",
-        "text-white bg-main rounded-full font-bold": status === "inprogress",
+        "text-white bg-primary rounded-full font-bold": status === "inprogress",
         "text-2xl text-black-sub": status === "completed",
       }
     );
@@ -27,7 +27,7 @@ export const Stepper: React.FC<StepperProps> = ({
   const labelStyle = (status: string) => {
     return cn("text-base", {
       "text-black-sub": status === "incomplete",
-      "text-main font-bold": status === "inprogress",
+      "text-primary font-bold": status === "inprogress",
       "text-black-sub font-regular": status === "completed",
     });
   };

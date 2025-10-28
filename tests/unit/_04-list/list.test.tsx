@@ -18,7 +18,7 @@ describe("List", () => {
     const btn = screen.getByRole("button");
     expect(li).toHaveAttribute("aria-selected", "true");
     expect(btn).toHaveAttribute("aria-selected", "true");
-    expect(btn.className).toContain("bg-main-bg");
+    expect(btn.className).toContain("bg-primary-sub");
   });
 
   it("selected=falseでliとbuttonのaria-selectedがfalseになる", () => {

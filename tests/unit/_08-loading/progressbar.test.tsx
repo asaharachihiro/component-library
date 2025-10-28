@@ -11,20 +11,20 @@ describe("Progressbar", () => {
 
   it("percentage指定時はwidthが正しく反映される", () => {
     render(<Progressbar percentage={75} />);
-    const bar = document.querySelector(".bg-main.transition-all");
+    const bar = document.querySelector(".bg-primary.transition-all");
     expect(bar).toBeTruthy();
     expect(bar).toHaveStyle({ width: "75%" });
   });
 
   it("percentageが0未満の場合はwidthが0%になる", () => {
     render(<Progressbar percentage={-10} />);
-    const bar = document.querySelector(".bg-main.transition-all");
+    const bar = document.querySelector(".bg-primary.transition-all");
     expect(bar).toHaveStyle({ width: "0%" });
   });
 
   it("percentageが100を超える場合はwidthが100%になる", () => {
     render(<Progressbar percentage={120} />);
-    const bar = document.querySelector(".bg-main.transition-all");
+    const bar = document.querySelector(".bg-primary.transition-all");
     expect(bar).toHaveStyle({ width: "100%" });
   });
 

@@ -43,7 +43,7 @@ const ContainedBaseButton = React.forwardRef<
     ref
   ) => {
     const ButtonStyle = cn(baseButtonStyle, size === "s" ? sizeS : sizeM, {
-      "bg-main text-white": !disabled && !isLoading && variant === "primary",
+      "bg-primary text-white": !disabled && !isLoading && variant === "primary",
       "bg-danger text-white": !disabled && !isLoading && variant === "danger",
       "bg-black-5-opacity text-black-20-opacity border-black-20-opacity pointer-events-none":
         disabled || isLoading,
@@ -86,12 +86,12 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const ButtonStyle = cn(baseButtonStyle, {
-      "border border-main text-main": !disabled && !isLoading,
+      "border border-primary text-primary": !disabled && !isLoading,
       [sizeS]: size === "s",
       [sizeM]: size !== "s",
       "text-black-20-opacity border-black-20-opacity pointer-events-none border":
         disabled || isLoading,
-      "bg-main-bg": !disabled && !isLoading && isActive,
+      "bg-primary-sub": !disabled && !isLoading && isActive,
     });
 
     return (
@@ -134,12 +134,12 @@ const TextBaseButton = React.forwardRef<
     ref
   ) => {
     const ButtonStyle = cn(baseButtonStyle, [sizeS], {
-      "text-main": variant === "textPrimary",
+      "text-primary": variant === "textPrimary",
       "text-black-sub": variant === "textSecondary",
       "text-danger": variant === "textDanger",
       "text-black-20-opacity border-black-20-opacity pointer-events-none":
         disabled || isLoading,
-      "bg-main-bg text-main":
+      "bg-primary-sub text-primary":
         !disabled && !isLoading && variant !== "textDanger" && isActive,
     });
 

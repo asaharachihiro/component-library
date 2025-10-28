@@ -69,9 +69,9 @@ describe("Calendar", () => {
     );
     expect(screen.getByText("1")).toBeInTheDocument();
     const input1 = screen.getByText("1");
-    expect(input1.className).toContain("bg-main");
+    expect(input1.className).toContain("bg-primary");
     const input2 = screen.getByText("2");
-    expect(input2.className).toContain("bg-main");
+    expect(input2.className).toContain("bg-primary");
   });
 
   it("setCurrentDateで月変更ができる", () => {

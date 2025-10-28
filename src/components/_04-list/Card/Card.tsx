@@ -61,7 +61,7 @@ export const Card: React.FC<CardProps> = ({
     "rounded-lg shadow-low transition-all hover:bg-black-3-opacity p-2",
     {
       "active:bg-black-10-opacity hover:bg-black-3-opacity": !selected,
-      "bg-main-bg hover:bg-main-bg": selected,
+      "bg-primary-sub hover:bg-primary-sub": selected,
       "cursor-pointer": onClick,
     }
   );

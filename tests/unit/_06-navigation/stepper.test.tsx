@@ -31,16 +31,16 @@ describe("Stepper", () => {
     expect(screen.getByText("check_circle")).toBeInTheDocument();
   });
 
-  it("inprogressステップは番号とbg-main, text-white, font-boldが付与される", () => {
+  it("inprogressステップは番号とbg-primary, text-white, font-boldが付与される", () => {
     render(<Stepper id="stepper4" steps={steps} />);
     const inprogressStep = screen.getByLabelText("ステップ 2: ステップ2");
     const icon = inprogressStep.querySelector("span");
-    expect(icon?.className).toContain("bg-main");
+    expect(icon?.className).toContain("bg-primary");
     expect(icon?.className).toContain("text-white");
     expect(icon?.className).toContain("font-bold");
     expect(icon?.textContent).toBe("2");
     const label = inprogressStep.querySelector("div");
-    expect(label?.className).toContain("text-main");
+    expect(label?.className).toContain("text-primary");
     expect(label?.className).toContain("font-bold");
   });
 

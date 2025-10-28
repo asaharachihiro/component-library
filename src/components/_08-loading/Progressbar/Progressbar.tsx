@@ -22,10 +22,10 @@ export const Progressbar: React.FC<ProgressbarProps> = ({
 
   // スタイルの設定
   const basebarStyle =
-    "flex h-1 w-full overflow-hidden rounded-full bg-main-bg";
+    "flex h-1 w-full overflow-hidden rounded-full bg-primary-sub";
   const progressbarStyle =
-    "h-1 rounded-full bg-main transition-all duration-200";
-  const infiniteStyle = "h-1 w-[100%] animate-progress rounded-full bg-main";
+    "h-1 rounded-full bg-primary transition-all duration-200";
+  const infiniteStyle = "h-1 w-[100%] animate-progress rounded-full bg-primary";
 
   return (
     <div id={id} className={className}>

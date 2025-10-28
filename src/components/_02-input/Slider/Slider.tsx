@@ -145,11 +145,11 @@ export const Slider: React.FC<SliderProps> = ({
 
   const inputBarStyle = cn(
     "h-full w-full rounded-l-md rounded-r-sm",
-    disabled ? "bg-black-20-opacity" : "bg-main"
+    disabled ? "bg-black-20-opacity" : "bg-primary"
   );
   const handleStyle = cn(
     "absolute top-1/2 h-4 w-[2px] -translate-y-1/2 cursor-pointer rounded-full",
-    disabled ? "pointer-events-none bg-black-sub" : "bg-main active:h-5"
+    disabled ? "pointer-events-none bg-black-sub" : "bg-primary active:h-5"
   );
 
   return (
@@ -194,7 +194,7 @@ export const Slider: React.FC<SliderProps> = ({
                 <div
                   className={cn(
                     "h-full w-full rounded-l-sm rounded-r-md",
-                    disabled ? "bg-black-5-opacity" : "bg-main-bg"
+                    disabled ? "bg-black-5-opacity" : "bg-primary-sub"
                   )}
                 />
               </div>

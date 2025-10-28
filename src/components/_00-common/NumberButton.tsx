@@ -36,8 +36,8 @@ export const NumberButton = React.forwardRef<
       "w-7 h-7 select-none rounded-full text-xs relative group",
       {
         "text-black-20-opacity pointer-events-none": disabled,
-        "border border-main text-main": isToday,
-        "bg-main text-white font-bold": selected,
+        "border border-primary text-primary": isToday,
+        "bg-primary text-white font-bold": selected,
         "text-black": !disabled && !isToday && !selected,
       }
     );

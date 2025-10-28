@@ -60,11 +60,15 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
           />
           <span className="material-symbols-rounded">
             {checked === "indeterminate" ? (
-              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
+              <span
+                className={cn("icon-fill", isNormalStyle && "text-primary")}
+              >
                 indeterminate_check_box
               </span>
             ) : checked ? (
-              <span className={cn("icon-fill", isNormalStyle && "text-main")}>
+              <span
+                className={cn("icon-fill", isNormalStyle && "text-primary")}
+              >
                 check_box
               </span>
             ) : (

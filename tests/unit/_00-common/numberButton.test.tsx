@@ -17,13 +17,13 @@ describe("NumberButton", () => {
   it("selectedのときselectedスタイルが適用される", () => {
     render(<NumberButton number={"9"} selected id={"9"} />);
     const btn = screen.getByRole("button");
-    expect(btn.className).toContain("bg-main");
+    expect(btn.className).toContain("bg-primary");
   });
 
   it("isToday=trueのときTodayスタイルが適用される", () => {
     render(<NumberButton number={"9"} isToday id={"9"} />);
     const btn = screen.getByRole("button");
-    expect(btn.className).toContain("border-main");
+    expect(btn.className).toContain("border-primary");
   });
 
   it("onClickイベントが発火する", () => {

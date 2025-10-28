@@ -10,9 +10,9 @@ module.exports = {
   safelist: [],
   theme: {
     colors: {
-      main: {
+      primary: {
         DEFAULT: "rgb(7, 72, 207, 1)",
-        bg: "rgb(7, 72, 207, 0.2)",
+        sub: "rgb(7, 72, 207, 0.2)",
       },
       black: {
         DEFAULT: "rgb(1, 30, 42, 1)",

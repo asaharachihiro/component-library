@@ -60,7 +60,7 @@ export const BaseSelectBox = React.forwardRef<
 
     //スタイルの設定
     const containerStyle =
-      "focus-visible:bordr-main group relative flex min-w-[40px] items-center truncate";
+      "focus-visible:bordr-primary group relative flex min-w-[40px] items-center truncate";
     const boxStyle = cn(
       "w-full cursor-pointer border bg-white flex items-center justify-between",
       {

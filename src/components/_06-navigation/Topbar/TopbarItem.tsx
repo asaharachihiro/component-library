@@ -24,7 +24,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
   const itemStyle = cn(
     "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 text-xl transition-all focus-visible:-outline-offset-1",
     selected
-      ? "bg-main-bg hover:bg-main-bg text-main border-main border-b-4 pt-4 pb-3"
+      ? "bg-primary-sub hover:bg-primary-sub text-primary border-primary border-b-4 pt-4 pb-3"
       : "hover:bg-black-3-opacity text-black-sub focus-visible:bg-black-3-opacity py-4"
   );
 

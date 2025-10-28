@@ -100,7 +100,7 @@ export const HeaderCell = <TData,>({
   // スタイルの設定
   const containerStyle = (isSorting: boolean) => {
     return cn(
-      isSorting && "font-bold text-main",
+      isSorting && "font-bold text-primary",
       "relative w-full overflow-visible border-b border-black-20-opacity bg-black-3-opacity"
     );
   };
@@ -108,8 +108,8 @@ export const HeaderCell = <TData,>({
     "inset-0 flex h-full w-full items-center p-4 transition-all hover:bg-black-5-opacity active:bg-black-10-opacity";
   const handleStyle = (isResizing: boolean) => {
     return cn(
-      "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-main-bg",
-      isResizing && "bg-main-bg"
+      "z-6 absolute right-0 top-0 inline-block h-full w-1 transform cursor-col-resize transition-all hover:bg-primary-sub",
+      isResizing && "bg-primary-sub"
     );
   };
 

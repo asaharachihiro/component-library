@@ -25,18 +25,18 @@ it("disabled のときボタンが無効化される", () => {
 it("variant='primary' で primary スタイルが適用される", () => {
   render(<Button label="primary" variant="primary" />);
   const btn = screen.getByRole("button");
-  expect(btn.className).toContain("bg-main");
+  expect(btn.className).toContain("bg-primary");
 });
 
 it("variant='secondary' で secondary スタイルが適用される", () => {
   render(<Button label="Secondary" variant="secondary" />);
   const btn = screen.getByRole("button");
-  expect(btn.className).toContain("border-main");
+  expect(btn.className).toContain("border-primary");
 });
 it("variant='textPrimary' で textPrimary スタイルが適用される", () => {
   render(<Button label="textPrimary" variant="textPrimary" />);
   const btn = screen.getByRole("button");
-  expect(btn.className).toContain("text-main");
+  expect(btn.className).toContain("text-primary");
 });
 it("variant='textSecondary' で textSecondary スタイルが適用される", () => {
   render(<Button label="textSecondary" variant="textSecondary" />);
@@ -63,7 +63,7 @@ it("size='s' で小さいサイズが適用される", () => {
 it("isActive のときスタイルが変化する", () => {
   render(<Button label="Active" variant="secondary" isActive />);
   const btn = screen.getByRole("button");
-  expect(btn.className).toContain("bg-main-bg");
+  expect(btn.className).toContain("bg-primary-sub");
 });
 
 it("type 属性が 'button' である", () => {

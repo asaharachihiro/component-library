@@ -31,7 +31,7 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
         "pointer-events-none text-black-20-opacity": disabled,
         "cursor-pointer hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity font-medium":
           !disabled && !selected,
-        "bg-main-bg text-main font-bold": !disabled && selected,
+        "bg-primary-sub text-primary font-bold": !disabled && selected,
       }
     );
 

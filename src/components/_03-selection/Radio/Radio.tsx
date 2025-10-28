@@ -150,7 +150,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
               >
                 <div className={iconStyle}>
                   <span className="material-symbols-rounded">
-                    <span className={cn(isSelected && "text-main")}>
+                    <span className={cn(isSelected && "text-primary")}>
                       {isSelected
                         ? "radio_button_checked"
                         : "radio_button_unchecked"}

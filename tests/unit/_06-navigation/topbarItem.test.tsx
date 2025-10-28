@@ -29,8 +29,8 @@ describe("TopbarItem", () => {
       <TopbarItem id="topbar4" href="/selected" label="選択中" selected />
     );
     const link = document.getElementById("topbar4");
-    expect(link?.className).toContain("bg-main-bg");
-    expect(link?.className).toContain("border-main");
+    expect(link?.className).toContain("bg-primary-sub");
+    expect(link?.className).toContain("border-primary");
     expect(link).toHaveAttribute("aria-selected", "true");
   });
 
