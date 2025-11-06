@@ -26,7 +26,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   const labelStyle = (selected: boolean | undefined) => {
     return cn("text-nowrap text-base", {
       "pointer-events-none text-base font-medium text-black": selected,
-      "underline underline-offset-4": !selected,
     });
   };
 

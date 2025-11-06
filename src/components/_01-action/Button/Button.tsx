@@ -157,11 +157,7 @@ const TextBaseButton = React.forwardRef<
             <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
-        <span
-          className={isLoading ? "opacity-0" : "underline underline-offset-4"}
-        >
-          {label}
-        </span>
+        <span className={cn(isLoading && "opacity-0")}>{label}</span>
       </button>
     );
   }
