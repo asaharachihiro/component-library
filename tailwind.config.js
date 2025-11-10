@@ -43,13 +43,37 @@ module.exports = {
       none: "0 0 rgb(0, 0, 0, 0)",
     },
     extend: {
-      fontSize: {
-        base: "16px",
+      fontFamily: {
+        sans: [
+          '"Noto Sans JP"',
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"Helvetica Neue"',
+          "Arial",
+          "sans-serif",
+        ],
       },
-      fontWeight: {
-        regular: 400,
-        medium: 500,
-        bold: 700,
+      fontSize: {
+        "dsp-56b-140": ["56px", { lineHeight: "140%", fontWeight: "700" }],
+        "dsp-48m-140": ["48px", { lineHeight: "140%", fontWeight: "500" }],
+
+        "hdl-40m-120": ["40px", { lineHeight: "120%", fontWeight: "500" }],
+        "hdl-32m-120": ["32px", { lineHeight: "120%", fontWeight: "500" }],
+
+        "ttl-28m-120": ["28px", { lineHeight: "120%", fontWeight: "500" }],
+        "ttl-24m-140": ["24px", { lineHeight: "140%", fontWeight: "500" }],
+        "ttl-20b-140": ["20px", { lineHeight: "140%", fontWeight: "700" }],
+        "ttl-18b-140": ["18px", { lineHeight: "140%", fontWeight: "700" }],
+
+        "bdy-18m-150": ["18px", { lineHeight: "150%", fontWeight: "500" }],
+        "bdy-16r-150": ["16px", { lineHeight: "150%", fontWeight: "400" }],
+        "bdy-14r-160": ["14px", { lineHeight: "160%", fontWeight: "400" }],
+
+        "lbl-16b-150": ["16px", { lineHeight: "150%", fontWeight: "700" }],
+        "lbl-14m-140": ["14px", { lineHeight: "140%", fontWeight: "500" }],
+        "lbl-12m-140": ["12px", { lineHeight: "140%", fontWeight: "500" }],
+        "lbl-10m-140": ["10px", { lineHeight: "140%", fontWeight: "500" }],
       },
       animation: {
         fadeIn: "fadeIn 0.3s ease-in-out",
