@@ -25,8 +25,8 @@ describe("InputBox", () => {
     expect(input).toBeDisabled();
   });
 
-  it("isValidがfalseのときborder-dangerクラスが適用される", () => {
-    render(<InputBox isValid={false} id={"input-invalid"} type={"text"} />);
+  it("isInvalidがtrueのときborder-dangerクラスが適用される", () => {
+    render(<InputBox isInvalid={true} id={"input-invalid"} type={"text"} />);
     const input = screen.getByRole("textbox");
     expect(input).toHaveClass("border-danger");
   });
