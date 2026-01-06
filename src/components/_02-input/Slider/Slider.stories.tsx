@@ -36,7 +36,7 @@ export const Default: Story = {
     value: 25,
     min: 0,
     max: 100,
-    isValid: true,
+    isInvalid: false,
     disabled: false,
   },
 };

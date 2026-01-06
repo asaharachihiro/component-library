@@ -14,7 +14,7 @@ interface SliderProps {
   value?: number;
   min?: number;
   max?: number;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   onChange?: (id: string, value: number) => void;
   onBlur?: (id: string, value: number) => void;
@@ -36,7 +36,7 @@ export const Slider: React.FC<SliderProps> = ({
   onChange,
   onBlur,
   onFocus,
-  isValid,
+  isInvalid,
   disabled = false,
   tooltip,
   ...props
@@ -48,8 +48,8 @@ export const Slider: React.FC<SliderProps> = ({
   const handleInputChange = context?.handleInputChange || (() => {});
 
   // バリデーション判定
-  const isValidStatus =
-    typeof isValid === "boolean" ? isValid : errors[id] == null;
+  const isInvalidStatus =
+    typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
   // 初期値の設定
   const initialValue =
@@ -217,7 +217,7 @@ export const Slider: React.FC<SliderProps> = ({
       {supportMessage && (
         <span className="text-xs text-black-sub">{supportMessage}</span>
       )}
-      {!isValidStatus && (
+      {isInvalidStatus && (
         <ErrorText
           text={errors[id] || errorMessage || "入力がエラーになっています。"}
         />
