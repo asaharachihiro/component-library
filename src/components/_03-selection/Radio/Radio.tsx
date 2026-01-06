@@ -7,7 +7,7 @@ interface RadioProps {
   id: string;
   className?: string;
   value?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   options: { label: string; value: string; children?: React.ReactNode }[];
   onChange?: (value: string) => void;
@@ -20,7 +20,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       id,
       className = "",
       value,
-      isValid,
+      isInvalid,
       disabled = false,
       onChange,
       options = [],
@@ -36,8 +36,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーションの判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     //　初期値の決定
     const initialValue =
@@ -125,7 +125,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         ref={ref}
         role="group"
         aria-labelledby={id}
-        aria-invalid={!isValidStatus}
+        aria-invalid={isInvalidStatus}
         aria-disabled={disabled}
         className={className}
         {...props}
@@ -166,7 +166,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             );
           })}
         </div>
-        {!isValidStatus && (
+        {isInvalidStatus && (
           <ErrorText
             className="mt-1"
             text={errors[id] || errorMessage || "入力がエラーになっています。"}

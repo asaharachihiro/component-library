@@ -53,7 +53,7 @@ describe("Radio", () => {
         id="r6"
         errorMessage="エラーです"
         options={options}
-        isValid={false}
+        isInvalid={true}
       />
     );
     expect(screen.getByText("エラーです")).toBeInTheDocument();
