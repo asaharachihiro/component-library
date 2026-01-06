@@ -12,7 +12,7 @@ interface PasswordBoxProps {
   supportMessage?: string;
   errorMessage?: string;
   value?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
@@ -34,7 +34,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
       onChange,
       onBlur,
       onFocus,
-      isValid,
+      isInvalid,
       disabled = false,
       tooltip,
       ...props
@@ -50,8 +50,8 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーション判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     // 初期値の設定
     const initialValue =
@@ -105,7 +105,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
             id={id}
             value={inputValue}
             type={showPassword ? "text" : "password"}
-            isValid={isValidStatus}
+            isInvalid={isInvalidStatus}
             disabled={disabled}
             onChange={(e) => handleChange(e.target.value)}
             onBlur={onBlur}
@@ -127,7 +127,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValidStatus && (
+        {isInvalidStatus && (
           <ErrorText
             text={errors[id] || errorMessage || "入力がエラーになっています。"}
           />
