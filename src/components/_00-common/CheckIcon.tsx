@@ -6,7 +6,7 @@ interface CheckIconProps {
   className?: string;
   checked?: boolean | "indeterminate";
   disabled?: boolean;
-  isValid?: boolean;
+  isInvalid?: boolean;
   children?: React.ReactNode;
   onChange?: (checked: boolean | "indeterminate") => void;
 }
@@ -20,18 +20,18 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
       checked = false,
       onChange,
       disabled = false,
-      isValid = true,
+      isInvalid = false,
       ...props
     },
     ref
   ) => {
     // スタイル設定
-    const isNormalStyle = !disabled && isValid;
+    const isNormalStyle = !disabled && !isInvalid;
     const checkBoxtyle = cn(
       "flex h-7 w-7 select-none items-center justify-center rounded-md text-xl hover:bg-black-5-opacity active:bg-black-10-opacity",
       {
         "text-black-20-opacity pointer-events-none": disabled,
-        "text-danger": !disabled && !isValid,
+        "text-danger": !disabled && isInvalid,
       }
     );
 
@@ -45,7 +45,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
             aria-checked={checked === "indeterminate" ? "mixed" : !!checked}
             aria-disabled={disabled}
             data-checked={checked ? "true" : "false"}
-            aria-invalid={!isValid}
+            aria-invalid={isInvalid}
             onChange={
               disabled
                 ? undefined

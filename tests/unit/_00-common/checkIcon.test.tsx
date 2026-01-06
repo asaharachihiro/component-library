@@ -24,8 +24,8 @@ describe("CheckIcon", () => {
     expect(input).toBeDisabled();
   });
 
-  it("isValid=false のとき aria-invalid が true になる", () => {
-    render(<CheckIcon id="test" isValid={false} />);
+  it("isInvalid=true のとき aria-invalid が true になる", () => {
+    render(<CheckIcon id="test" isInvalid={true} />);
     const input = screen.getByRole("checkbox");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
