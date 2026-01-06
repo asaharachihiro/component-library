@@ -16,7 +16,7 @@ interface DateRangeProps {
   value?: DateRangeValue;
   isJPLocale?: boolean;
   className?: string;
-  isValidValue?: boolean;
+  isInvalid?: boolean;
   isRequired?: {
     start?: boolean;
     end?: boolean;
@@ -39,7 +39,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
   id,
   label,
   value,
-  isValidValue,
+  isInvalid,
   className,
   supportMessage,
   errorMessage,
@@ -91,8 +91,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
   const [selectedDates, setSelectedDates] = React.useState<Date[]>([]);
 
   // バリデーション判定
-  const isValidStatus =
-    typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
+  const isInvalidStatus =
+    typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
   // 初期値の逆転を修正
   React.useEffect(() => {
@@ -192,7 +192,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
           disabled={disabled?.start}
           label={label}
           isJPLocale={isJPLocale}
-          isValidValue={isValidStatus}
+          isInvalid={isInvalidStatus}
           isStartOnMonday={isStartOnMonday}
           getCalendar={getCalendar}
           tooltip={tooltip}
@@ -212,7 +212,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
           isRequired={isRequired?.end}
           disabled={disabled?.end}
           isJPLocale={isJPLocale}
-          isValidValue={isValidStatus}
+          isInvalid={isInvalidStatus}
           isStartOnMonday={isStartOnMonday}
           getCalendar={getCalendar}
         />
@@ -221,7 +221,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValidStatus && (
+        {isInvalidStatus && (
           <ErrorText
             text={errors[id] || errorMessage || "入力がエラーになっています。"}
           />

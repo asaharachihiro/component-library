@@ -70,7 +70,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
     // バリデーション判定
     const isInvalidStatus =
-      typeof isInvalid === "boolean" ? isInvalid : errors[id] == null;
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
     const [showCalendar, setShowCalendar] = React.useState(false);
 
     // 初期値の設定
