@@ -9,7 +9,7 @@ interface ToggleSwitchProps {
   label?: string;
   checked?: boolean;
   disabled?: boolean;
-  isValid?: boolean;
+  isInvalid?: boolean;
   onChange?: (checked: boolean) => void;
   errorMessage?: string;
 }
@@ -26,7 +26,7 @@ export const ToggleSwitch = React.forwardRef<
       checked,
       onChange,
       disabled = false,
-      isValid,
+      isInvalid,
       errorMessage,
       ...props
     },
@@ -39,8 +39,8 @@ export const ToggleSwitch = React.forwardRef<
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーションの判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     // 初期値の設定
     const initialChecked =
@@ -126,7 +126,7 @@ export const ToggleSwitch = React.forwardRef<
           />
           <div className={switchStyle} />
         </label>
-        {!isValidStatus && (
+        {isInvalidStatus && (
           <ErrorText
             className="mt-1"
             text={errors[id] || errorMessage || "入力がエラーになっています。"}
