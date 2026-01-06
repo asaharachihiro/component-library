@@ -24,7 +24,7 @@ interface DatePickerProps {
   isRequired?: boolean;
   value?: string;
   selectedDates?: Date[];
-  isValidValue?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   isJPLocale?: boolean;
   isStartOnMonday?: boolean;
@@ -46,7 +46,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       className,
       value,
       selectedDates = [],
-      isValidValue,
+      isInvalid,
       isRequired = false,
       disabled = false,
       isJPLocale = false,
@@ -69,8 +69,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーション判定
-    const isValidStatus =
-      typeof isValidValue === "boolean" ? isValidValue : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] == null;
     const [showCalendar, setShowCalendar] = React.useState(false);
 
     // 初期値の設定
@@ -199,7 +199,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <InputBox
             id={id}
             value={inputStr}
-            isValid={isValidStatus}
+            isInvalid={isInvalidStatus}
             disabled={disabled}
             type="text"
             aria-haspopup="dialog"
@@ -248,7 +248,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           {supportMessage && (
             <span className="text-xs text-black-sub">{supportMessage}</span>
           )}
-          {!hasRange && !isValidStatus && (
+          {!hasRange && isInvalidStatus && (
             <ErrorText
               text={
                 errors[id] || errorMessage || "入力がエラーになっています。"
