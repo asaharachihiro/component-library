@@ -14,7 +14,7 @@ describe("DateRange", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<DateRange id="dr3" errorMessage="エラー" isValidValue={false} />);
+    render(<DateRange id="dr3" errorMessage="エラー" isInvalid={true} />);
     expect(screen.getByText("エラー")).toBeInTheDocument();
   });
 

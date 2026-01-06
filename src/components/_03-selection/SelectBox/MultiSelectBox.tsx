@@ -13,7 +13,7 @@ interface MultiSelectBoxProps {
   values?: { value: string; label: string }[];
   label?: string;
   isRequired?: boolean;
-  isValid?: boolean;
+  isInvalid?: boolean;
   size?: "s" | "m";
   supportMessage?: string;
   errorMessage?: string;
@@ -39,7 +39,7 @@ export const MultiSelectBox = React.forwardRef<
       placeholder = "未選択",
       values = [],
       isRequired = false,
-      isValid,
+      isInvalid,
       onChange,
       supportMessage,
       errorMessage,
@@ -56,8 +56,8 @@ export const MultiSelectBox = React.forwardRef<
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーションの判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     //　初期値の設定
     const initialSelected =
@@ -172,7 +172,7 @@ export const MultiSelectBox = React.forwardRef<
         id={id}
         label={label}
         isRequired={isRequired}
-        isValid={isValidStatus}
+        isInvalid={isInvalidStatus}
         supportMessage={supportMessage}
         errorMessage={
           errors[id] || errorMessage || "入力がエラーになっています。"

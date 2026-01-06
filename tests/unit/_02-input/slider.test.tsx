@@ -19,7 +19,7 @@ describe("Slider", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<Slider id="slider4" errorMessage="エラーです" isValid={false} />);
+    render(<Slider id="slider4" errorMessage="エラーです" isInvalid={true} />);
     expect(screen.getByText("エラーです")).toBeInTheDocument();
   });
 

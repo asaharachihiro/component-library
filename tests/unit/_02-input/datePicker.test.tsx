@@ -33,11 +33,7 @@ describe("DatePicker", () => {
 
   it("errorMessageが表示される", () => {
     render(
-      <DatePicker
-        id="dp3"
-        errorMessage="エラーメッセージ"
-        isValidValue={false}
-      />
+      <DatePicker id="dp3" errorMessage="エラーメッセージ" isInvalid={true} />
     );
     expect(screen.getByText("エラーメッセージ")).toBeInTheDocument();
   });
@@ -89,12 +85,7 @@ describe("DatePicker", () => {
 
   it("hasRange=trueでもエラーが表示されない", () => {
     render(
-      <DatePicker
-        id="dp14"
-        errorMessage="エラー"
-        hasRange
-        isValidValue={false}
-      />
+      <DatePicker id="dp14" errorMessage="エラー" hasRange isInvalid={true} />
     );
     expect(screen.queryByText("エラー")).not.toBeInTheDocument();
   });

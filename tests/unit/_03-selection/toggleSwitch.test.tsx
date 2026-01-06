@@ -39,7 +39,9 @@ describe("ToggleSwitch", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<ToggleSwitch id="ts6" errorMessage="エラーです" isValid={false} />);
+    render(
+      <ToggleSwitch id="ts6" errorMessage="エラーです" isInvalid={true} />
+    );
     expect(screen.getByText("エラーです")).toBeInTheDocument();
   });
 });

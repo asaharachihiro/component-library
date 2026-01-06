@@ -8,7 +8,7 @@ export const Spinner: React.FC<{ className?: string }> = ({ className }) => {
 
   return (
     <div className={cn(className, "flex items-center justify-center")}>
-      <span className={iconStyle} aria-label="loading" />
+      <span className={iconStyle} aria-label="loading" data-testid="spinner" />
     </div>
   );
 };

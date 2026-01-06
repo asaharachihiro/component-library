@@ -8,7 +8,7 @@ interface SearchBoxProps {
   className?: string;
   placeholder?: string;
   value?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
@@ -32,7 +32,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
       supportMessage,
       errorMessage,
       disabled = false,
-      isValid = true,
+      isInvalid = false,
       ...props
     },
     ref
@@ -44,8 +44,8 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーション判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     // 初期値の設定
     const initialValue =
@@ -79,7 +79,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
     // スタイルの設定
     const ButtonStyle = cn(
       "flex w-[42px] h-[42px] min-w-[42px] items-center justify-center rounded-lg rounded-l-none border border-l-0  text-xl  text-black-sub transition-all",
-      isValidStatus ? "border-black-20-opacity" : "border-danger",
+      isInvalidStatus ? "border-danger" : "border-black-20-opacity",
       disabled
         ? "text-black-20-opacity bg-black-3-opacity pointer-events-none"
         : "hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity"
@@ -94,7 +94,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
             value={inputValue}
             onChange={(e) => handleChange(e.target.value)}
             onBlur={onBlur}
-            isValid={isValidStatus}
+            isInvalid={isInvalidStatus}
             disabled={disabled}
             onFocus={onFocus}
             className="rounded-r-none"
@@ -118,7 +118,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
           {supportMessage && (
             <span className="text-xs text-black-sub">{supportMessage}</span>
           )}
-          {!isValidStatus && (
+          {isInvalidStatus && (
             <ErrorText
               text={
                 errors[id] || errorMessage || "入力がエラーになっています。"

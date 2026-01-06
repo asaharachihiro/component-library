@@ -17,7 +17,7 @@ interface CheckboxProps {
   options: CheckboxOption[];
   onChange?: (checkedIds: string[]) => void;
   errorMessage?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   tooltip?: React.ReactNode;
   isRequired?: boolean;
 }
@@ -26,7 +26,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   id,
   className,
   label,
-  isValid,
+  isInvalid,
   options = [],
   onChange,
   errorMessage,
@@ -42,8 +42,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   const handleInputChange = context?.handleInputChange || (() => {});
 
   // バリデーションの判定
-  const isValidStatus =
-    typeof isValid === "boolean" ? isValid : errors[id] == null;
+  const isInvalidStatus =
+    typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
   // 初期値の設定
   const initialChecked: string[] = options
@@ -134,7 +134,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             data-testid="check-icon"
             checked={checkedIds.includes(option.id)}
             disabled={option.disabled}
-            isValid={isValidStatus && !option.disabled}
+            isInvalid={isInvalidStatus || option.disabled}
             onChange={(checked) => handleChange(option.id, checked)}
           />
           <span className="ml-2">{option.label}</span>

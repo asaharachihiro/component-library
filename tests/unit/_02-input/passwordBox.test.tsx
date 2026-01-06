@@ -20,7 +20,7 @@ describe("PasswordBox", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<PasswordBox id="pw4" errorMessage="エラーです" isValid={false} />);
+    render(<PasswordBox id="pw4" errorMessage="エラーです" isInvalid={true} />);
     expect(screen.getByText("エラーです")).toBeInTheDocument();
   });
 

@@ -51,7 +51,7 @@ describe("SearchBox", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<SearchBox id="sb8" errorMessage="エラーです" isValid={false} />);
+    render(<SearchBox id="sb8" errorMessage="エラーです" isInvalid={true} />);
     expect(screen.getByText("エラーです")).toBeInTheDocument();
   });
 

@@ -23,7 +23,7 @@ export const Default: Story = {
     id: "date-range",
     label: "対象期間",
     className: "w-[400px]",
-    isValidValue: false,
+    isInvalid: true,
     isRequired: { start: false, end: false },
     supportMessage: "指定できる日数は最大30日間です。",
     errorMessage: "選択できない日付が含まれています。",

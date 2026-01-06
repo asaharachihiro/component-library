@@ -20,7 +20,7 @@ describe("TextBox", () => {
   });
 
   it("errorMessageが表示される", () => {
-    render(<TextBox id="tb4" errorMessage="エラーです" isValid={false} />);
+    render(<TextBox id="tb4" errorMessage="エラーです" isInvalid={true} />);
     expect(screen.getByText("エラーです")).toBeInTheDocument();
   });
 

@@ -7,7 +7,7 @@ interface InputBoxProps {
   className?: string;
   placeholder?: string;
   value?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   asTextArea?: boolean;
   onChange?: (
@@ -28,7 +28,7 @@ export const InputBox = React.forwardRef<
       className = "",
       placeholder,
       value = "",
-      isValid = true,
+      isInvalid = false,
       disabled = false,
       asTextArea = false,
       autoComplete,
@@ -44,9 +44,9 @@ export const InputBox = React.forwardRef<
     const inputStyle = cn("w-full min-w-[40px] rounded-lg border p-2", {
       "border-black-20-opacity text-black-sub pointer-events-none bg-black-3-opacity":
         disabled,
-      "border-danger": !disabled && !isValid,
+      "border-danger": !disabled && isInvalid,
       "border-black-20-opacity focus:border-black-sub text-black":
-        !disabled && isValid,
+        !disabled && !isInvalid,
     });
 
     return (
@@ -65,7 +65,7 @@ export const InputBox = React.forwardRef<
         className={cn(inputStyle, className)}
         autoComplete={autoComplete}
         aria-disabled={disabled}
-        aria-invalid={!isValid}
+        aria-invalid={isInvalid}
         tabIndex={0}
         {...(asTextArea ? { rows: 4 } : {})}
         {...props}
