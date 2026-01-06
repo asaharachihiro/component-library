@@ -14,7 +14,7 @@ interface BaseSelectBoxProps {
   label?: string;
   isRequired?: boolean;
   className?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   placeholder?: string;
   supportMessage?: string;
   errorMessage?: string;
@@ -37,7 +37,7 @@ export const BaseSelectBox = React.forwardRef<
       label,
       className = "",
       isRequired = false,
-      isValid,
+      isInvalid,
       placeholder = "未選択",
       supportMessage,
       errorMessage,
@@ -67,8 +67,8 @@ export const BaseSelectBox = React.forwardRef<
         "group-hover:bg-black-5-opacity cursor-pointer group": !disabled,
         "text-black-sub pointer-events-none bg-black-3-opacity border-black-20-opacity":
           disabled,
-        "border-danger": !disabled && !isValid,
-        "border-black-20-opacity": !disabled && isValid,
+        "border-danger": !disabled && isInvalid,
+        "border-black-20-opacity": !disabled && !isInvalid,
         "text-sm p-1 pl-2 rounded-md border-transparent": size === "s",
         "rounded-lg p-2": size !== "s",
       }
@@ -108,7 +108,7 @@ export const BaseSelectBox = React.forwardRef<
             aria-haspopup="listbox"
             aria-disabled={disabled}
             aria-describedby={supportMessage}
-            aria-invalid={!isValid}
+            aria-invalid={isInvalid}
             aria-errormessage={errorMessage}
             disabled={disabled}
             readOnly
@@ -138,7 +138,7 @@ export const BaseSelectBox = React.forwardRef<
         {supportMessage && (
           <span className="text-xs text-black-sub">{supportMessage}</span>
         )}
-        {!isValid && (
+        {isInvalid && (
           <ErrorText text={errorMessage || "入力がエラーになっています。"} />
         )}
       </div>

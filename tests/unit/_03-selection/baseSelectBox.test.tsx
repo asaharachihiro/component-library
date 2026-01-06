@@ -41,7 +41,7 @@ describe("BaseSelectBox", () => {
       <BaseSelectBox
         id="bsb7"
         errorMessage="エラーです"
-        isValid={false}
+        isInvalid={true}
         children={null}
       />
     );
