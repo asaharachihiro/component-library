@@ -13,7 +13,7 @@ interface TextBoxProps {
   supportMessage?: string;
   errorMessage?: string;
   value?: string;
-  isValid?: boolean;
+  isInvalid?: boolean;
   disabled?: boolean;
   onChange?: (id: string, value: string) => void;
   onBlur?: (id: string, value: string) => void;
@@ -38,7 +38,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
       onChange,
       onBlur,
       onFocus,
-      isValid,
+      isInvalid,
       disabled = false,
       tooltip,
       currency,
@@ -54,8 +54,8 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーションの判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     // 金額のフォーマット関数
     const formatJpy = (val: string) => {
@@ -139,7 +139,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
           id={id}
           value={displayValue}
           type={type}
-          isValid={isValidStatus}
+          isInvalid={isInvalidStatus}
           disabled={disabled}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={handleBlur}
@@ -153,7 +153,7 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
           {supportMessage && (
             <span className="text-xs text-black-sub">{supportMessage}</span>
           )}
-          {!isValidStatus && (
+          {isInvalidStatus && (
             <ErrorText
               text={
                 errors[id] || errorMessage || "入力がエラーになっています。"

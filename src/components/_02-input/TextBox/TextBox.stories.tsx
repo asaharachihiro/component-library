@@ -20,7 +20,7 @@ type Story = StoryObj<typeof TextBox>;
 export const Default: Story = {
   args: {
     label: "ユーザー名",
-    isValid: true,
+    isInvalid: false,
     disabled: false,
     placeholder: "山田 太郎",
     isRequired: true,
@@ -30,7 +30,7 @@ export const Default: Story = {
   argTypes: {
     label: { control: "text" },
     value: { control: "text" },
-    isValid: { control: "boolean" },
+    isInvalid: { control: "boolean" },
     disabled: { control: "boolean" },
     placeholder: { control: "text" },
     isRequired: { control: "boolean" },
