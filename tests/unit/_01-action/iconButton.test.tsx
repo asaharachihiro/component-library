@@ -36,7 +36,7 @@ it("checkedの場合、アイコンの色が変わる", () => {
 
 it("isLoadingのとき、スピナーが表示される", () => {
   render(<IconButton icon="sync" aria-label="同期" isLoading />);
-  expect(screen.getByText("progress_activity")).toBeInTheDocument();
+  expect(screen.getByTestId("spinner")).toBeInTheDocument();
 });
 
 it("size='s'で小さいサイズが適用される", () => {

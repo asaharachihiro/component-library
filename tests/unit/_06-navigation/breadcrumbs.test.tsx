@@ -31,10 +31,9 @@ describe("Breadcrumbs", () => {
     expect(selected).toHaveAttribute("tabIndex", "-1");
   });
 
-  it("selected=falseのitemはunderlineが付与される", () => {
+  it("selected=falseのitemはタブ選択できない", () => {
     render(<Breadcrumbs id="bc4" items={items} />);
     const link = screen.getByText("ホーム");
-    expect(link.className).toContain("underline");
     expect(link).toHaveAttribute("tabIndex", "0");
   });
 

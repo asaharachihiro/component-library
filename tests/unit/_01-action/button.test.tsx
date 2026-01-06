@@ -14,7 +14,7 @@ it("icon が表示される", () => {
 
 it("isLoading のとき Spinner が表示される", () => {
   render(<Button label="Loading" isLoading variant="primary" />);
-  expect(screen.getByText("progress_activity")).toBeInTheDocument();
+  expect(screen.getByTestId("spinner")).toBeInTheDocument();
 });
 
 it("disabled のときボタンが無効化される", () => {
