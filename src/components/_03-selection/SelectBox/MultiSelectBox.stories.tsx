@@ -31,7 +31,7 @@ export const Default: Story = {
     label: "応募地域",
     placeholder: "未選択",
     isRequired: false,
-    isValid: true,
+    isInvalid: false,
     options: [
       { value: "1", label: "東京都" },
       { value: "2", label: "神奈川県" },

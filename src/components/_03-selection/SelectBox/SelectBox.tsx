@@ -13,7 +13,7 @@ interface SelectBoxProps {
   value?: string;
   label?: string;
   isRequired?: boolean;
-  isValid?: boolean;
+  isInvalid?: boolean;
   size?: "s" | "m";
   supportMessage?: string;
   errorMessage?: string;
@@ -34,7 +34,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
       placeholder = "未選択",
       value,
       isRequired = false,
-      isValid,
+      isInvalid,
       size = "m",
       onChange,
       supportMessage,
@@ -53,8 +53,8 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
     const handleInputChange = context?.handleInputChange || (() => {});
 
     // バリデーションの判定
-    const isValidStatus =
-      typeof isValid === "boolean" ? isValid : errors[id] == null;
+    const isInvalidStatus =
+      typeof isInvalid === "boolean" ? isInvalid : errors[id] != null;
 
     // 初期値の設定
     const initialValue =
@@ -191,7 +191,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
         id={id}
         label={label}
         isRequired={isRequired}
-        isValid={isValidStatus}
+        isInvalid={isInvalidStatus}
         supportMessage={supportMessage}
         errorMessage={
           errors[id] || errorMessage || "入力がエラーになっています。"
