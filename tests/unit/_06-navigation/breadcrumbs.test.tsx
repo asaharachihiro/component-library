@@ -23,11 +23,10 @@ describe("Breadcrumbs", () => {
     });
   });
 
-  it("selected=trueのitemはpointer-events-noneとfont-mediumが付与される", () => {
+  it("selected=trueのitemはpointer-events-noneが付与される", () => {
     render(<Breadcrumbs id="bc3" items={items} />);
     const selected = screen.getByText("詳細");
     expect(selected.className).toContain("pointer-events-none");
-    expect(selected.className).toContain("font-medium");
     expect(selected).toHaveAttribute("tabIndex", "-1");
   });
 

@@ -15,20 +15,19 @@ export const Stepper: React.FC<StepperProps> = ({
   // スタイルの設定
   const iconStyle = (status: string) => {
     return cn(
-      "h-[20px] w-[20px] flex items-center justify-center text-xs mr-2 shrink-0",
+      "h-[20px] w-[20px] flex items-center justify-center text-label-sm mr-2 shrink-0",
       {
         "text-black-sub border border-black-sub rounded-full":
           status === "incomplete",
-        "text-white bg-primary rounded-full font-bold": status === "inprogress",
+        "text-white bg-primary rounded-full": status === "inprogress",
         "text-2xl text-black-sub": status === "completed",
       }
     );
   };
   const labelStyle = (status: string) => {
-    return cn("text-base", {
-      "text-black-sub": status === "incomplete",
+    return cn("text-label-lg", {
+      "text-black-sub": status === "incomplete" || status === "completed",
       "text-primary font-bold": status === "inprogress",
-      "text-black-sub font-regular": status === "completed",
     });
   };
   const separatorStyle = "h-[2px] flex-grow rounded-full bg-black-20-opacity";

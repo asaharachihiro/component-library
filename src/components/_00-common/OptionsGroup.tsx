@@ -41,12 +41,12 @@ export const OptionsGroup = React.forwardRef<
     );
 
     return (
-      <div className={cn("", className)} {...props} ref={ref}>
+      <div className={cn("font-sans", className)} {...props} ref={ref}>
         {label && (
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
         {supportText && (
-          <span className="text-xs text-black-sub">{supportText}</span>
+          <span className="text-label-sm text-black-sub">{supportText}</span>
         )}
         {errorText && <ErrorText text={errorText} />}
         <div className={ordarStyle}>{children}</div>

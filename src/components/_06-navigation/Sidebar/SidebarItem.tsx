@@ -22,7 +22,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
 }) => {
   // スタイルの設定
   const itemStyle = cn(
-    "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-xl transition-all focus-visible:-outline-offset-1",
+    "flex h-[56px] w-full cursor-pointer items-center space-x-2 text-title-sm transition-all focus-visible:-outline-offset-1",
     selected
       ? "border-l-4 border-primary bg-primary-sub pl-3 pr-4 text-primary hover:bg-primary-sub"
       : "px-4 text-black-sub hover:bg-black-3-opacity focus-visible:bg-black-3-opacity"
@@ -41,9 +41,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         {icon && (
           <span className="material-symbols-rounded select-none">{icon}</span>
         )}
-        {label && (
-          <span className="text-nowrap text-lg font-medium"> {label}</span>
-        )}
+        {label && <span className="text-body-lg text-nowrap"> {label}</span>}
       </a>
     </li>
   );

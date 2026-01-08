@@ -151,7 +151,9 @@ export const TextBox = React.forwardRef<HTMLInputElement, TextBoxProps>(
         />
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
           {supportMessage && (
-            <span className="text-xs text-black-sub">{supportMessage}</span>
+            <span className="text-label-sm text-black-sub">
+              {supportMessage}
+            </span>
           )}
           {isInvalidStatus && (
             <ErrorText

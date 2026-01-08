@@ -162,7 +162,7 @@ export const MultiSelectBox = React.forwardRef<
 
     //スタイルの設定
     const selectedItemsStyle =
-      "flex items-center text-nowrap rounded-md bg-primary-sub pl-2 text-xs";
+      "flex items-center text-nowrap rounded-md bg-primary-sub pl-2 text-label-sm";
     const listContainerStyle =
       "mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low";
 

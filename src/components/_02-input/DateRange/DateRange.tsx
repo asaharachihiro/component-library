@@ -198,7 +198,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
           tooltip={tooltip}
         />
 
-        <span className="mx-2 flex h-10 grow-0 items-center text-xs text-black-sub">
+        <span className="text-label-sm mx-2 flex h-10 grow-0 items-center text-black-sub">
           〜
         </span>
         <DatePicker
@@ -219,7 +219,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
       </div>
       <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
         {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
+          <span className="text-label-sm text-black-sub">{supportMessage}</span>
         )}
         {isInvalidStatus && (
           <ErrorText

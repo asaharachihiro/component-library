@@ -19,9 +19,9 @@ export interface ButtonProps
 }
 
 const baseButtonStyle =
-  "flex items-center justify-center font-bold cursor-pointer relative overflow-hidden group shrink-0 text-nowrap";
-const sizeS = "h-7 px-2 text-sm rounded-md min-w-12";
-const sizeM = "h-9 px-6 text-base rounded-lg";
+  "flex items-center justify-center cursor-pointer relative overflow-hidden group shrink-0 text-nowrap";
+const sizeS = "h-7 px-2 text-label-md rounded-md min-w-12";
+const sizeM = "h-9 px-6 text-label-lg rounded-lg";
 
 // primary, danger
 const ContainedBaseButton = React.forwardRef<
@@ -59,7 +59,12 @@ const ContainedBaseButton = React.forwardRef<
         <div className="absolute bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
+          <div
+            className={cn(
+              "text-title-sm",
+              isLoading ? "opacity-0" : "mr-1 flex"
+            )}
+          >
             <span className={"material-symbols-rounded"}>{icon}</span>
           </div>
         )}
@@ -104,7 +109,12 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
+          <div
+            className={cn(
+              "text-title-sm",
+              isLoading ? "opacity-0" : "mr-1 flex"
+            )}
+          >
             <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}
@@ -153,7 +163,12 @@ const TextBaseButton = React.forwardRef<
         <div className="absolute inset-0 bg-black opacity-0 transition-all group-hover:opacity-5 group-focus-visible:opacity-5 group-active:opacity-10" />
         {isLoading && <Spinner className="absolute flex" />}
         {icon && (
-          <div className={cn("text-xl", isLoading ? "opacity-0" : "mr-1 flex")}>
+          <div
+            className={cn(
+              "text-title-sm",
+              isLoading ? "opacity-0" : "mr-1 flex"
+            )}
+          >
             <span className="material-symbols-rounded">{icon}</span>
           </div>
         )}

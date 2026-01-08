@@ -47,10 +47,10 @@ export const Tab: React.FC<TabProps> = ({
   // スタイルの設定
   const indexStyle = (id: string) => {
     return cn(
-      "px-8 py-2 text-base hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
+      "px-8 py-2 hover:bg-black-5-opacity text-nowrap active:bg-black-10-opacity rounded-t-lg focus-visible:bg-black-5-opacity",
       {
-        "text-primary font-bold border-b-4 border-primary": openTab === id,
-        "text-black-sub": openTab !== id,
+        "text-primary text-label-lg border-b-4 border-primary": openTab === id,
+        "text-black-sub text-body-md": openTab !== id,
       }
     );
   };
