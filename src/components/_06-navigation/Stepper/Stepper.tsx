@@ -15,7 +15,7 @@ export const Stepper: React.FC<StepperProps> = ({
   // スタイルの設定
   const iconStyle = (status: string) => {
     return cn(
-      "h-[20px] w-[20px] flex items-center justify-center text-label-sm mr-2 shrink-0",
+      "h-[20px] w-[20px] flex items-center justify-center typo-label-sm mr-2 shrink-0",
       {
         "text-black-sub border border-black-sub rounded-full":
           status === "incomplete",
@@ -25,7 +25,7 @@ export const Stepper: React.FC<StepperProps> = ({
     );
   };
   const labelStyle = (status: string) => {
-    return cn("text-label-lg", {
+    return cn("typo-label-lg", {
       "text-black-sub": status === "incomplete" || status === "completed",
       "text-primary font-bold": status === "inprogress",
     });

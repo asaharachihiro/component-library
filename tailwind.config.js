@@ -60,6 +60,28 @@ module.exports = {
 
   plugins: [
     function ({ addUtilities }) {
+      const fontSizes = designTokens.theme.fontSize;
+
+      const typoUtilities = Object.entries(fontSizes).reduce(
+        (acc, [key, value]) => {
+          const [fontSize, options] = value;
+
+          acc[`.typo-${key}`] = {
+            fontSize,
+            lineHeight: options.lineHeight,
+            letterSpacing: options.letterSpacing,
+            fontWeight: options.fontWeight,
+          };
+
+          return acc;
+        },
+        {}
+      );
+
+      addUtilities(typoUtilities);
+    },
+
+    function ({ addUtilities }) {
       addUtilities({
         ".icon-wght-500": {
           fontVariationSettings: '"wght" 500',

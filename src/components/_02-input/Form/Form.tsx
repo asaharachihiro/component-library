@@ -86,12 +86,12 @@ export const Form = React.forwardRef<HTMLFormElement, FormProps>(
       <FormContext.Provider value={{ formData, errors, handleInputChange }}>
         <div className={cn(className, "space-y-6")} id={id}>
           {formLabel && (
-            <label className="text-title-sm block">{formLabel}</label>
+            <label className="typo-title-sm block">{formLabel}</label>
           )}
           <div className="space-y-1">
-            {description && <p className="text-body-md">{description}</p>}
+            {description && <p className="typo-body-md">{description}</p>}
             {supportText && (
-              <p className="text-body-sm mb-6 text-black-sub">{supportText}</p>
+              <p className="typo-body-sm mb-6 text-black-sub">{supportText}</p>
             )}
           </div>
           <form

@@ -12,9 +12,9 @@ interface FormLabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
 export const FormLabel = React.forwardRef<HTMLLabelElement, FormLabelProps>(
   ({ label, isRequired, className, htmlFor, tooltip, ...props }, ref) => {
     // スタイル設定
-    const labelStyle = "text-label-md text-black";
+    const labelStyle = "typo-label-md text-black";
     const requiredLabelStyle =
-      "ml-2 flex h-5 shrink-0 items-center rounded-md bg-black-10-opacity px-2 text-label-sm text-black-sub";
+      "ml-2 flex h-5 shrink-0 items-center rounded-md bg-black-10-opacity px-2 typo-label-sm text-black-sub";
 
     return (
       <div

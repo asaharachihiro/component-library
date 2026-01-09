@@ -18,7 +18,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
     header: "ID",
     size: 80,
     cell: (cell) => (
-      <span className="text-body-sm text-black-sub">{cell.getValue()}</span>
+      <span className="typo-body-sm text-black-sub">{cell.getValue()}</span>
     ),
   }),
   columnHelper.accessor("name", {
@@ -35,7 +35,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
     header: "体長",
     size: 80,
     cell: (cell) => (
-      <span className="text-body-sm block text-right text-black-sub">
+      <span className="typo-body-sm block text-right text-black-sub">
         {cell.getValue()}
       </span>
     ),

@@ -46,7 +46,7 @@ export const OptionsGroup = React.forwardRef<
           <FormLabel label={label} isRequired={isRequired} tooltip={tooltip} />
         )}
         {supportText && (
-          <span className="text-label-sm text-black-sub">{supportText}</span>
+          <span className="typo-label-sm text-black-sub">{supportText}</span>
         )}
         {errorText && <ErrorText text={errorText} />}
         <div className={ordarStyle}>{children}</div>

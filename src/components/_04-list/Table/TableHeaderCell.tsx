@@ -100,7 +100,7 @@ export const HeaderCell = <TData,>({
   // スタイルの設定
   const containerStyle = (isSorting: boolean) => {
     return cn(
-      isSorting && "text-label-lg text-primary",
+      isSorting && "typo-label-lg text-primary",
       "relative w-full overflow-visible border-b border-black-20-opacity bg-black-3-opacity"
     );
   };

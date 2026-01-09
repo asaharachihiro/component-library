@@ -33,7 +33,7 @@ export const NumberButton = React.forwardRef<
   ) => {
     // スタイル設定
     const buttonStyle = cn(
-      "w-7 h-7 select-none rounded-full text-label-sm relative group font-sans",
+      "w-7 h-7 select-none rounded-full typo-label-sm relative group font-sans",
       {
         "text-black-20-opacity pointer-events-none": disabled,
         "border border-primary text-primary": isToday,

@@ -238,7 +238,7 @@ export const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             {weekdays.map((weekday) => (
               <span
                 key={weekday}
-                className="text-label-sm flex h-7 w-7 items-center justify-center text-black-sub"
+                className="typo-label-sm flex h-7 w-7 items-center justify-center text-black-sub"
               >
                 {weekday}
               </span>

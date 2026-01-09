@@ -23,6 +23,7 @@ import {
   columns,
 } from "./components/_04-list/Table/sampleData";
 import { ColumnDef } from "node_modules/@tanstack/table-core/build/lib/types";
+import { cn } from "./utils/cn";
 
 // type SampleData = {
 //   id: string;
@@ -97,7 +98,6 @@ const App: React.FC = () => {
      /> */}
 
       {/* フォーム確認用 */}
-
       <Form
         values={defaultFormData}
         id={"form"}

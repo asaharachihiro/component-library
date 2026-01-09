@@ -14,7 +14,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     // スタイルの設定
     const linkStyle = cn(
-      "font-sans m-1 inline-flex items-center text-label-lg",
+      "font-sans m-1 inline-flex items-center typo-label-lg",
       className,
       {
         "cursor-pointer  text-link visited:text-link-visited": !disabled,
@@ -34,7 +34,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       >
         <span className="mx-1 underline underline-offset-4">{label}</span>
         {isBlank && (
-          <span className="material-symbols-rounded text-body-md icon-wght-500">
+          <span className="material-symbols-rounded typo-body-md icon-wght-500">
             <span className="align-middle">open_in_new</span>
           </span>
         )}

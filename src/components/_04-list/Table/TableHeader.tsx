@@ -103,7 +103,7 @@ export const TableHeader = <TData,>({
   };
 
   // スタイルの設定
-  const containerStyle = "w-full text-label-md text-black-sub transition-all";
+  const containerStyle = "w-full typo-label-md text-black-sub transition-all";
 
   return (
     <thead className={containerStyle}>

@@ -22,7 +22,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
 }) => {
   // スタイルの設定
   const itemStyle = cn(
-    "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 text-title-sm transition-all focus-visible:-outline-offset-1",
+    "flex h-[48px] w-full cursor-pointer items-center space-x-2 px-4 typo-title-sm transition-all focus-visible:-outline-offset-1",
     selected
       ? "bg-primary-sub hover:bg-primary-sub text-primary border-primary border-b-4 pt-4 pb-3"
       : "hover:bg-black-3-opacity text-black-sub focus-visible:bg-black-3-opacity py-4"
@@ -41,7 +41,7 @@ export const TopbarItem: React.FC<TopbarItemProps> = ({
         {icon && (
           <span className="material-symbols-rounded select-none">{icon}</span>
         )}
-        {label && <span className="text-body-lg text-nowrap"> {label}</span>}
+        {label && <span className="typo-body-lg text-nowrap"> {label}</span>}
       </a>
     </li>
   );

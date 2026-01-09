@@ -65,7 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
       >
         <div>
           <div className="flex justify-between p-6 pb-0">
-            <span className="text-title-sm">{title}</span>
+            <span className="typo-title-sm">{title}</span>
             {isDeletable && (
               <IconButton
                 id={"closeModal"}

@@ -22,7 +22,7 @@ export const Badge: React.FC<BadgeProps> = ({
     "pointer-events-none absolute z-10 flex shrink-0 select-none rounded-full bg-danger",
     type === "dot"
       ? "right-1 top-1 h-2 w-2"
-      : "-right-[2px] -top-[2px] h-5 min-w-5 items-center justify-center px-1 text-12m-140 text-white"
+      : "-right-[2px] -top-[2px] h-5 min-w-5 items-center justify-center px-1 typo-label-sm text-white"
   );
 
   return (

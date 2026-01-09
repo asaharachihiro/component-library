@@ -48,8 +48,8 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     const IconButtonStyle = cn(
       "flex relative justify-center items-center hover:bg-black-5-opacity shrink-0 active:bg-black-10-opacity disabled:text-black-20-opacity disabled:pointer-events-none select-none transition-all focus-visible:bg-black-5-opacity",
       size === "m"
-        ? "text-title-sm w-9 h-9 rounded-lg text-primary"
-        : "text-body-lg disabled:text-black-20-opacity w-7 h-7 rounded-md text-black-sub",
+        ? "typo-title-sm w-9 h-9 rounded-lg text-primary"
+        : "typo-body-lg disabled:text-black-20-opacity w-7 h-7 rounded-md text-black-sub",
       {
         "text-black-20-opacity pointer-events-none": disabled || isLoading,
         "text-primary": !isLoading && toggleChecked,

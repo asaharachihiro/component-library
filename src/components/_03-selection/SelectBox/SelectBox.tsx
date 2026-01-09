@@ -182,7 +182,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
     //スタイルの設定
     const listContainerStyle =
       "mt-1 max-h-60 overflow-y-auto rounded-lg bg-white shadow-low";
-    const checkIconStyle = "mr-1 flex items-center text-body-lg text-primary";
+    const checkIconStyle = "mr-1 flex items-center typo-body-lg text-primary";
 
     return (
       <BaseSelectBox
@@ -217,7 +217,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
                     "aria-selected": selectedValue === "none",
                     "aria-label": placeholder,
                     onClick: () => handleChange("none"),
-                    className: "text-body-md text-black-sub",
+                    className: "typo-body-md text-black-sub",
                     onKeyDown: handleOnKeyDown(0),
                     ref: (el: HTMLButtonElement | null) => {
                       optionRefs.current["none"] = el;
@@ -234,7 +234,7 @@ export const SelectBox = React.forwardRef<HTMLDivElement, SelectBoxProps>(
               ref: (el: HTMLButtonElement | null) => {
                 optionRefs.current[index] = el;
               },
-              className: "text-body-md",
+              className: "typo-body-md",
               onClick: () => handleChange(option.value),
               onKeyDown: handleOnKeyDown(hasDefaultOption ? index + 1 : index),
               children: (

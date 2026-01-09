@@ -28,10 +28,10 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
     const buttonStyle = cn(
       "flex w-full items-center justify-start p-2 px-4  truncate transition-all",
       {
-        "pointer-events-none text-black-20-opacity text-body-md": disabled,
-        "cursor-pointer hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity text-body-md":
+        "pointer-events-none text-black-20-opacity typo-body-md": disabled,
+        "cursor-pointer hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity typo-body-md":
           !disabled && !selected,
-        "bg-primary-sub text-primary text-label-lg": !disabled && selected,
+        "bg-primary-sub text-primary typo-label-lg": !disabled && selected,
       }
     );
 

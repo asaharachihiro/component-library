@@ -20,8 +20,8 @@ export interface ButtonProps
 
 const baseButtonStyle =
   "flex items-center justify-center cursor-pointer relative overflow-hidden group shrink-0 text-nowrap";
-const sizeS = "h-7 px-2 text-label-md rounded-md min-w-12";
-const sizeM = "h-9 px-6 text-label-lg rounded-lg";
+const sizeS = "h-7 px-2 typo-label-md rounded-md min-w-12";
+const sizeM = "h-9 px-6 typo-label-lg rounded-lg";
 
 // primary, danger
 const ContainedBaseButton = React.forwardRef<
@@ -61,7 +61,7 @@ const ContainedBaseButton = React.forwardRef<
         {icon && (
           <div
             className={cn(
-              "text-title-sm",
+              "typo-title-sm",
               isLoading ? "opacity-0" : "mr-1 flex"
             )}
           >
@@ -111,7 +111,7 @@ const OutlinedBaseButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {icon && (
           <div
             className={cn(
-              "text-title-sm",
+              "typo-title-sm",
               isLoading ? "opacity-0" : "mr-1 flex"
             )}
           >
@@ -165,7 +165,7 @@ const TextBaseButton = React.forwardRef<
         {icon && (
           <div
             className={cn(
-              "text-title-sm",
+              "typo-title-sm",
               isLoading ? "opacity-0" : "mr-1 flex"
             )}
           >

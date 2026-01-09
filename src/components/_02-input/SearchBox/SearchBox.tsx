@@ -116,7 +116,7 @@ export const SearchBox = React.forwardRef<HTMLInputElement, SearchBoxProps>(
         </div>
         <div className={cn(supportMessage || errorMessage ? "mt-1" : "")}>
           {supportMessage && (
-            <span className="text-label-sm text-black-sub">
+            <span className="typo-label-sm text-black-sub">
               {supportMessage}
             </span>
           )}
