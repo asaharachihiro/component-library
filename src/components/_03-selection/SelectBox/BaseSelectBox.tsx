@@ -69,7 +69,7 @@ export const BaseSelectBox = React.forwardRef<
           disabled,
         "border-danger": !disabled && isInvalid,
         "border-black-20-opacity": !disabled && !isInvalid,
-        "text-sm p-1 pl-2 rounded-md border-transparent": size === "s",
+        "typo-label-md p-1 pl-2 rounded-md border-transparent": size === "s",
         "rounded-lg p-2": size !== "s",
       }
     );
@@ -136,7 +136,7 @@ export const BaseSelectBox = React.forwardRef<
           </div>
         )}
         {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
+          <span className="typo-label-sm text-black-sub">{supportMessage}</span>
         )}
         {isInvalid && (
           <ErrorText text={errorMessage || "入力がエラーになっています。"} />

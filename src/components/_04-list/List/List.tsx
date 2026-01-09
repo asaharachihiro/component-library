@@ -26,12 +26,12 @@ export const List = React.forwardRef<HTMLButtonElement, ListProps>(
   ) => {
     // スタイルの設定
     const buttonStyle = cn(
-      "flex w-full items-center justify-start p-2 px-4 text-base truncate transition-all",
+      "flex w-full items-center justify-start p-2 px-4  truncate transition-all",
       {
-        "pointer-events-none text-black-20-opacity": disabled,
-        "cursor-pointer hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity font-medium":
+        "pointer-events-none text-black-20-opacity typo-body-md": disabled,
+        "cursor-pointer hover:bg-black-5-opacity active:bg-black-10-opacity focus-visible:bg-black-5-opacity typo-body-md":
           !disabled && !selected,
-        "bg-primary-sub text-primary font-bold": !disabled && selected,
+        "bg-primary-sub text-primary typo-label-lg": !disabled && selected,
       }
     );
 

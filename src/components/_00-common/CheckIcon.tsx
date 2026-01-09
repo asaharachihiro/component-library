@@ -28,7 +28,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
     // スタイル設定
     const isNormalStyle = !disabled && !isInvalid;
     const checkBoxtyle = cn(
-      "flex h-7 w-7 select-none items-center justify-center rounded-md text-xl hover:bg-black-5-opacity active:bg-black-10-opacity",
+      "flex h-7 w-7 select-none items-center justify-center rounded-md typo-title-sm hover:bg-black-5-opacity active:bg-black-10-opacity",
       {
         "text-black-20-opacity pointer-events-none": disabled,
         "text-danger": !disabled && isInvalid,
@@ -36,7 +36,7 @@ export const CheckIcon = React.forwardRef<HTMLInputElement, CheckIconProps>(
     );
 
     return (
-      <div className={className}>
+      <div className={cn(className, "font-sans")}>
         <div className={checkBoxtyle}>
           <input
             type="checkbox"

@@ -18,7 +18,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
     header: "ID",
     size: 80,
     cell: (cell) => (
-      <span className="text-sm text-black-sub">{cell.getValue()}</span>
+      <span className="typo-body-sm text-black-sub">{cell.getValue()}</span>
     ),
   }),
   columnHelper.accessor("name", {
@@ -35,7 +35,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
     header: "体長",
     size: 80,
     cell: (cell) => (
-      <span className="block text-right text-sm text-black-sub">
+      <span className="typo-body-sm block text-right text-black-sub">
         {cell.getValue()}
       </span>
     ),
@@ -53,7 +53,7 @@ export const columns: ColumnDef<SampleData, any>[] = [
     id: "summary",
     header: "概要",
     size: 800,
-    cell: (cell) => <span className="font-regular">{cell.getValue()}</span>,
+    cell: (cell) => <span>{cell.getValue()}</span>,
     enableSorting: false,
   }),
 ];

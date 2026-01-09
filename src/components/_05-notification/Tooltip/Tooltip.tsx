@@ -31,10 +31,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   // スタイルの設定
   const baseStyle =
-    "group flex select-none items-center text-2xl text-black-sub";
+    "group flex select-none items-center typo-title-md text-black-sub";
   const iconStyle = cn("material-symbols-rounded", "peer -ml-2");
   const panelStyle = cn(
-    "z-100 text-nowrap rounded-md bg-white p-4 text-sm shadow-low peer-hover:animate-fadeIn",
+    "z-100 text-nowrap rounded-md bg-white p-4 typo-body-sm shadow-low peer-hover:animate-fadeIn",
     isVisible
       ? "pointer-events-auto opacity-100"
       : "pointer-events-none animate-fadeOut opacity-0"

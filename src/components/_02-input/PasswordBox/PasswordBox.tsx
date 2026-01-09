@@ -125,7 +125,7 @@ export const PasswordBox = React.forwardRef<HTMLInputElement, PasswordBoxProps>(
           </div>
         </div>
         {supportMessage && (
-          <span className="text-xs text-black-sub">{supportMessage}</span>
+          <span className="typo-label-sm text-black-sub">{supportMessage}</span>
         )}
         {isInvalidStatus && (
           <ErrorText

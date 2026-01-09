@@ -110,7 +110,7 @@ export const ToggleSwitch = React.forwardRef<
           }}
         >
           {label && (
-            <span className="m-1 mr-4 text-left text-base leading-[180%]">
+            <span className="typo-body-md m-1 mr-4 text-left leading-[180%]">
               {label}
             </span>
           )}

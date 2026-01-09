@@ -33,15 +33,15 @@ const Template: Story = {
       <div className="grid grid-cols-4 gap-4">
         <Card {...args}>
           <div className="flex justify-between">
-            <span className="text-lg font-bold">{args.id}</span>
+            <span className="typo-title-sm">{args.id}</span>
           </div>
 
-          <div className="my-4 flex h-[80px] items-center justify-center rounded-md bg-black-5-opacity text-2xl">
+          <div className="typo-title-md my-4 flex h-[80px] items-center justify-center rounded-md bg-black-5-opacity">
             <span className="material-symbols-rounded text-black-sub">
               home_improvement_and_tools
             </span>
           </div>
-          <div className="m-2 flex flex-col space-y-2 text-xs text-black-sub">
+          <div className="typo-label-sm m-2 flex flex-col space-y-2 text-black-sub">
             <span className="text-black">サラネジ 5*5 2cm</span>
             <span>W5mm * D5mm * H20mm</span>
             <span>BX工業</span>
@@ -50,15 +50,15 @@ const Template: Story = {
         {cards.map((index) => (
           <Card id={`card-${index}`}>
             <div className="flex justify-between">
-              <span className="text-lg font-bold">{index}</span>
+              <span className="typo-title-sm">{index}</span>
             </div>
 
-            <div className="my-4 flex h-[80px] items-center justify-center rounded-md bg-black-5-opacity text-2xl">
+            <div className="typo-title-md my-4 flex h-[80px] items-center justify-center rounded-md bg-black-5-opacity">
               <span className="material-symbols-rounded text-black-sub">
                 home_improvement_and_tools
               </span>
             </div>
-            <div className="m-2 flex flex-col space-y-2 text-xs text-black-sub">
+            <div className="typo-label-sm m-2 flex flex-col space-y-2 text-black-sub">
               <span className="text-black">サラネジ 5*5 2cm</span>
               <span>W5mm * D5mm * H20mm</span>
               <span>BX工業</span>

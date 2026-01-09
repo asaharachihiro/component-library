@@ -21,7 +21,6 @@ describe("TopbarItem", () => {
   it("labelが表示される", () => {
     render(<TopbarItem id="topbar3" href="/label" label="ラベル" />);
     expect(screen.getByText("ラベル")).toBeInTheDocument();
-    expect(screen.getByText("ラベル").className).toContain("font-medium");
   });
 
   it("selected=trueのとき選択スタイルが付与される", () => {

@@ -33,11 +33,11 @@ export const NumberButton = React.forwardRef<
   ) => {
     // スタイル設定
     const buttonStyle = cn(
-      "w-7 h-7 select-none rounded-full text-xs relative group",
+      "w-7 h-7 select-none rounded-full typo-label-sm relative group font-sans",
       {
         "text-black-20-opacity pointer-events-none": disabled,
         "border border-primary text-primary": isToday,
-        "bg-primary text-white font-bold": selected,
+        "bg-primary text-white": selected,
         "text-black": !disabled && !isToday && !selected,
       }
     );

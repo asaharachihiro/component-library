@@ -117,7 +117,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       );
     };
     const iconStyle =
-      "flex shrink-0 select-none items-center justify-center rounded-full text-xl transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity";
+      "flex shrink-0 select-none items-center justify-center rounded-full typo-title-sm transition-all group-hover:bg-black-5-opacity group-focus-visible:bg-black-5-opacity";
 
     return (
       <div
@@ -158,7 +158,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
                   </span>
                 </div>
 
-                <div className="ml-1 flex h-full w-full text-base">
+                <div className="typo-body-md ml-1 flex h-full w-full">
                   {option.label}
                   {option.children}
                 </div>

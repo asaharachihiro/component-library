@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const designTokens = require("./tailwind.json");
+
 module.exports = {
   content: [
     "./index.html",
@@ -7,74 +9,10 @@ module.exports = {
     "./src/styles/global.scss",
     "./storybook-static/**/*.html",
   ],
-  safelist: [],
+
   theme: {
-    colors: {
-      primary: {
-        DEFAULT: "rgb(7, 72, 207, 1)",
-        sub: "rgb(7, 72, 207, 0.2)",
-      },
-      black: {
-        DEFAULT: "rgb(1, 30, 42, 1)",
-        sub: "rgb(1, 30, 42, 0.5)",
-        overlay: "rgb(1, 30, 42, 0.3)",
-        disabled: "rgb(1, 30, 42, 0.2)",
-        "3-opacity": "rgb(1, 30, 42, 0.03)",
-        "5-opacity": "rgb(1, 30, 42, 0.05)",
-        "10-opacity": "rgb(1, 30, 42, 0.1)",
-        "20-opacity": "rgb(1, 30, 42, 0.2)",
-        "50-opacity": "rgb(1, 30, 42, 0.5)",
-      },
-      white: "#FFFFFF",
-      transparent: "rgb(0, 0, 0, 0)",
-      danger: {
-        DEFAULT: "rgb(224, 6, 6, 1)",
-        light: "rgb(224, 6, 6, 0.1)",
-      },
-      success: "rgb(23, 179, 132, 1)",
-      link: {
-        DEFAULT: "rgb(58, 58, 230, 1)",
-        visited: "rgb(138, 74, 236, 1)",
-      },
-    },
-    boxShadow: {
-      low: "0px 1px 4px 2px rgb(0, 0, 0, 0.075)",
-      high: "0px 4px 12px 4px rgb(0, 0, 0, 0.1)",
-      none: "0 0 rgb(0, 0, 0, 0)",
-    },
     extend: {
-      fontFamily: {
-        sans: [
-          '"Noto Sans JP"',
-          "system-ui",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"Helvetica Neue"',
-          "Arial",
-          "sans-serif",
-        ],
-      },
-      fontSize: {
-        "dsp-56b-140": ["56px", { lineHeight: "140%", fontWeight: "700" }],
-        "dsp-48m-140": ["48px", { lineHeight: "140%", fontWeight: "500" }],
-
-        "hdl-40m-120": ["40px", { lineHeight: "120%", fontWeight: "500" }],
-        "hdl-32m-120": ["32px", { lineHeight: "120%", fontWeight: "500" }],
-
-        "ttl-28m-120": ["28px", { lineHeight: "120%", fontWeight: "500" }],
-        "ttl-24m-140": ["24px", { lineHeight: "140%", fontWeight: "500" }],
-        "ttl-20b-140": ["20px", { lineHeight: "140%", fontWeight: "700" }],
-        "ttl-18b-140": ["18px", { lineHeight: "140%", fontWeight: "700" }],
-
-        "bdy-18m-150": ["18px", { lineHeight: "150%", fontWeight: "500" }],
-        "bdy-16r-150": ["16px", { lineHeight: "150%", fontWeight: "400" }],
-        "bdy-14r-160": ["14px", { lineHeight: "160%", fontWeight: "400" }],
-
-        "lbl-16b-150": ["16px", { lineHeight: "150%", fontWeight: "700" }],
-        "lbl-14m-140": ["14px", { lineHeight: "140%", fontWeight: "500" }],
-        "lbl-12m-140": ["12px", { lineHeight: "140%", fontWeight: "500" }],
-        "lbl-10m-140": ["10px", { lineHeight: "140%", fontWeight: "500" }],
-      },
+      ...designTokens.theme,
       animation: {
         fadeIn: "fadeIn 0.3s ease-in-out",
         fadeOut: "fadeOut 0.3s ease-out",
@@ -119,7 +57,30 @@ module.exports = {
       },
     },
   },
+
   plugins: [
+    function ({ addUtilities }) {
+      const fontSizes = designTokens.theme.fontSize;
+
+      const typoUtilities = Object.entries(fontSizes).reduce(
+        (acc, [key, value]) => {
+          const [fontSize, options] = value;
+
+          acc[`.typo-${key}`] = {
+            fontSize,
+            lineHeight: options.lineHeight,
+            letterSpacing: options.letterSpacing,
+            fontWeight: options.fontWeight,
+          };
+
+          return acc;
+        },
+        {}
+      );
+
+      addUtilities(typoUtilities);
+    },
+
     function ({ addUtilities }) {
       addUtilities({
         ".icon-wght-500": {

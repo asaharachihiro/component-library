@@ -57,7 +57,7 @@ describe("BaseSelectBox", () => {
   it("size='s'で小さいスタイルが適用される", () => {
     render(<BaseSelectBox id="bsb9" size="s" children={null} />);
     const input = screen.getByRole("select");
-    expect(input.className).toContain("text-sm");
+    expect(input.className).toContain("typo-label-md");
   });
 
   it("size='m'でデフォルトスタイルが適用される", () => {

@@ -133,7 +133,7 @@ export const Slider: React.FC<SliderProps> = ({
 
   // スタイルの設定
   const InputNumStyle = cn(
-    "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 text-xs font-regular",
+    "-top-9 left-0 mb-2 flex size-fit h-7 min-w-7 items-center justify-center rounded-full px-1 typo-label-sm",
     disabled
       ? "bg-black-3-opacity text-black-sub"
       : "bg-black-10-opacity text-black"
@@ -215,7 +215,7 @@ export const Slider: React.FC<SliderProps> = ({
         </div>
       </div>
       {supportMessage && (
-        <span className="text-xs text-black-sub">{supportMessage}</span>
+        <span className="typo-label-sm text-black-sub">{supportMessage}</span>
       )}
       {isInvalidStatus && (
         <ErrorText

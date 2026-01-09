@@ -15,11 +15,11 @@ export const ColumnPanel = React.forwardRef<HTMLDivElement, ColumnPanelProps>(
   ({ id, panelPosition, onClick, isFixed = false }, ref) => {
     // スタイルの設定
     const panelStyle =
-      "absolute mt-2 size-fit rounded-lg bg-white text-lg text-black-sub shadow-low";
+      "absolute mt-2 size-fit rounded-lg bg-white typo-body-lg text-black-sub shadow-low";
     const containerStyle =
       "flex items-center rounded-lg p-4 hover:bg-black-5-opacity active:bg-black-10-opacity";
     const iconStyle = "material-symbols-rounded mr-2 select-none";
-    const labelStyle = "text-base font-regular";
+    const labelStyle = "typo-body-md";
 
     return (
       <Portal>

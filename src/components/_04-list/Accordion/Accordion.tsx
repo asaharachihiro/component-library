@@ -65,13 +65,13 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   return (
     <li id={id} className={cn(className, "list-none")}>
-      <div className="relative flex w-full cursor-pointer flex-col text-base">
+      <div className="typo-body-md relative flex w-full cursor-pointer flex-col">
         <button
           onClick={() => toggleAccordion(!isOpen)}
           className={labelStyle}
           aria-expanded={isOpen}
         >
-          <span className="truncate font-medium">{label}</span>
+          <span className="truncate">{label}</span>
           <span className={iconStyle}>expand_more</span>
         </button>
         <div className={containerStyle} ref={contentRef}>

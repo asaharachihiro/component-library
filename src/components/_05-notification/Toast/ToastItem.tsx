@@ -22,7 +22,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
 
   // スタイルの設定
   const toastStyle = cn(
-    "m-2 flex w-[500px] items-center justify-between space-x-2 rounded-lg bg-white p-4 text-2xl shadow-high transition-all duration-300",
+    "m-2 flex w-[500px] items-center justify-between space-x-2 rounded-lg bg-white p-4 typo-title-md shadow-high transition-all duration-300",
     {
       "border border-success text-success": type === "success",
       "border border-danger text-danger": type === "error",
@@ -56,7 +56,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({
                 {type === "error" && "emergency_home"}
               </span>
             )}
-            <span className="text-base font-medium text-black">{message}</span>
+            <span className="typo-body-md text-black">{message}</span>
           </div>
           {children}
         </div>

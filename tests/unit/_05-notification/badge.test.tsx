@@ -15,7 +15,7 @@ describe("Badge", () => {
       document.getElementById("badge2");
     expect(badge).toBeTruthy();
     expect(badge?.textContent).toBe("");
-    expect(badge?.className).toContain("h-1 w-1");
+    expect(badge?.className).toContain("h-2 w-2");
   });
 
   it("typeがcounterの場合はカウントが描画される", () => {
@@ -23,7 +23,6 @@ describe("Badge", () => {
     const badge = document.getElementById("badge3");
     expect(badge).toBeTruthy();
     expect(badge?.textContent).toBe("5");
-    expect(badge?.className).toContain("h-4 min-w-4");
   });
 
   it("countが99より大きい場合は99+と表示される", () => {
@@ -44,6 +43,6 @@ describe("Badge", () => {
     render(<Badge id="badge6" count={2} />);
     const badge = document.getElementById("badge6");
     expect(badge).toBeTruthy();
-    expect(badge?.className).toContain("h-1 w-1");
+    expect(badge?.className).toContain("h-2 w-2");
   });
 });

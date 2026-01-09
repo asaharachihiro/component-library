@@ -18,7 +18,7 @@ export const Tag: React.FC<TagProps> = ({
 }) => {
   // スタイルの設定
   const tagStyle = cn(
-    " px-2 h-6 inline-flex h-[22px] items-center text-sm shrink-0 nowrap font-medium select-none rounded-sm",
+    " px-2 h-6 inline-flex font-sans h-[22px] items-center typo-label-md shrink-0 nowrap select-none rounded-sm",
     {
       "bg-black-5-opacity text-black-50-opacity": disabled,
       "bg-black-sub text-white": type === "primary" && !disabled,

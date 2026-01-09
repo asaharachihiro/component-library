@@ -22,10 +22,12 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   onClick = () => {},
 }) => {
   // スタイルの設定
-  const arrowStyle = cn("m-1 flex select-none text-base text-black-20-opacity");
+  const arrowStyle = cn(
+    "m-1 flex select-none typo-body-md text-black-20-opacity"
+  );
   const labelStyle = (selected: boolean | undefined) => {
-    return cn("text-nowrap text-base", {
-      "pointer-events-none text-base font-medium text-black": selected,
+    return cn("text-nowrap typo-body-md", {
+      "pointer-events-none typo-body-md text-black": selected,
     });
   };
 
@@ -35,7 +37,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
         {items.map((item, index) => (
           <div
             key={index}
-            className="flex items-center text-2xl text-black-sub"
+            className="typo-title-md flex items-center text-black-sub"
           >
             {0 < index && (
               <div className={arrowStyle}>
