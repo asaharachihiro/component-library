@@ -1,10 +1,10 @@
 import React from "react";
-import { TextBox } from "./TextBox";
+import { TextBox } from "../../_02-input/TextBox/TextBox";
 import figma from "@figma/code-connect";
 
 figma.connect(
   TextBox,
-  "https://www.figma.com/design/3DW5ortH1T3WgHePqou4RY/NUDS-V5?node-id=89%3A1768",
+  "https://www.figma.com/design/3DW5ortH1T3WgHePqou4RY/NUDS-V5?node-id=89-1769&t=HwEz7F392NbmBN93-4",
   {
     props: {
       label: figma.string("label"),
