@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "../../src/components/_01-action/Button/Button";
+import { Button } from "../../../src/components/_01-action/Button/Button";
 import figma from "@figma/code-connect";
-import { iconMap } from "./iconMap";
 
 figma.connect(
   Button,
