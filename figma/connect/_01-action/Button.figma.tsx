@@ -8,7 +8,6 @@ figma.connect(
   {
     props: {
       label: figma.string("label"),
-      icon: figma.string("icon"),
       isActive: figma.string("isActive"),
       isLoading: figma.string("isLoading"),
       disabled: figma.string("disabled"),
@@ -19,7 +18,7 @@ figma.connect(
       return (
         <Button
           label={props.label}
-          icon={props.icon}
+          icon={"icon_name"}
           variant={props.variant}
           size={props.size}
           disabled={props.disabled}
